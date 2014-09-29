@@ -1,5 +1,6 @@
 package com.comp490.studybuddy;
 
+import com.comp490.studybuddy.calendar.CalenderActivity;
 import com.comp490.studybuddy.textnote.TextNote;
 import com.example.studybuddy.R;
 
@@ -40,6 +41,12 @@ public class MainActivity extends Activity {
 	public boolean onTextNoteClick(View view) {
 		Intent noteLaunch = new Intent(this.getApplicationContext(), TextNote.class);
 		startActivity(noteLaunch);
+		return true;
+	}
+	
+	public boolean onCalClick(View view) {
+		Intent calLaunch = new Intent(this.getApplicationContext(), CalenderActivity.class);
+		startActivity(calLaunch);
 		return true;
 	}
  }
