@@ -1,9 +1,14 @@
-package com.example.studybuddy;
+package com.comp490.studybuddy;
+
+import com.comp490.studybuddy.textnote.TextNote;
+import com.example.studybuddy.R;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 public class MainActivity extends Activity {
 
@@ -31,4 +36,10 @@ public class MainActivity extends Activity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
-}
+	
+	public boolean onTextNoteClick(View view) {
+		Intent noteLaunch = new Intent(this.getApplicationContext(), TextNote.class);
+		startActivity(noteLaunch);
+		return true;
+	}
+ }
