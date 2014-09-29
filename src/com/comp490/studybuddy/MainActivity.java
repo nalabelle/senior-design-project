@@ -1,6 +1,6 @@
 package com.comp490.studybuddy;
 
-import com.comp490.studybuddy.calendar.CalenderActivity;
+import com.comp490.studybuddy.calendar.CalenActivity;
 import com.comp490.studybuddy.textnote.TextNote;
 import com.example.studybuddy.R;
 
@@ -45,7 +45,7 @@ public class MainActivity extends Activity {
 	}
 	
 	public boolean onCalClick(View view) {
-		Intent calLaunch = new Intent(this.getApplicationContext(), CalenderActivity.class);
+		Intent calLaunch = new Intent(this.getApplicationContext(), CalenActivity.class);
 		startActivity(calLaunch);
 		return true;
 	}
