@@ -7,5 +7,6 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_text_note">TextNote</string>
     <string name="enter_note_here">Enter your note here.</string>
+    <string name="title_activity_calen">CalenActivity</string>
 
 </resources>

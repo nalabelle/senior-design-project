@@ -26,6 +26,10 @@
             android:name="com.comp490.studybuddy.textnote.TextNote"
             android:label="@string/title_activity_text_note" >
         </activity>
+        <activity
+            android:name="com.comp490.studybuddy.calendar.CalenActivity"
+            android:label="@string/title_activity_calen" >
+        </activity>
     </application>
 
 </manifest>

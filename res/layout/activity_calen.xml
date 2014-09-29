@@ -6,14 +6,13 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.comp490.studybuddy.MainActivity" >
+    tools:context="com.comp490.studybuddy.calendar.CalenActivity" >
 
     <CalendarView
         android:id="@+id/calendarView1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="83dp" />
+        android:layout_centerVertical="true" />
     
 </RelativeLayout>
