@@ -2,7 +2,6 @@ package com.comp490.studybuddy;
 
 import com.comp490.studybuddy.calendar.CalenActivity;
 import com.comp490.studybuddy.textnote.TextNote;
-import com.example.studybuddy.R;
 
 import android.app.Activity;
 import android.content.Intent;
