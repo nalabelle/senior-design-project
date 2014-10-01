@@ -20,7 +20,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.example.studybuddy.R;
+import com.comp490.studybuddy.R;
 
 public class TextNote extends Activity {
 	
