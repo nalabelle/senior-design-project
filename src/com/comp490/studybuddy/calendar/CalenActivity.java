@@ -1,14 +1,11 @@
 package com.comp490.studybuddy.calendar;
 
-import com.example.studybuddy.R;
-import com.example.studybuddy.R.id;
-import com.example.studybuddy.R.layout;
-import com.example.studybuddy.R.menu;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.comp490.studybuddy.R;
 
 public class CalenActivity extends Activity {
 
