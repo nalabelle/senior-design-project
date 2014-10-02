@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" 
+    android:padding="6dip" >
+
+    <EditText
+        android:id="@+id/txtItem"
+        android:layout_width="240dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/addBtn"
+        android:hint="@string/enter_task"
+        android:inputType="text" />
+
+    <Button
+        android:id="@+id/addBtn"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/txtItem"
+        android:background="@drawable/todo_button"
+        android:text="@string/add_button" />
+
+   <ListView
+       android:id="@android:id/list"
+       android:layout_width="fill_parent"
+       android:layout_height="wrap_content"
+       android:layout_above="@+id/delBtn"
+       android:layout_below="@id/txtItem"
+       android:layout_marginTop="6dip"
+       android:layout_marginBottom="6dip"
+       android:choiceMode="multipleChoice" >
+
+   </ListView>
+
+        <Button
+            android:id="@+id/delBtn"
+            android:layout_width="178dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/todo_button"
+            android:gravity="center"
+            android:text="@string/del_button" />
+
+</RelativeLayout>
+

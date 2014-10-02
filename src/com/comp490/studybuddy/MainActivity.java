@@ -2,6 +2,7 @@ package com.comp490.studybuddy;
 
 import com.comp490.studybuddy.calendar.CalenActivity;
 import com.comp490.studybuddy.textnote.TextNote;
+import com.comp490.studybuddy.todolist.ToDoList;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -48,4 +49,10 @@ public class MainActivity extends Activity {
 		startActivity(calLaunch);
 		return true;
 	}
+	
+   public boolean onTodoClick(View view) {
+      Intent todoLaunch = new Intent(this.getApplicationContext(), ToDoList.class);
+      startActivity(todoLaunch);
+      return true;
+   }
  }

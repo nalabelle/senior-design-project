@@ -3,11 +3,11 @@
     package="com.comp490.studybuddy"
     android:versionCode="1"
     android:versionName="1.0" >
-    
+
     <uses-permission android:name="android.permission.CAMERA" />
-	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-	<uses-permission android:name="android.permission.RECORD_AUDIO"/>
-    
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+
     <uses-sdk
         android:minSdkVersion="14"
         android:targetSdkVersion="19" />
@@ -18,7 +18,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.comp490.studybuddy.MainActivity"
+            android:name=".MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,12 +27,16 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.comp490.studybuddy.textnote.TextNote"
+            android:name=".textnote.TextNote"
             android:label="@string/title_activity_text_note" >
         </activity>
         <activity
-            android:name="com.comp490.studybuddy.calendar.CalenActivity"
+            android:name=".calendar.CalenActivity"
             android:label="@string/title_activity_calen" >
+        </activity>
+        <activity
+            android:name="com.comp490.studybuddy.todolist.ToDoList"
+            android:label="@string/title_activity_to_do_list" >
         </activity>
     </application>
 
