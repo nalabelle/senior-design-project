@@ -28,16 +28,17 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="38dp"
             android:text="@string/welcome"
-            android:textSize="22sp" 
-            android:textStyle="bold" />
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:typeface="sans" />
 
         <Button
             android:id="@+id/button1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_above="@+id/button3"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentRight="true"
+            android:layout_alignLeft="@+id/textView1"
+            android:layout_alignRight="@+id/textView1"
             android:layout_marginBottom="10dp"
             android:background="@drawable/button"
             android:onClick="onTextNoteClick"
