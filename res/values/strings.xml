@@ -14,7 +14,14 @@
    <string name="main_to_do_btn">To Do List</string>
    <string name="enter_task">Enter a task</string>
    <string name="add_button">Add</string>
-   <string name="del_button">Delete</string>        
+   <string name="del_button">Delete</string>   
+   
+   <string name="action_record_sound">Record Sound</string>
+   <string name="action_button_record">Rec</string>
+   <string name="action_play_sound">Play Sound</string>
+   <string name="action_pause_sound">Pause Sound</string>
+   <string name="action_stop_sound">Stop Sound</string>
+   <string name="action_save">Save Sound</string>
  
     
 

@@ -2,6 +2,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.studybuddy.TextNote" >
 
+    <item android:id="@+id/action_record_sound"
+        android:icon="@drawable/ic_action_mic"
+        android:title="@string/action_record_sound"
+        android:showAsAction="ifRoom|collapseActionView" 
+        android:actionLayout="@layout/action_view_sound"/>
+    
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
