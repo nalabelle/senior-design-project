@@ -35,9 +35,14 @@
             android:label="@string/title_activity_calen" >
         </activity>
         <activity
-            android:name="com.comp490.studybuddy.todolist.ToDoList"
+            android:name=".todolist.ToDoList"
             android:label="@string/title_activity_to_do_list" >
         </activity>
+        <activity
+            android:name=".MyService"
+            android:label="@string/title_activity_my_service" >
+        </activity>
+        <service android:enabled="true" android:name=".MyService" />
     </application>
 
 </manifest>
