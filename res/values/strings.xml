@@ -9,20 +9,18 @@
    <string name="enter_note_here">Enter your note here.</string>
    <string name="title_activity_calen">CalenActivity</string>
    <string name="title_activity_picture">Picture</string>
-   <string name="title_activity_to_do_list">To Do List</string>
-    
+   <string name="title_activity_to_do_list">To Do List</string>    
    <string name="main_to_do_btn">To Do List</string>
    <string name="enter_task">Enter a task</string>
    <string name="add_button">Add</string>
-   <string name="del_button">Delete</string>   
-   
+   <string name="del_button">Delete</string>
+   <string name="title_activity_my_service">MyService</string>    
    <string name="action_record_sound">Record Sound</string>
    <string name="action_button_record">Rec</string>
    <string name="action_play_sound">Play Sound</string>
    <string name="action_pause_sound">Pause Sound</string>
    <string name="action_stop_sound">Stop Sound</string>
-   <string name="action_save">Save Sound</string>
- 
-    
+   <string name="action_save">Save Sound</string>    
 
 </resources>
+

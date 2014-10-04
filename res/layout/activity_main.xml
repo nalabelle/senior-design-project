@@ -9,24 +9,41 @@
     tools:context="com.comp490.studybuddy.MainActivity" >
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
-
-    <TextView
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
-        android:text="@string/gWiz" />
+        android:layout_below="@+id/stop_service"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="21dp"
+        android:layout_toLeftOf="@+id/button1" />
+
+    <Button
+        android:id="@+id/start_service"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="32dp"
+        android:gravity="center_horizontal"
+        android:onClick="onClickStartService"
+        android:text="notification test on" />
+
+    <Button
+        android:id="@+id/stop_service"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/start_service"
+        android:layout_centerHorizontal="true"
+        android:gravity="center_horizontal"
+        android:onClick="onClickStopService"
+        android:text="notification test off" />
 
     <Button
         android:id="@+id/button1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView1"
+        android:layout_alignTop="@+id/textView1"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="35dp"
         android:onClick="onTextNoteClick"
         android:text="New Text Note" />
 
@@ -36,7 +53,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/button1"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="70dp"
+        android:layout_marginTop="17dp"
         android:onClick="onCalClick"
         android:text="CalenBer v 0" />
 
@@ -46,7 +63,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/button2"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="29dp"
+        android:layout_marginTop="17dp"
         android:onClick="onTodoClick"
         android:text="@string/main_to_do_btn" />
 

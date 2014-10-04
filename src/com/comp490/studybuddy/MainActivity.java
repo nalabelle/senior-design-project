@@ -38,6 +38,16 @@ public class MainActivity extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 	
+	public void onClickStartService(View V)
+	{
+		startService(new Intent(this,MyService.class));
+	}
+	
+	public void onClickStopService(View V)
+	{
+		stopService(new Intent(this,MyService.class));
+	}
+	
 	public boolean onTextNoteClick(View view) {
 		Intent noteLaunch = new Intent(this.getApplicationContext(), TextNote.class);
 		startActivity(noteLaunch);
