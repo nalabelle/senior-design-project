@@ -3,17 +3,22 @@
 
    <string name="app_name">Study Buddy</string>
    <string name="hello_world">!dlrow olleH</string>
+   <string name="welcome">Welcome to StudyBuddy</string>
    <string name="gWiz">All bow to the Git Wizard Sniggles the Poo!</string>
    <string name="action_settings">Settings</string>
+   
    <string name="title_activity_text_note">TextNote</string>
    <string name="enter_note_here">Enter your note here.</string>
+   
    <string name="title_activity_calen">CalenActivity</string>
    <string name="title_activity_picture">Picture</string>
+   
    <string name="title_activity_to_do_list">To Do List</string>    
    <string name="main_to_do_btn">To Do List</string>
    <string name="enter_task">Enter a task</string>
    <string name="add_button">Add</string>
    <string name="del_button">Delete</string>
+   
    <string name="title_activity_my_service">MyService</string>    
    <string name="action_record_sound">Record Sound</string>
    <string name="action_button_record">Rec</string>
