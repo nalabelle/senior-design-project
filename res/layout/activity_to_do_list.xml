@@ -3,7 +3,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
-    android:padding="5dip" >
+    android:padding="8dip" >
 
     <TextView
         android:id="@+id/textView1"
@@ -15,56 +15,60 @@
         android:text="@string/todo"
         android:textColor="#007FFF"
         android:textSize="22sp"
-        android:textStyle="bold"
-        android:typeface="monospace" />
+        />
 
-    <ListView
-        android:id="@android:id/list"
-        android:layout_width="fill_parent"
-        android:layout_height="202dp"
-        android:layout_marginBottom="5dip"
-        android:layout_marginTop="5dip"
-        android:layout_weight="0.23"
-        android:choiceMode="multipleChoice" >
-    </ListView>
+     <LinearLayout
+         android:layout_width="fill_parent"
+         android:layout_height="294dp"
+         android:background="@drawable/border" >
+    
+   <ListView
+       android:id="@android:id/list"
+       android:layout_width="fill_parent"
+       android:layout_height="249dp"
+       android:layout_marginBottom="5dip"
+       android:layout_marginTop="5dip"
+       android:choiceMode="multipleChoice" >
+
+   </ListView>
+   </LinearLayout>
 
     <EditText
         android:id="@+id/txtItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dip"
-        android:layout_weight="0.05"
+        android:layout_weight="0.01"
         android:ems="10"
         android:hint="@string/enter_task"
         android:inputType="text" />
     
     <LinearLayout 
-    android:id="@+id/LinearLayout02" 
-    android:layout_height="wrap_content" 
-    android:layout_width="fill_parent" 
-    android:padding="8dp" 
-    style="@android:style/ButtonBar"
-    android:background="#99F2BF">
+      android:layout_height="wrap_content" 
+      android:layout_width="fill_parent" 
+      >
 
     <Button
         android:id="@+id/addBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:background="@drawable/button"
-        android:text="@string/add_button" 
         android:layout_marginRight="8dip"
-        />
+        android:layout_weight="0.94"
+        android:background="@drawable/button2"
+        android:onClick="onClick"
+        android:text="@string/add_button" />
 
     <Button
         android:id="@+id/delBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:background="@drawable/button"
+        android:background="@drawable/button2"
         android:gravity="center"
+        android:onClick="onClick"
         android:text="@string/del_button" 
-        android:layout_alignLeft="@+id/addBtn" />
+        android:layout_alignLeft="@+id/addBtn" 
+        />
     </LinearLayout>
 
 </LinearLayout>
