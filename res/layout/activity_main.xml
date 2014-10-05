@@ -8,63 +8,76 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.comp490.studybuddy.MainActivity" >
 
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/stop_service"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="21dp"
-        android:layout_toLeftOf="@+id/button1" />
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/start_service"
+            android:layout_alignLeft="@+id/start_service"
+            android:layout_alignRight="@+id/start_service"
+            android:layout_marginBottom="10dp"
+            android:onClick="onCalClick"
+            android:text="CalenBer v 0" 
+            android:background="@drawable/button"/>
 
-    <Button
-        android:id="@+id/start_service"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="32dp"
-        android:gravity="center_horizontal"
-        android:onClick="onClickStartService"
-        android:text="notification test on" />
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="38dp"
+            android:text="@string/welcome"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:typeface="sans" />
 
-    <Button
-        android:id="@+id/stop_service"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/start_service"
-        android:layout_centerHorizontal="true"
-        android:gravity="center_horizontal"
-        android:onClick="onClickStopService"
-        android:text="notification test off" />
+        <Button
+            android:id="@+id/button1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/button3"
+            android:layout_alignLeft="@+id/textView1"
+            android:layout_alignRight="@+id/textView1"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/button"
+            android:onClick="onTextNoteClick"
+            android:text="New Text Note" />
 
-    <Button
-        android:id="@+id/button1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/textView1"
-        android:layout_centerHorizontal="true"
-        android:onClick="onTextNoteClick"
-        android:text="New Text Note" />
+        <Button
+            android:id="@+id/button3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/button2"
+            android:layout_alignLeft="@+id/button1"
+            android:layout_alignRight="@+id/button2"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/button"
+            android:onClick="onTodoClick"
+            android:text="@string/main_to_do_btn" />
 
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/button1"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="17dp"
-        android:onClick="onCalClick"
-        android:text="CalenBer v 0" />
+        <Button
+            android:id="@+id/stop_service"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/start_service"
+            android:layout_alignParentBottom="true"
+            android:layout_alignRight="@+id/start_service"
+            android:layout_marginBottom="52dp"
+            android:background="@drawable/button"
+            android:onClick="onClickStopService"
+            android:text="Notification Test Off" />
 
-    <Button
-        android:id="@+id/button3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/button2"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="17dp"
-        android:onClick="onTodoClick"
-        android:text="@string/main_to_do_btn" />
+        <Button
+            android:id="@+id/start_service"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/stop_service"
+            android:layout_alignLeft="@+id/button1"
+            android:layout_alignRight="@+id/button1"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/button"
+            android:onClick="onClickStartService"
+            android:text="Notification Test On" />
 
 </RelativeLayout>
