@@ -28,7 +28,10 @@
         </activity>
         <activity
             android:name=".textnote.TextNote"
-            android:label="@string/title_activity_text_note" >
+            android:label="@string/title_activity_text_note">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.app.MainActivity" />
         </activity>
         <activity
             android:name=".calendar.CalenActivity"
