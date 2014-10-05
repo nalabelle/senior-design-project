@@ -1,47 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical" 
-    android:padding="6dip" >
+    android:orientation="vertical"
+    android:padding="5dip" >
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dip"
+        android:layout_marginTop="10dip"
+        android:gravity="center"
+        android:text="@string/todo"
+        android:textColor="#007FFF"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:typeface="monospace" />
+
+    <ListView
+        android:id="@android:id/list"
+        android:layout_width="fill_parent"
+        android:layout_height="202dp"
+        android:layout_marginBottom="5dip"
+        android:layout_marginTop="5dip"
+        android:layout_weight="0.23"
+        android:choiceMode="multipleChoice" >
+    </ListView>
 
     <EditText
         android:id="@+id/txtItem"
-        android:layout_width="240dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/addBtn"
+        android:layout_marginBottom="5dip"
+        android:layout_weight="0.05"
+        android:ems="10"
         android:hint="@string/enter_task"
         android:inputType="text" />
+    
+    <LinearLayout 
+    android:id="@+id/LinearLayout02" 
+    android:layout_height="wrap_content" 
+    android:layout_width="fill_parent" 
+    android:padding="8dp" 
+    style="@android:style/ButtonBar"
+    android:background="#99F2BF">
 
     <Button
         android:id="@+id/addBtn"
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/txtItem"
-        android:background="@drawable/todo_button"
-        android:text="@string/add_button" />
+        android:layout_weight="1"
+        android:background="@drawable/button"
+        android:text="@string/add_button" 
+        android:layout_marginRight="8dip"
+        />
 
-   <ListView
-       android:id="@android:id/list"
-       android:layout_width="fill_parent"
-       android:layout_height="wrap_content"
-       android:layout_above="@+id/delBtn"
-       android:layout_below="@id/txtItem"
-       android:layout_marginTop="6dip"
-       android:layout_marginBottom="6dip"
-       android:choiceMode="multipleChoice" >
+    <Button
+        android:id="@+id/delBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="@drawable/button"
+        android:gravity="center"
+        android:text="@string/del_button" 
+        android:layout_alignLeft="@+id/addBtn" />
+    </LinearLayout>
 
-   </ListView>
-
-        <Button
-            android:id="@+id/delBtn"
-            android:layout_width="178dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:background="@drawable/todo_button"
-            android:gravity="center"
-            android:text="@string/del_button" />
-
-</RelativeLayout>
-
+</LinearLayout>
