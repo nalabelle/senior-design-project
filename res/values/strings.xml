@@ -11,6 +11,9 @@
    <string name="enter_note_here">Enter your note here.</string>
    
    <string name="title_activity_calen">CalenActivity</string>
+   <string name="main_Cal_button">Calendar v 1.0</string>
+   
+   
    <string name="title_activity_picture">Picture</string>
    
    <string name="title_activity_to_do_list">To Do List</string>    
