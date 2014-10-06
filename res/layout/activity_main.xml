@@ -17,7 +17,7 @@
             android:layout_alignRight="@+id/start_service"
             android:layout_marginBottom="10dp"
             android:onClick="onCalClick"
-            android:text="CalenBer v 0" 
+            android:text="@string/main_Cal_button" 
             android:background="@drawable/button"/>
 
         <TextView
