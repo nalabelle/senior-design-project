@@ -9,6 +9,7 @@
  * 
  * Working Calendar... no functionality
  * TODO
+ * Fix broken button/header texy issues
  * Move New Event button out of header section.
  * Find a way to stretch calendar on large screens... new day_button xml? relative layout fill?
  * Sprint 2: add event tracking, add events,
@@ -74,7 +75,7 @@ public class CalenActivity extends Activity {
         
         //How to align to columns? Option for Su->Sa || M -> Su TODO
         calHeader = (TextView) this.findViewById(R.id.cal_header);
-        calHeader.setText("Sun   Mon   Tue   Wed   Thur   Fri   Sat");
+        calHeader.setText("New Event"); //Esthetic bug fix for now
 
         calendarGrid = (GridView) this.findViewById(R.id.gridView1);
 
