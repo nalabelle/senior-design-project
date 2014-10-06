@@ -7,8 +7,7 @@
     <Button
         android:id="@+id/grid_day"
         android:layout_gravity="center"
-        android:textColor="#DC143C"
-        android:background="#00FFFF"
+        android:background="#A9A9A9"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
     </Button>
