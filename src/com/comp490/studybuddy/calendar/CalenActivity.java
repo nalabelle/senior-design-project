@@ -6,19 +6,24 @@
  * Date: You mean today?
  * Team members: Buddy Corp
  * Contribution: IP
+ * 
+ * Working Calendar... no functionality
+ * TODO
+ * Move New Event button out of header section.
+ * Find a way to stretch calendar on large screens... new day_button xml? relative layout fill?
+ * Sprint 2: add event tracking, add events,
+ *  scrolling (back/forward in time), day detail popup
+ * 
  */
 
 package com.comp490.studybuddy.calendar;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
-
 import java.util.Locale;
 
 import android.app.Activity;
@@ -44,8 +49,10 @@ public class CalenActivity extends Activity {
 	private Calendar calendar;
     private int month, year;
     private TextView currentMonth;
+    
+    //Days of week, add events. TODO
     private TextView calHeader;
-    private Button newEvent;
+    private Button newEvent; //IP
     
     private GridView calendarGrid;
     private GridCellAdapter adapter;
@@ -65,23 +72,25 @@ public class CalenActivity extends Activity {
         currentMonth = (TextView) this.findViewById(R.id.curr_month);
         currentMonth.setText(dateFormatter.format(dateTemplate, calendar.getTime()));
         
-        currentMonth = (TextView) this.findViewById(R.id.curr_month);
-        currentMonth = (TextView) this.findViewById(R.id.curr_month);
+        //How to align to columns? Option for Su->Sa || M -> Su TODO
+        calHeader = (TextView) this.findViewById(R.id.cal_header);
+        calHeader.setText("Sun   Mon   Tue   Wed   Thur   Fri   Sat");
 
         calendarGrid = (GridView) this.findViewById(R.id.gridView1);
 
-        // Initialized
+        // Grid --> Calendar
         adapter = new GridCellAdapter(getApplicationContext(), R.id.grid_day, month, year);
         adapter.notifyDataSetChanged();
         calendarGrid.setAdapter(adapter);
 	}
 
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.calen, menu);
 		return true;
-	}
+	}//Autogen
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -93,27 +102,30 @@ public class CalenActivity extends Activity {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
-	}
+	}//Autogen
 	
+	//Grid --> Calendar
 	public class GridCellAdapter extends BaseAdapter implements OnClickListener
 	{
         private final Context context;
 
         private final List<String> list;
         private static final int DAY_OFFSET = 1;
-        private final String[] weekdays = new String[]{"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
+        
         private final String[] months = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
         private final int[] daysOfMonth = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+        
         private final int month, year;
-        private int daysInMonth, prevMonthDays;
-        private int currentDayOfMonth;
-        private int currentWeekDay;
+        private int daysInMonth;
+        private int currDayOfMonth;
+        private int currWeekDay;
         private Button gridcell;
         private TextView num_events_per_day;
-        private final HashMap eventsPerMonthMap;
+        private final HashMap<String, Integer> eventsPerMonthMap;
+        //better way? Locale based
         private final SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-MMM-yyyy");
 
-        public GridCellAdapter(Context context, int textViewResourceId, int month, int year)
+        public GridCellAdapter(Context context, int cellID, int month, int year)
         {
                 super();
                 this.context = context;
@@ -122,8 +134,8 @@ public class CalenActivity extends Activity {
                 this.year = year;
                 
                 Calendar calendar = Calendar.getInstance();
-                setCurrentDayOfMonth(calendar.get(Calendar.DAY_OF_MONTH));
-                setCurrentWeekDay(calendar.get(Calendar.DAY_OF_WEEK));
+                setCurrDayOfMonth(calendar.get(Calendar.DAY_OF_MONTH));
+                setCurrWeekDay(calendar.get(Calendar.DAY_OF_WEEK));
 
                 // Print Month
                 printMonth(month, year);
@@ -132,117 +144,136 @@ public class CalenActivity extends Activity {
                 eventsPerMonthMap = findEventsMonth(year, month);
         }
         
-        private String getMonthString(int i)
+        //print to cells
+        private void printMonth(int m, int y)
         {
-        	return months[i];
-        }
-
-        private String getWeekDayString(int i)
-        {
-            return weekdays[i];
-        }
-
-        private int getDaysinMonth(int i)
-            {
-            return daysOfMonth[i];
-            }
-
-        public String getItem(int position)
-        {
-            return list.get(position);
-        }
-
-        @Override
-        public int getCount()
-        {
-            return list.size();
-        }
-              
-        private void printMonth(int mm, int yy)
-        {
-            int trailingSpaces = 0;
+            int prevMonthPadding = 0;
             int daysInPrevMonth = 0;
+            
             int prevMonth = 0;
             int prevYear = 0;
+            
             int nextMonth = 0;
             int nextYear = 0;
 
-            int currentMonth = mm - 1;
+            int currentMonth = m - 1;
             daysInMonth = getDaysinMonth(currentMonth);
 
-            GregorianCalendar cal = new GregorianCalendar(yy, currentMonth, 1);
+            GregorianCalendar cal = new GregorianCalendar(y, currentMonth, 1);
 
-            if (currentMonth == 11)
+            if (currentMonth == 11) //Dec
             {
                 prevMonth = currentMonth - 1;
                 daysInPrevMonth = getDaysinMonth(prevMonth);
                 nextMonth = 0;
-                prevYear = yy;
-                nextYear = yy + 1;
+                prevYear = y;
+                nextYear = y + 1;
             }
-            else if (currentMonth == 0)
+            else if (currentMonth == 0) // Jan
             {
                 prevMonth = 11;
-                prevYear = yy - 1;
-                nextYear = yy;
+                prevYear = y - 1;
+                nextYear = y;
                 daysInPrevMonth = getDaysinMonth(prevMonth);
                 nextMonth = 1;
                  
             }
-            else
+            else //Not dec && Not jan
             {
                 prevMonth = currentMonth - 1;
                 nextMonth = currentMonth + 1;
-                nextYear = yy;
-                prevYear = yy;
+                nextYear = y;
+                prevYear = y;
                 daysInPrevMonth = getDaysinMonth(prevMonth); 
             }
 
            //Pad front of month
             int currentWeekDay = cal.get(Calendar.DAY_OF_WEEK) - 1;
-            trailingSpaces = currentWeekDay;
+            prevMonthPadding = currentWeekDay;
 
-            if (cal.isLeapYear(cal.get(Calendar.YEAR)) && mm == 1)
+            if (cal.isLeapYear(cal.get(Calendar.YEAR)) && m == 1)
             {
                 ++daysInMonth;
             }
 
-            // Trailing Month days
-            for (int i = 0; i < trailingSpaces; i++)
+            // Previous Month days, fill in beginning of curr month if necessary
+            for (int i = 0; i < prevMonthPadding; i++)
             {
-                list.add(String.valueOf((daysInPrevMonth - trailingSpaces + DAY_OFFSET) + i) + "-GREY" + "-" + getMonthString(prevMonth) + "-" + prevYear);
+                list.add(String.valueOf((daysInPrevMonth - prevMonthPadding + DAY_OFFSET) + i) + "-GREY" + "-" + getMonthString(prevMonth) + "-" + prevYear);
             }
 
             // Current Month Days
             for (int i = 1; i <= daysInMonth; i++)
             {
-                if (i == getCurrentDayOfMonth())
+                if (i == getCurrDayOfMonth())
                 {
-                    list.add(String.valueOf(i) + "-BLUE" + "-" + getMonthString(currentMonth) + "-" + yy);
+                    list.add(String.valueOf(i) + "-BLUE" + "-" + getMonthString(currentMonth) + "-" + y);
                 }
                 else
                 {
-                    list.add(String.valueOf(i) + "-WHITE" + "-" + getMonthString(currentMonth) + "-" + yy);
+                    list.add(String.valueOf(i) + "-WHITE" + "-" + getMonthString(currentMonth) + "-" + y);
                 }
             }
 
-            // Leading Month days
+            // Fill in end of curr months, if necessary
             for (int i = 0; i < list.size() % 7; i++)
             {
                 list.add(String.valueOf(i + 1) + "-GREY" + "-" + getMonthString(nextMonth) + "-" + nextYear);
             }
+        } //End print Month
+        
+        public String getMonthString(int i)
+        {
+        	return months[i];
+        }
+
+        public int getDaysinMonth(int i)
+        {
+        	return daysOfMonth[i];
+        }
+
+        public String getItem(int position)
+        {
+            return list.get(position);
         }
         
-        private HashMap<String, Integer> findEventsMonth(int year, int month)
+        public int getCurrDayOfMonth()
         {
-            HashMap<String, Integer> map = new HashMap<String, Integer>();
-            return map;
+            return currDayOfMonth;
+        }
+        
+        public void setCurrDayOfMonth(int currDayOfMonth)
+        {
+            this.currDayOfMonth = currDayOfMonth;
+        }
+        
+        public int getCurrWeekDay()
+        {
+            return currWeekDay;
+        }
+        
+        public void setCurrWeekDay(int currWeekDay)
+        {
+            this.currWeekDay = currWeekDay;
+        }
+        
+        @Override
+        public int getCount()
+        {
+            return list.size();
         }
         
         @Override
         public long getItemId(int position)
         {
             return position;
+        }
+        
+        //Where to store/ retrieve events?
+        private HashMap<String, Integer> findEventsMonth(int year, int month)
+        {
+            HashMap<String, Integer> map = new HashMap<String, Integer>();
+            return map;
         }
 
         @Override
@@ -255,37 +286,43 @@ public class CalenActivity extends Activity {
                     row = inflater.inflate(R.layout.day_button, parent, false);
                 }
 
-                // Get a reference to the Day gridcell
+                // day cells, button action
                 gridcell = (Button) row.findViewById(R.id.grid_day);
                 gridcell.setOnClickListener(this);
-
-                // ACCOUNT FOR SPACING
+                
+                // Parse print month information
                 String[] day_color = list.get(position).split("-");
                 String theday = day_color[0];
                 String themonth = day_color[2];
                 String theyear = day_color[3];
+                
+                //Add number of events per day from HashMap.
                 if ((!eventsPerMonthMap.isEmpty()) && (eventsPerMonthMap != null))
                     {
                         if (eventsPerMonthMap.containsKey(theday))
                             {
-                                //num_events_per_day = (TextView) row.findViewById(R.id.num_events_per_day);
+                                num_events_per_day = (TextView) row.findViewById(R.id.num_events);
                                 Integer numEvents = (Integer) eventsPerMonthMap.get(theday);
                                 num_events_per_day.setText(numEvents.toString());
                             }
                     }
 
-                // Set the Day GridCell
+                // Set the Day in each GridCell, date as tag
                 gridcell.setText(theday);
                 gridcell.setTag(theday + "-" + themonth + "-" + theyear);
 
+                //Colorize days on calendar
+                //Sandwiching months days
                 if (day_color[1].equals("GREY"))
                 {
                     gridcell.setTextColor(Color.LTGRAY);
                 }
+                //Current Month
                 if (day_color[1].equals("WHITE"))
                 {
                     gridcell.setTextColor(Color.WHITE);
                 }
+                //Day
                 if (day_color[1].equals("BLUE"))
                 {
                     gridcell.setTextColor(Color.BLUE);
@@ -293,40 +330,13 @@ public class CalenActivity extends Activity {
                 return row;
             }
         
-        
+        //TODO setpopup day detail
         @Override
         public void onClick(View view)
         {
         	//Get info for day poked
         	String date_month_year = (String) view.getTag();
-
-            try
-            {
-            	Date parsedDate = dateFormatter.parse(date_month_year);
-            }
-           catch (ParseException e)
-           {
-        	   e.printStackTrace();
-           }
         }
         
-        
-        public int getCurrentDayOfMonth()
-        {
-            return currentDayOfMonth;
-        }
-
-        private void setCurrentDayOfMonth(int currentDayOfMonth)
-        {
-            this.currentDayOfMonth = currentDayOfMonth;
-        }
-        public void setCurrentWeekDay(int currentWeekDay)
-        {
-            this.currentWeekDay = currentWeekDay;
-        }
-        public int getCurrentWeekDay()
-        {
-            return currentWeekDay;
-        }
-	}
-}
+	} //End GridCellAdapter
+}// End CalenActivity
