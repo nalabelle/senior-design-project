@@ -5,13 +5,24 @@
     <item android:id="@+id/action_record_sound"
         android:icon="@drawable/ic_action_mic"
         android:title="@string/action_record_sound"
-        android:showAsAction="ifRoom|collapseActionView" 
+        android:showAsAction="always|collapseActionView" 
         android:actionLayout="@layout/action_view_sound"/>
+    <item
+        android:id="@+id/action_take_photo"
+        android:icon="@drawable/ic_action_camera"
+        android:showAsAction="always"
+        android:title="@string/action_take_photo"/>
     
+    <item
+        android:id="@+id/action_create_text"
+        android:icon="@drawable/ic_action_keyboard"
+        android:showAsAction="always"
+        android:title="@string/action_create_text"/>       
+           
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
-        android:showAsAction="never"
+        android:showAsAction="ifRoom"
         android:title="@string/action_settings"/>
 
 </menu>

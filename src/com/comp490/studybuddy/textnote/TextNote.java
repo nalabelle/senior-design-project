@@ -18,6 +18,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -29,12 +30,17 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.comp490.studybuddy.R;
@@ -66,10 +72,15 @@ public class TextNote extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
+		
+		ActionBar actionBar = getActionBar();
+		actionBar.setDisplayShowTitleEnabled(false); //hide actionbar title
+		actionBar.setDisplayShowHomeEnabled(false); //hide actionbar icon
 		getMenuInflater().inflate(R.menu.text_note, menu);
+
 		View v = (View) menu.findItem(R.id.action_record_sound).getActionView();
 		
-		//listeners for Record action view menu		
+		//listeners for Record actionView menu		
 		if (hasMic()){
 			final Button b = (Button) v.findViewById(R.id.bActionSoundRecord);
 			b.setOnClickListener(new View.OnClickListener(){
@@ -105,8 +116,7 @@ public class TextNote extends Activity {
 					clickie();
 				}
 			});	
-		}
-	
+		}	
 		return true;
 	}
 	
@@ -116,21 +126,42 @@ public class TextNote extends Activity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
+		// Action bar clicks (black bar on top)
 		switch(item.getItemId()){
 		case R.id.action_record_sound: {
-			// loads sub menu via xml
+			// onClick of sound button loads actionView via xml
 			return true;
 		}
-		//insert other action menu options
+		case R.id.action_take_photo: {
+			//onClick of photo icon
+			takePhoto();
+			return true;
+		}
+		case R.id.action_create_text:{
+			//onClick of keyboard icon
+			createEditText();
+			return true;
+		}
+		//insert other action menu options here
 		default:
 				return super.onOptionsItemSelected(item);
 		}
 	}
+	
+	private void createEditText(){
+		
+		// TO DO: create more boxes, apart from one another
+		EditText textBox = new EditText(getBaseContext());
+		textBox.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+		textBox.setMaxLines(10);
+		textBox.setHint("Enter note here");
+		textBox.requestFocus();
+		textBox.setRawInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+		RelativeLayout layout = (RelativeLayout)findViewById(R.id.note_layout);
+		layout.addView(textBox);
+	}
 
-	public void takePhoto(View view) {
+	public void takePhoto() {
 		Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 		fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE);
 		//intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
@@ -185,8 +216,7 @@ public class TextNote extends Activity {
 		return pm.hasSystemFeature(PackageManager.FEATURE_MICROPHONE);
 	}
 	
-	private void startRecording() { //start actionView button press
-
+	private void startRecording() { //on actionView REC button press
 			if (playing && player != null){
 				stopPlayback();
 			}
@@ -202,7 +232,6 @@ public class TextNote extends Activity {
 						+ ".3gp";
 				recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
 				recorder.setOutputFile(filename);
-
 				recorder.prepare();
 				recorder.start();
 				recording = true;
@@ -215,7 +244,7 @@ public class TextNote extends Activity {
 			}
 	}
 	
-	private void stopRecordOrPlay(){ //stop actionView button press
+	private void stopRecordOrPlay(){ //on actionView STOP button press
 		if (playing){
 			stopPlayback();
 		}
@@ -239,7 +268,7 @@ public class TextNote extends Activity {
 		recorder = null;
 	}
 	
-	private void playSound(){
+	private void playSound(){ // on actionView PLAY button press
 		try {
 			player = new MediaPlayer();
 			player.setDataSource(filename);
@@ -250,6 +279,19 @@ public class TextNote extends Activity {
 			Log.e(LOG_TAG, "playBack() broke");
 		}
 	}
+
+	@Override
+	protected void onDestroy() {
+		if (recorder != null){
+			recorder.release();
+		}
+		if (player != null){
+			player.release();
+		}
+		super.onDestroy();
+	}
+	
+	
 }
 
 /* SOUND: TO DO 10/4/2014 
