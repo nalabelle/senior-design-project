@@ -6,37 +6,13 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:id="@+id/note_layout"
     tools:context="com.comp490.studybuddy.textnote.TextNote" >
-
-    <Button
-        android:id="@+id/Picturebutton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignTop="@+id/editText1"
-        android:onClick="takePhoto"
-        android:text="Capture Photo" />
-
-    <EditText
-        android:id="@+id/editText1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="21dp"
-        android:ems="10"
-        android:hint="@string/enter_note_here"
-        android:inputType="textMultiLine"
-        android:lines="10" >
-
-        <requestFocus />
-    </EditText>
 
     <ImageView
         android:id="@+id/imageView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/editText1"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="90dp"
         android:src="@drawable/img_test" />
