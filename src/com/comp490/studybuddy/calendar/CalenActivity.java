@@ -55,6 +55,7 @@ public class CalenActivity extends Activity {
     private TextView calHeader;
     private Button newEvent; //IP
     
+    //Calendar skeleton and adapter
     private GridView calendarGrid;
     private GridCellAdapter adapter;
     
