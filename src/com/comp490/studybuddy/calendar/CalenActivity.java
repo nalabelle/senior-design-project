@@ -60,17 +60,11 @@ public class CalenActivity extends Activity {
     
     private final DateFormat dateFormatter = new DateFormat();
     private static final String dateTemplate = "MMMM yyyy";
-    
-    //testing git and stash... nothing todo with project
-    private int testline;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_customcal);
-		
-		//testing stahs/git
-		testline = 808;
 		
 		calendar = Calendar.getInstance(Locale.getDefault());
 		month = calendar.get(Calendar.MONTH) + 1;
