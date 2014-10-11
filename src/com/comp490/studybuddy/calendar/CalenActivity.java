@@ -9,11 +9,11 @@
  * 
  * Working Calendar... no functionality
  * TODO
- * Fix broken button/header texy issues
+ * Fix broken button/header text issues
  * Move New Event button out of header section.
  * Find a way to stretch calendar on large screens... new day_button xml? relative layout fill?
  * Sprint 2: add event tracking, add events,
- *  scrolling (back/forward in time), day detail popup
+ *  scrolling (back/forward in time), day detail pop up
  * 
  */
 
@@ -65,7 +65,7 @@ public class CalenActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_customcal);
+		setContentView(R.layout.activity_customcal_phone);
 		
 		calendar = Calendar.getInstance(Locale.getDefault());
 		month = calendar.get(Calendar.MONTH) + 1;
