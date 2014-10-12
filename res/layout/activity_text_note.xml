@@ -8,13 +8,17 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:id="@+id/note_layout"
     tools:context="com.comp490.studybuddy.textnote.TextNote" >
-
-    <ImageView
-        android:id="@+id/imageView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="90dp"
-        android:src="@drawable/img_test" />
-
+    
+    <!--  it's not useless!! -->
+	<ScrollView 
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent">
+	    
+	    <LinearLayout 
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:orientation="vertical"
+	        android:id="@+id/note_inner_layout">	
+    	</LinearLayout>
+	</ScrollView>
 </RelativeLayout>
