@@ -38,9 +38,9 @@ import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.comp490.studybuddy.R;
@@ -57,7 +57,7 @@ public class TextNote extends Activity {
 	public static final int MEDIA_TYPE_IMAGE = 1;
 	public static final int MEDIA_TYPE_VIDEO = 2;
 	
-	private ImageView a = null;
+	private ImageView pic = null;
 	@SuppressWarnings("unused")
 	private Uri fileUri;
 	private static File mediaFile;
@@ -82,11 +82,11 @@ public class TextNote extends Activity {
 		
 		//listeners for Record actionView menu		
 		if (hasMic()){
-			final Button b = (Button) v.findViewById(R.id.bActionSoundRecord);
-			b.setOnClickListener(new View.OnClickListener(){
+			final Button rec = (Button) v.findViewById(R.id.bActionSoundRecord);
+			rec.setOnClickListener(new View.OnClickListener(){
 				public void onClick(View v1) {
 					if (!recording){
-						b.setTextColor(Color.RED);					
+						rec.setTextColor(Color.RED);					
 						startRecording();
 					}
 				}
@@ -101,7 +101,7 @@ public class TextNote extends Activity {
 			v.findViewById(R.id.ibActionSoundStop).setOnClickListener(new View.OnClickListener(){
 				public void onClick(View v1) {
 					if (playing || recording){
-						b.setTextColor(Color.WHITE);
+						rec.setTextColor(Color.WHITE);
 						stopRecordOrPlay();
 					}
 				}
@@ -113,7 +113,7 @@ public class TextNote extends Activity {
 			});
 			v.findViewById(R.id.ibActionSoundSave).setOnClickListener(new View.OnClickListener(){
 				public void onClick(View v1) {
-					clickie();
+					createSoundButton();
 				}
 			});	
 		}	
@@ -149,16 +149,23 @@ public class TextNote extends Activity {
 	}
 	
 	private void createEditText(){
-		
-		// TO DO: create more boxes, apart from one another
 		EditText textBox = new EditText(getBaseContext());
 		textBox.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 		textBox.setMaxLines(10);
 		textBox.setHint("Enter note here");
 		textBox.requestFocus();
 		textBox.setRawInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
-		RelativeLayout layout = (RelativeLayout)findViewById(R.id.note_layout);
+		LinearLayout layout = (LinearLayout)findViewById(R.id.note_inner_layout);
 		layout.addView(textBox);
+	}
+	
+	protected void createSoundButton(){
+		//TO DO: to wire button to actionView buttons
+		ImageButton soundButton = new ImageButton(getBaseContext());
+		soundButton.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+		soundButton.setImageResource(R.drawable.ic_action_volume_on);
+		LinearLayout layout = (LinearLayout)findViewById(R.id.note_inner_layout);
+		layout.addView(soundButton);
 	}
 
 	public void takePhoto() {
@@ -171,19 +178,23 @@ public class TextNote extends Activity {
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		a = (ImageView) findViewById(R.id.imageView1);
+		pic = new ImageView(getBaseContext());
+		pic.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+		LinearLayout layout = (LinearLayout)findViewById(R.id.note_inner_layout);
+		layout.addView(pic);
+
 		if (resultCode == Activity.RESULT_OK) {
 				Bundle extras = data.getExtras();
 				Bitmap btm = (Bitmap) extras.get("data");
-				FileOutputStream b;
+				FileOutputStream fs;
 				try {
-					b = new FileOutputStream(mediaFile);
-					btm.compress(Bitmap.CompressFormat.JPEG, 100, b);
+					fs = new FileOutputStream(mediaFile);
+					btm.compress(Bitmap.CompressFormat.JPEG, 100, fs);
 				} catch (FileNotFoundException e) {
 					e.printStackTrace();
 				}
-				a.setImageBitmap(btm);
-		}
+				pic.setImageBitmap(btm);
+		}		
 	}
 	
 	private static Uri getOutputMediaFileUri(int type) {
