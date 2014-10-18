@@ -33,6 +33,7 @@
    <string name="action_save">Save Sound</string>    
    <string name="action_save_note">Save Note</string>  
    <string name="action_new_note">New Note</string>  
+   <string name="action_delete_sound">Delete Sound</string>
 
 </resources>
 

@@ -25,6 +25,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.media.MediaPlayer;
+import android.media.MediaPlayer.OnCompletionListener;
 import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.Bundle;
@@ -32,6 +33,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.InputType;
 import android.util.Log;
+import android.view.ActionMode;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -50,22 +52,21 @@ import com.comp490.studybuddy.R;
 
 public class TextNote extends Activity {
 	
+	// Sound related variables
 	boolean micExists, recording, playing, paused = false;
-	
-// flag to save a previously recorded a track before recording a new one
 	boolean aRecordingExists = false; 
 	ActionBar actionBar;
-	Menu menu;
+	int count = 1; 
 	MediaRecorder recorder = null;
+	ActionMode mActionMode;
 	MediaPlayer player = null;
 	int soundPlayBackPosition; 
 	private static final String LOG_TAG = "Sound Record";
-	String filename;
+	String soundFilePath;
 
-	
+	// Photo related variables
 	public static final int MEDIA_TYPE_IMAGE = 1;
-	public static final int MEDIA_TYPE_VIDEO = 2;
-	
+	public static final int MEDIA_TYPE_VIDEO = 2;	
 	private ImageView pic = null;
 	@SuppressWarnings("unused")
 	private Uri fileUri;
@@ -78,9 +79,14 @@ public class TextNote extends Activity {
 		setContentView(R.layout.activity_text_note);
 	}
 
+/*  General note about sound interface. The recording interface is controlled
+	 by an actionView. That is when the mic button is clicked, the actionView 
+	 is created to display record options. The playback interface is created 
+	 using a contextual action mode, which is also a menu, but a different 
+	 implementation.	 */
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		this.menu = menu;
 		// Inflate the menu; this adds items to the action bar if it is present.
 
 		actionBar = getActionBar();
@@ -90,7 +96,7 @@ public class TextNote extends Activity {
 
 		View v = (View) menu.findItem(R.id.action_record_sound).getActionView();
 		
-		//listeners for Record actionView menu		
+		//listeners for Record actionView menu and appropriate response		
 		if (hasMic()){
 			final Button rec = (Button) v.findViewById(R.id.bActionSoundRecord);
 			rec.setOnClickListener(new View.OnClickListener(){
@@ -114,7 +120,8 @@ public class TextNote extends Activity {
 					if (aRecordingExists){
 						createSoundButton();
 					}
-					//back out of menu
+					rec.setTextColor(Color.WHITE);
+					// back out of menu
 					dispatchKeyEvent(new KeyEvent (KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK));
 					dispatchKeyEvent(new KeyEvent (KeyEvent.ACTION_UP, KeyEvent.KEYCODE_BACK));
 				}
@@ -122,7 +129,7 @@ public class TextNote extends Activity {
 		}	
 		return true;
 	}
-
+	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Action bar clicks (black bar on top)
@@ -141,11 +148,6 @@ public class TextNote extends Activity {
 			createEditText();
 			return true;
 		}
-		case R.id.menuSoundPlay:{
-			//onClick of keyboard icon
-			playSound();
-			return true;
-		}
 		// TO DO: SAVE NOTE AND NEW NOTE
 		
 		//insert other action menu options here
@@ -153,6 +155,64 @@ public class TextNote extends Activity {
 				return super.onOptionsItemSelected(item);
 		}
 	}
+	
+	// Contextual action mode for sound playback (when a sound icon is touched
+	// a menu is loaded to allow controls for the sound)
+	private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
+
+	    // Called when the action mode is created; startActionMode() was called
+	    @Override
+	    public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+	        // Inflate a menu resource providing context menu items
+	        MenuInflater inflater = mode.getMenuInflater();
+	        inflater.inflate(R.menu.note_play_sound, menu);
+	        return true;
+	    }
+
+	    // Called each time the action mode is shown. Always called after onCreateActionMode, but
+	    // may be called multiple times if the mode is invalidated.
+	    @Override
+	    public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+	        return false; // Return false if nothing is done
+	    }
+
+	    // Called when the user selects a contextual menu item
+	    @Override
+	    public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+	        switch (item.getItemId()) {
+	        //menu selection responses:
+	            case R.id.menuSoundPlay: {	            	
+	            	playSound();
+	                return true;
+	            }
+	            case R.id.menuSoundPause: {
+	            	pauseSound();
+	                return true;
+	            }
+	            case R.id.menuSoundStop: {
+	            	stopPlayback();
+	                return true;
+	            }
+	            case R.id.menuSoundDelete: {
+	            	stopPlayback();
+	            	// TO DO: figure out how to delete the button and file
+	            	// add confirmation box
+	            	mode.finish(); //close the CAB
+	               return true;
+	            }
+	            default:
+	                return false;
+	        }
+	    }
+	    // Called when the user exits the action mode (check mark)
+	    @Override
+	    public void onDestroyActionMode(ActionMode mode) {
+	   	 if (playing || paused){
+	   		 stopPlayback();
+	   	 }
+	        mActionMode = null;
+	    }
+	};
 	
 	private void createEditText(){
 		EditText textBox = new EditText(getBaseContext());
@@ -166,28 +226,29 @@ public class TextNote extends Activity {
 	}
 	
 	protected void createSoundButton(){
-		//TO DO: to wire button to actionView buttons
 		stopRecording();
+		// Creating container (linearlayout) to hold imagebutton and title
 		LinearLayout soundButtonAndTitle = new LinearLayout(getBaseContext());
 		LayoutParams llParams = new LayoutParams(LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 		soundButtonAndTitle.setLayoutParams(llParams);		
 		ImageButton soundButton = new ImageButton(getBaseContext());
 		soundButton.setImageResource(R.drawable.ic_action_volume_on);
-		TextView soundTitle = new TextView(getBaseContext());
-		soundTitle.setText("Sound 1");
+		final TextView soundTitle = new TextView(getBaseContext());
+		soundTitle.setText("Sound " + count);
+		count++;
 		soundButtonAndTitle.addView(soundButton);
 		soundButtonAndTitle.addView(soundTitle);
 		LinearLayout layout = (LinearLayout)findViewById(R.id.note_inner_layout);
 		layout.addView(soundButtonAndTitle);
-		soundTitle.setContentDescription(filename);
+		soundTitle.setContentDescription(soundFilePath);
 		soundButton.setOnClickListener(new View.OnClickListener(){
 				public void onClick(View v1) {
-				    MenuInflater inflater = getMenuInflater();
-				    inflater.inflate(R.menu.note_play_sound, menu);
-					//load a new menu
-					// MenuItemCompat.getActionView(buttonThatSetsActionViewinXML)
-					//simulate a click??
-					clickie();
+			        if (mActionMode != null) {}			 
+			        else { // Start the CAB using the ActionMode.Callback defined above
+			      	  soundFilePath = (String) soundTitle.getContentDescription(); //update to current button file path
+			      	  mActionMode = startActionMode(mActionModeCallback);
+			      	  v1.setSelected(true);
+			        }
 				}
 			});
 		aRecordingExists = false;		
@@ -264,11 +325,11 @@ public class TextNote extends Activity {
 			try {
 				recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
 				recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-				filename = Environment.getExternalStorageDirectory()
+				soundFilePath = Environment.getExternalStorageDirectory()
 						.getAbsolutePath() + "/SB_Audio_" + new SimpleDateFormat("MM-dd-yyyy_KK-mm-ss-a", Locale.getDefault()).format(new Date())
 						+ ".3gp";
 				recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
-				recorder.setOutputFile(filename);
+				recorder.setOutputFile(soundFilePath);
 				recorder.prepare();
 				recorder.start();
 				recording = true;
@@ -282,15 +343,6 @@ public class TextNote extends Activity {
 			}
 	}
 	
-	private void stopPlayback(){
-		if (playing){
-			Toast.makeText(this, "Stopped Playback", Toast.LENGTH_SHORT).show();
-			player.stop();
-			player.release();
-			player = null;
-		}
-	}
-	
 	private void stopRecording(){
 		if (recording){
 			Toast.makeText(this, "Stopped Recording", Toast.LENGTH_SHORT).show();
@@ -299,28 +351,48 @@ public class TextNote extends Activity {
 		}
 	}
 	
-	private void playSound(){ // on actionView PLAY button press
-
+	private void playSound(){ 
 		try {
 			if (paused){
+				Toast.makeText(this, "Playing Sound", Toast.LENGTH_SHORT).show();
 				player.start();
 				playing = true;
+				paused = false;
 			}
-			else {
+			else if (!playing){
 				player = new MediaPlayer();
-				player.setDataSource(filename);
+				player.setDataSource(soundFilePath);
 				player.prepare();
 				player.start();
+				player.setOnCompletionListener(new OnCompletionListener() {					
+					@Override
+					public void onCompletion(MediaPlayer mp) {
+						stopPlayback();						
+					}
+				});
 				playing = true;
-			}			
+			} //else was already playing, do nothing			
 		} catch (Exception e) {
 			Log.e(LOG_TAG, "playBack() broke");
 		}
 	}
 	
 	private void pauseSound(){
-		player.pause();
-		paused = true;
+		if (playing){
+			player.pause();
+			paused = true;
+			playing = false;
+		}
+	}
+	
+	private void stopPlayback(){
+		if (playing || paused){
+			Toast.makeText(this, "Stopped Playback", Toast.LENGTH_SHORT).show();
+			playing = false;
+			paused = false;
+			player.stop();
+			player.release();
+		}
 	}
 
 	@Override
@@ -332,9 +404,7 @@ public class TextNote extends Activity {
 			player.release();
 		}
 		super.onDestroy();
-	}
-	
-	
+	}	
 }
 
 /* SOUND: TO DO 10/4/2014 
@@ -345,6 +415,13 @@ public class TextNote extends Activity {
  * Save the sound files and buttons for later use
  * Allow the user to rename the sound files
  * Put sound files in a directory
+ * */
+
+/* SOUND: TO DO 10/18/2014
+ * figure out how to get correct file path to play multiple files - working
+ * delete sound icons and files
+ * rename buttons
+ * 
  * */
 
 	
