@@ -1,39 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-   <string name="app_name">Study Buddy</string>
-   <string name="hello_world">!dlrow olleH</string>
-   <string name="welcome">Welcome to StudyBuddy</string>
-   <string name="gWiz">All bow to the Git Wizard Sniggles the Poo!</string>
-   <string name="action_settings">Settings</string>
-   
-   <string name="title_activity_text_note">Note</string>
-   
-   <string name="title_activity_calen">CalenActivity</string>
-   <string name="main_Cal_button">Calendar v 1.0</string>
-   
-   
-   <string name="title_activity_picture">Picture</string>
-   
-   <string name="title_activity_to_do_list">To Do List</string>    
-   <string name="main_to_do_btn">To Do List</string>
-   <string name="todo">My to do list</string>
-   <string name="enter_task">Enter a task</string>
-   <string name="add_button">Add</string>
-   <string name="del_button">Delete</string>
-   
-   <string name="title_activity_my_service">MyService</string>    
-   <string name="action_create_text">Enter Text</string>
-   <string name="action_record_sound">Record Sound</string>
-   <string name="action_take_photo">Take Picture</string>
-   <string name="action_button_record">Rec</string>
-   <string name="action_play_sound">Play Sound</string>
-   <string name="action_pause_sound">Pause Sound</string>
-   <string name="action_stop_sound">Stop Sound</string>
-   <string name="action_save">Save Sound</string>    
-   <string name="action_save_note">Save Note</string>  
-   <string name="action_new_note">New Note</string>  
-   <string name="action_delete_sound">Delete Sound</string>
+    <string name="app_name">Study Buddy</string>
+    <string name="hello_world">!dlrow olleH</string>
+    <string name="welcome">Welcome to StudyBuddy</string>
+    <string name="gWiz">All bow to the Git Wizard Sniggles the Poo!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_text_note">Note</string>
+    <string name="title_activity_calen">CalenActivity</string>
+    <string name="main_Cal_button">Calendar v 1.0</string>
+    <string name="title_activity_picture">Picture</string>
+    <string name="title_activity_to_do_list">To Do List</string>
+    <string name="main_to_do_btn">To Do List</string>
+    <string name="todo">My to do list</string>
+    <string name="enter_task">Enter a task</string>
+    <string name="add_button">Add</string>
+    <string name="del_button">Delete</string>
+    <string name="title_activity_my_service">MyService</string>
+    <string name="action_create_text">Enter Text</string>
+    <string name="action_record_sound">Record Sound</string>
+    <string name="action_take_photo">Take Picture</string>
+    <string name="action_button_record">Rec</string>
+    <string name="action_play_sound">Play Sound</string>
+    <string name="action_pause_sound">Pause Sound</string>
+    <string name="action_stop_sound">Stop Sound</string>
+    <string name="action_save">Save Sound</string>
+    <string name="action_save_note">Save Note</string>
+    <string name="action_new_note">New Note</string>
+    <string name="action_delete_sound">Delete Sound</string>
+    <string name="title_activity_settings">SettingsActivity</string>
+    <string name="title_activity_settings_fragment">SettingsFragment</string>
+    <string name="title_activity_help">Help</string>
+    <string name="title_activity_about">AboutActivity</string>
 
 </resources>
-
