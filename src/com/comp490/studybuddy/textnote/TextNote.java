@@ -30,8 +30,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.view.MenuItemCompat;
 import android.text.InputType;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -41,15 +43,21 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.comp490.studybuddy.R;
 
 public class TextNote extends Activity {
 	
-	boolean micExists, recording, playing = false;
+	boolean micExists, recording, playing, paused = false;
+	
+// flag to save a previously recorded a track before recording a new one
+	boolean aRecordingExists = false; 
+	ActionBar actionBar;
 	MediaRecorder recorder = null;
 	MediaPlayer player = null;
+	int soundPlayBackPosition; 
 	private static final String LOG_TAG = "Sound Record";
 	String filename;
 
@@ -70,10 +78,10 @@ public class TextNote extends Activity {
 	}
 
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
+	public boolean onCreateOptionsMenu(final Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		
-		ActionBar actionBar = getActionBar();
+
+		actionBar = getActionBar();
 		actionBar.setDisplayShowTitleEnabled(false); //hide actionbar title
 		actionBar.setDisplayShowHomeEnabled(false); //hide actionbar icon
 		getMenuInflater().inflate(R.menu.text_note, menu);
@@ -91,37 +99,26 @@ public class TextNote extends Activity {
 					}
 				}
 			});
-			v.findViewById(R.id.ibActionSoundPlay).setOnClickListener(new View.OnClickListener(){
-				public void onClick(View v1) {
-					if (!playing || !recording){
-						playSound();
-					}
-				}
-			});
 			v.findViewById(R.id.ibActionSoundStop).setOnClickListener(new View.OnClickListener(){
 				public void onClick(View v1) {
-					if (playing || recording){
+					if (recording){
 						rec.setTextColor(Color.WHITE);
-						stopRecordOrPlay();
+						stopRecording();
 					}
-				}
-			});
-			v.findViewById(R.id.ibActionSoundPause).setOnClickListener(new View.OnClickListener(){
-				public void onClick(View v1) {
-					clickie();
 				}
 			});
 			v.findViewById(R.id.ibActionSoundSave).setOnClickListener(new View.OnClickListener(){
 				public void onClick(View v1) {
-					createSoundButton();
+					if (aRecordingExists){
+						createSoundButton();
+					}
+					//back out of menu
+					dispatchKeyEvent(new KeyEvent (KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK));
+					dispatchKeyEvent(new KeyEvent (KeyEvent.ACTION_UP, KeyEvent.KEYCODE_BACK));
 				}
 			});	
 		}	
 		return true;
-	}
-	
-	public void clickie(){ //for testing
-		Toast.makeText(this, "Listener working", Toast.LENGTH_SHORT).show();
 	}
 
 	@Override
@@ -161,11 +158,32 @@ public class TextNote extends Activity {
 	
 	protected void createSoundButton(){
 		//TO DO: to wire button to actionView buttons
+		stopRecording();
+		LinearLayout soundButtonAndTitle = new LinearLayout(getBaseContext());
+		LayoutParams llParams = new LayoutParams(LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+		soundButtonAndTitle.setLayoutParams(llParams);		
 		ImageButton soundButton = new ImageButton(getBaseContext());
-		soundButton.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
 		soundButton.setImageResource(R.drawable.ic_action_volume_on);
+		TextView soundTitle = new TextView(getBaseContext());
+		soundTitle.setText("Sound 1");
+		soundButtonAndTitle.addView(soundButton);
+		soundButtonAndTitle.addView(soundTitle);
 		LinearLayout layout = (LinearLayout)findViewById(R.id.note_inner_layout);
-		layout.addView(soundButton);
+		layout.addView(soundButtonAndTitle);
+		soundTitle.setContentDescription(filename);
+		soundButtonAndTitle.setOnClickListener(new View.OnClickListener(){
+				public void onClick(View v1) {
+					//load a new menu
+					// MenuItemCompat.getActionView(buttonThatSetsActionViewinXML)
+					//simulate a click??
+					clickie();
+				}
+			});
+		aRecordingExists = false;		
+	}
+	
+	public void clickie(){ //for testing
+		Toast.makeText(this, "Listener working", Toast.LENGTH_SHORT).show();
 	}
 
 	public void takePhoto() {
@@ -228,13 +246,10 @@ public class TextNote extends Activity {
 	}
 	
 	private void startRecording() { //on actionView REC button press
-			if (playing && player != null){
-				stopPlayback();
+			if (recorder == null){
+				recorder = new MediaRecorder();
 			}
 			
-			//TO DO: option: record from end of previous recording
-			Toast.makeText(this, "Recording", Toast.LENGTH_SHORT).show();
-			recorder = new MediaRecorder();
 			try {
 				recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
 				recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
@@ -246,6 +261,7 @@ public class TextNote extends Activity {
 				recorder.prepare();
 				recorder.start();
 				recording = true;
+				aRecordingExists = true;
 			} catch (IllegalStateException e) {
 				Log.e(LOG_TAG, "startRecording() broke illegalstate");
 				e.printStackTrace();
@@ -255,40 +271,45 @@ public class TextNote extends Activity {
 			}
 	}
 	
-	private void stopRecordOrPlay(){ //on actionView STOP button press
-		if (playing){
-			stopPlayback();
-		}
-		if (recording){
-			stopRecording();
-		}
-	}
-	
 	private void stopPlayback(){
-		Toast.makeText(this, "Stopped Playback", Toast.LENGTH_SHORT).show();
-		player.stop();
-		player.release();
-		player = null;
+		if (playing){
+			Toast.makeText(this, "Stopped Playback", Toast.LENGTH_SHORT).show();
+			player.stop();
+			player.release();
+			player = null;
+		}
 	}
 	
 	private void stopRecording(){
-		Toast.makeText(this, "Stopped Recording", Toast.LENGTH_SHORT).show();
-		recorder.stop();
-		recorder.reset();
-		recorder.release();
-		recorder = null;
+		if (recording){
+			Toast.makeText(this, "Stopped Recording", Toast.LENGTH_SHORT).show();
+			recorder.stop();
+			recording = false;
+		}
 	}
 	
 	private void playSound(){ // on actionView PLAY button press
+
 		try {
-			player = new MediaPlayer();
-			player.setDataSource(filename);
-			player.prepare();
-			player.start();
-			playing = true;
+			if (paused){
+				player.start();
+				playing = true;
+			}
+			else {
+				player = new MediaPlayer();
+				player.setDataSource(filename);
+				player.prepare();
+				player.start();
+				playing = true;
+			}			
 		} catch (Exception e) {
 			Log.e(LOG_TAG, "playBack() broke");
 		}
+	}
+	
+	private void pauseSound(){
+		player.pause();
+		paused = true;
 	}
 
 	@Override
