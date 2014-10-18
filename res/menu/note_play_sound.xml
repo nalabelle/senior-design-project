@@ -1,0 +1,19 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.studybuddy.TextNote" >
+    
+    <item android:id="@+id/menuSoundPlay"
+          android:icon="@drawable/ic_action_play"
+          android:title="@string/action_play_sound"
+          android:showAsAction="ifRoom"/>
+    
+    <item android:id="@+id/menuSoundPause"
+          android:icon="@drawable/ic_action_pause"
+          android:title="@string/action_pause_sound"
+          android:showAsAction="ifRoom" />
+    
+    <item android:id="@+id/menuSoundStop"
+          android:icon="@drawable/ic_action_stop"
+          android:title="@string/action_stop_sound"
+          android:showAsAction="ifRoom" />
+</menu>

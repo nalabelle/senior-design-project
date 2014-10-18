@@ -30,11 +30,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.v4.view.MenuItemCompat;
 import android.text.InputType;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
@@ -55,6 +55,7 @@ public class TextNote extends Activity {
 // flag to save a previously recorded a track before recording a new one
 	boolean aRecordingExists = false; 
 	ActionBar actionBar;
+	Menu menu;
 	MediaRecorder recorder = null;
 	MediaPlayer player = null;
 	int soundPlayBackPosition; 
@@ -78,7 +79,8 @@ public class TextNote extends Activity {
 	}
 
 	@Override
-	public boolean onCreateOptionsMenu(final Menu menu) {
+	public boolean onCreateOptionsMenu(Menu menu) {
+		this.menu = menu;
 		// Inflate the menu; this adds items to the action bar if it is present.
 
 		actionBar = getActionBar();
@@ -139,6 +141,13 @@ public class TextNote extends Activity {
 			createEditText();
 			return true;
 		}
+		case R.id.menuSoundPlay:{
+			//onClick of keyboard icon
+			playSound();
+			return true;
+		}
+		// TO DO: SAVE NOTE AND NEW NOTE
+		
 		//insert other action menu options here
 		default:
 				return super.onOptionsItemSelected(item);
@@ -171,8 +180,10 @@ public class TextNote extends Activity {
 		LinearLayout layout = (LinearLayout)findViewById(R.id.note_inner_layout);
 		layout.addView(soundButtonAndTitle);
 		soundTitle.setContentDescription(filename);
-		soundButtonAndTitle.setOnClickListener(new View.OnClickListener(){
+		soundButton.setOnClickListener(new View.OnClickListener(){
 				public void onClick(View v1) {
+				    MenuInflater inflater = getMenuInflater();
+				    inflater.inflate(R.menu.note_play_sound, menu);
 					//load a new menu
 					// MenuItemCompat.getActionView(buttonThatSetsActionViewinXML)
 					//simulate a click??
