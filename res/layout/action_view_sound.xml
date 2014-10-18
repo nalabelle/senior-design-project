@@ -7,16 +7,16 @@
         android:id="@+id/bActionSoundRecord"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/action_button_record" 
-		android:contentDescription="@string/action_record_sound"/>
+        android:contentDescription="@string/action_record_sound"
+        android:text="@string/action_button_record" />
 
     <ImageButton
         android:id="@+id/ibActionSoundStop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_action_stop"
-        android:contentDescription="@string/action_stop_sound" />
-    
+        android:contentDescription="@string/action_stop_sound"
+        android:src="@drawable/ic_action_stop" />
+
     <ImageButton
         android:id="@+id/ibActionSoundSave"
         android:layout_width="wrap_content"

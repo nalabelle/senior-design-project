@@ -31,6 +31,8 @@
    <string name="action_pause_sound">Pause Sound</string>
    <string name="action_stop_sound">Stop Sound</string>
    <string name="action_save">Save Sound</string>    
+   <string name="action_save_note">Save Note</string>  
+   <string name="action_new_note">New Note</string>  
 
 </resources>
 
