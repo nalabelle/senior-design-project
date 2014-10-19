@@ -20,6 +20,9 @@ import java.util.Locale;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -56,11 +59,13 @@ public class TextNote extends Activity {
 	boolean micExists, recording, playing, paused = false;
 	boolean aRecordingExists = false; 
 	ActionBar actionBar;
+	final Context context = this;
 	int count = 1; 
 	MediaRecorder recorder = null;
 	ActionMode mActionMode;
 	MediaPlayer player = null;
 	int soundPlayBackPosition; 
+	int currentResourceID = -1;
 	private static final String LOG_TAG = "Sound Record";
 	String soundFilePath;
 
@@ -160,59 +165,94 @@ public class TextNote extends Activity {
 	// a menu is loaded to allow controls for the sound)
 	private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
 
-	    // Called when the action mode is created; startActionMode() was called
-	    @Override
-	    public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-	        // Inflate a menu resource providing context menu items
-	        MenuInflater inflater = mode.getMenuInflater();
-	        inflater.inflate(R.menu.note_play_sound, menu);
-	        return true;
-	    }
+		// Called when the action mode is created; startActionMode() was called
+		@Override
+		public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+			// Inflate a menu resource providing context menu items
+			MenuInflater inflater = mode.getMenuInflater();
+			inflater.inflate(R.menu.note_play_sound, menu);
+			return true;
+		}
 
-	    // Called each time the action mode is shown. Always called after onCreateActionMode, but
-	    // may be called multiple times if the mode is invalidated.
-	    @Override
-	    public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-	        return false; // Return false if nothing is done
-	    }
+		// Called each time the action mode is shown. Always called after
+		// onCreateActionMode, but
+		// may be called multiple times if the mode is invalidated.
+		@Override
+		public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+			return false; // Return false if nothing is done
+		}
 
-	    // Called when the user selects a contextual menu item
-	    @Override
-	    public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-	        switch (item.getItemId()) {
-	        //menu selection responses:
-	            case R.id.menuSoundPlay: {	            	
-	            	playSound();
-	                return true;
-	            }
-	            case R.id.menuSoundPause: {
-	            	pauseSound();
-	                return true;
-	            }
-	            case R.id.menuSoundStop: {
-	            	stopPlayback();
-	                return true;
-	            }
-	            case R.id.menuSoundDelete: {
-	            	stopPlayback();
-	            	// TO DO: figure out how to delete the button and file
-	            	// add confirmation box
-	            	mode.finish(); //close the CAB
-	               return true;
-	            }
-	            default:
-	                return false;
-	        }
-	    }
+		// Called when the user selects a contextual menu item
+		@Override
+		public boolean onActionItemClicked(final ActionMode mode, MenuItem item) {
+			switch (item.getItemId()) {
+			// menu selection responses:
+			case R.id.menuSoundPlay: {
+				playSound();
+				return true;
+			}
+			case R.id.menuSoundPause: {
+				pauseSound();
+				return true;
+			}
+			case R.id.menuSoundStop: {
+				stopPlayback();
+				return true;
+			}
+			case R.id.menuSoundDelete: {
+				stopPlayback();
+				
+				// Popup Confirmation dialogbox for deletion
+				AlertDialog.Builder builder = new AlertDialog.Builder(context);
+				builder.setMessage("Delete Sound?");
+				builder.setPositiveButton("Yes",
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int id) {
+								try { //clicked yes
+									View viewToDelete = findViewById(currentResourceID);
+									((LinearLayout) viewToDelete.getParent())
+											.removeView(viewToDelete);
+								} catch (Exception e1) {
+									Log.e(LOG_TAG, "Delete of soundbutton failed");
+								}
+								try {
+									File file = new File(soundFilePath);
+									boolean deleted = file.delete();
+									if (deleted) {
+										Toast.makeText(getBaseContext(),
+												"File Deleted: " + soundFilePath,
+												Toast.LENGTH_LONG).show();
+									}
+								} catch (Exception e) {
+									Log.e(LOG_TAG, "Delete of sound file failed");
+								}
+
+								mode.finish(); // close the contextual menu
+							}
+						});
+				builder.setNegativeButton("Cancel",
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int id) {
+								dialog.cancel();
+							}
+						});
+				AlertDialog dialog = builder.create();
+				dialog.show();
+				return true;
+			}
+			default:
+				return false;
+			}
+		}
 	    // Called when the user exits the action mode (check mark)
 	    @Override
 	    public void onDestroyActionMode(ActionMode mode) {
 	   	 if (playing || paused){
-	   		 stopPlayback();
+	   		 //stopPlayback(); if commented allows other activities while playing
 	   	 }
 	        mActionMode = null;
 	    }
-	};
+	};	
 	
 	private void createEditText(){
 		EditText textBox = new EditText(getBaseContext());
@@ -225,10 +265,11 @@ public class TextNote extends Activity {
 		layout.addView(textBox);
 	}
 	
+
 	protected void createSoundButton(){
+		// Creating dynamic container (linearlayout) to hold imagebutton and title
 		stopRecording();
-		// Creating container (linearlayout) to hold imagebutton and title
-		LinearLayout soundButtonAndTitle = new LinearLayout(getBaseContext());
+		final LinearLayout soundButtonAndTitle = new LinearLayout(getBaseContext());
 		LayoutParams llParams = new LayoutParams(LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 		soundButtonAndTitle.setLayoutParams(llParams);		
 		ImageButton soundButton = new ImageButton(getBaseContext());
@@ -241,11 +282,14 @@ public class TextNote extends Activity {
 		LinearLayout layout = (LinearLayout)findViewById(R.id.note_inner_layout);
 		layout.addView(soundButtonAndTitle);
 		soundTitle.setContentDescription(soundFilePath);
+		soundButtonAndTitle.setId(count + 1000);
+		
 		soundButton.setOnClickListener(new View.OnClickListener(){
 				public void onClick(View v1) {
 			        if (mActionMode != null) {}			 
 			        else { // Start the CAB using the ActionMode.Callback defined above
 			      	  soundFilePath = (String) soundTitle.getContentDescription(); //update to current button file path
+			      	  currentResourceID = soundButtonAndTitle.getId();
 			      	  mActionMode = startActionMode(mActionModeCallback);
 			      	  v1.setSelected(true);
 			        }
@@ -408,18 +452,18 @@ public class TextNote extends Activity {
 }
 
 /* SOUND: TO DO 10/4/2014 
- * Allow play/record to continue while activity paused/stopped
- * Remove errors (they have no effect)
- * Sound file selection
- * Create buttons representing saved sound files, allow them to display actionView controls. 
- * Save the sound files and buttons for later use
+ * Allow play/record to continue while activity paused/stopped - DONE
+ * Remove errors (they have no effect) - IGNORING
+ * Sound file selection - DONE
+ * Create buttons representing saved sound files, allow them to display actionView controls.  - DONE
+ * Save the sound files and buttons for later use 
  * Allow the user to rename the sound files
  * Put sound files in a directory
  * */
 
 /* SOUND: TO DO 10/18/2014
- * figure out how to get correct file path to play multiple files - working
- * delete sound icons and files
+ * figure out how to get correct file path to play multiple files - DONE
+ * delete sound icons and files - DONE
  * rename buttons
  * 
  * */
