@@ -9,15 +9,26 @@
     	android:layout_height="wrap_content"
     	android:orientation="horizontal" >
     	
+        <ImageButton
+            android:id="@+id/prevMonth"
+            android:text="Back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="movePast">
+        </ImageButton>
+        
     	<TextView
 		    android:id="@+id/curr_month"
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content" />
-    	<Button
-		    android:id="@+id/button2"
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-		    android:text="New Event" />
+    	
+    	<ImageButton
+            android:id="@+id/nextMonth"
+            android:text="Forw"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="moveFuture">
+        </ImageButton>
  
     </LinearLayout>
 	

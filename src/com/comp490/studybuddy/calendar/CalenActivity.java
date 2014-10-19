@@ -41,6 +41,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.comp490.studybuddy.R;
@@ -53,7 +54,8 @@ public class CalenActivity extends Activity {
     
     //Days of week, add events. TODO
     private TextView calHeader;
-    private Button newEvent; //IP
+    private ImageButton prevButton;
+    private ImageButton nextButton;
     
     //Calendar skeleton and adapter
     private GridView calendarGrid;
@@ -74,6 +76,10 @@ public class CalenActivity extends Activity {
         currentMonth = (TextView) this.findViewById(R.id.curr_month);
         currentMonth.setText(dateFormatter.format(dateTemplate, calendar.getTime()));
         
+        prevButton = (ImageButton) this.findViewById(R.id.prevMonth);
+        
+        nextButton = (ImageButton) this.findViewById(R.id.nextMonth);
+        
         //How to align to columns? Option for Su->Sa || M -> Su TODO
         calHeader = (TextView) this.findViewById(R.id.cal_header);
         calHeader.setText("New Event"); //Esthetic bug fix for now
@@ -84,6 +90,22 @@ public class CalenActivity extends Activity {
         adapter = new GridCellAdapter(getApplicationContext(), R.id.grid_day, month, year);
         adapter.notifyDataSetChanged();
         calendarGrid.setAdapter(adapter);
+	}
+	
+	public void movePast(View v)
+	{
+		if (month <= 1)
+        {
+            month = 12;
+            year--;
+        }
+		else
+        {
+            month--;
+        }
+    
+		//set GridCellAdapter ToDate(month, year);
+		
 	}
 
 	
@@ -272,6 +294,7 @@ public class CalenActivity extends Activity {
         }
         
         //Where to store/ retrieve events?
+        //String == event desc.,  Integer is the day
         private HashMap<String, Integer> findEventsMonth(int year, int month)
         {
             HashMap<String, Integer> map = new HashMap<String, Integer>();
