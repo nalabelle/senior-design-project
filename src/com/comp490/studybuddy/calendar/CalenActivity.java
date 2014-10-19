@@ -39,6 +39,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.GridView;
@@ -94,6 +95,7 @@ public class CalenActivity extends Activity {
         calHeader.setText("New Event"); //Esthetic bug fix for now
 
         calendarGrid = (GridView) this.findViewById(R.id.gridView1);
+        
         
         // Grid --> Calendar
         adapter = new GridCellAdapter(getApplicationContext(), R.id.grid_day, month, year);
@@ -341,7 +343,8 @@ public class CalenActivity extends Activity {
                 {
                     LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                     row = inflater.inflate(R.layout.day_button, parent, false);
-                    //row.setMinimumHeight(CalenActivity.height/5);
+                    //Workingish. Should be based on number of rows...
+                    row.setLayoutParams(new GridView.LayoutParams(width/7, height/9));
                 }
 
                 // day cells, button action
