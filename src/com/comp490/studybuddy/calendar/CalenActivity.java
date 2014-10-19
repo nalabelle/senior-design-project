@@ -92,6 +92,15 @@ public class CalenActivity extends Activity {
         calendarGrid.setAdapter(adapter);
 	}
 	
+    private void changeCalendarDisplay(int month, int year)
+    {
+        adapter = new GridCellAdapter(getApplicationContext(), R.id.grid_day, month, year);
+        calendar.set(year, month - 1, calendar.get(Calendar.DAY_OF_MONTH));
+        currentMonth.setText(dateFormatter.format(dateTemplate, calendar.getTime()));
+        adapter.notifyDataSetChanged();
+        calendarGrid.setAdapter(adapter);
+    }
+	
 	public void movePast(View v)
 	{
 		if (month <= 1)
@@ -104,9 +113,23 @@ public class CalenActivity extends Activity {
             month--;
         }
     
-		//set GridCellAdapter ToDate(month, year);
-		
+		changeCalendarDisplay(month, year);
 	}
+	
+	public void moveFuture(View v)
+	{
+		if (month > 11)
+		{
+			month = 1;
+            year++;
+        }
+        else
+        {
+        	month++;
+        }
+		
+		changeCalendarDisplay(month, year);
+    }
 
 	
 	@Override
