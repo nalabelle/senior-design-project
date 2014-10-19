@@ -32,6 +32,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.format.DateFormat;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -64,6 +65,9 @@ public class CalenActivity extends Activity {
     private final DateFormat dateFormatter = new DateFormat();
     private static final String dateTemplate = "MMMM yyyy";
 
+    private int width;
+    private static int height;
+    
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -77,15 +81,20 @@ public class CalenActivity extends Activity {
         currentMonth.setText(dateFormatter.format(dateTemplate, calendar.getTime()));
         
         prevButton = (ImageButton) this.findViewById(R.id.prevMonth);
-        
         nextButton = (ImageButton) this.findViewById(R.id.nextMonth);
+        
+        //Make it fit, get width and height
+        DisplayMetrics metrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        width = metrics.widthPixels;
+        height = metrics.heightPixels;
         
         //How to align to columns? Option for Su->Sa || M -> Su TODO
         calHeader = (TextView) this.findViewById(R.id.cal_header);
         calHeader.setText("New Event"); //Esthetic bug fix for now
 
         calendarGrid = (GridView) this.findViewById(R.id.gridView1);
-
+        
         // Grid --> Calendar
         adapter = new GridCellAdapter(getApplicationContext(), R.id.grid_day, month, year);
         adapter.notifyDataSetChanged();
@@ -332,6 +341,7 @@ public class CalenActivity extends Activity {
                 {
                     LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                     row = inflater.inflate(R.layout.day_button, parent, false);
+                    //row.setMinimumHeight(CalenActivity.height/5);
                 }
 
                 // day cells, button action

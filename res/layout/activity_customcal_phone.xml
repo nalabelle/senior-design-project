@@ -18,11 +18,11 @@
         </ImageButton>
         
     	<TextView
-		    android:id="@+id/curr_month"
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-		    android:textSize="20sp"
-		    android:text="PlaceHolder 0000" />
+    	    android:id="@+id/curr_month"
+    	    android:layout_width="wrap_content"
+    	    android:layout_height="wrap_content"
+    	    android:text="PlaceHolder 0000"
+    	    android:textSize="20sp" />
     	
     	<ImageButton
             android:id="@+id/nextMonth"
@@ -44,8 +44,10 @@
     <GridView
         android:id="@+id/gridView1"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:numColumns="7" >
+        android:layout_height="fill_parent"
+        android:numColumns="7"
+        android:horizontalSpacing="-1px"
+        android:verticalSpacing="-1px" >
     </GridView>
 
 </LinearLayout>
