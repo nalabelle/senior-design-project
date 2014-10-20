@@ -365,6 +365,7 @@ public class CalenActivity extends Activity {
                                 num_events_per_day = (TextView) row.findViewById(R.id.num_events);
                                 Integer numEvents = (Integer) eventsPerMonthMap.get(theday);
                                 num_events_per_day.setText(numEvents.toString());
+                                num_events_per_day.setTextColor(Color.parseColor("#cd5b45"));
                             }
                     }
 
