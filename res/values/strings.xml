@@ -32,5 +32,8 @@
     <string name="title_activity_settings_fragment">SettingsFragment</string>
     <string name="title_activity_help">Help</string>
     <string name="title_activity_about">AboutActivity</string>
+    <string name="title_activity_add_task">AddTask</string>
+    <string name="title_activity_update_task">UpdateTask</string>
+    <string name="title_activity_update_tast">UpdateTast</string>
 
 </resources>
