@@ -28,7 +28,8 @@
         </activity>
         <activity
             android:name=".textnote.TextNote"
-            android:label="@string/title_activity_text_note">
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/title_activity_text_note" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.app.MainActivity" />
@@ -45,7 +46,27 @@
             android:name=".MyService"
             android:label="@string/title_activity_my_service" >
         </activity>
-        <service android:enabled="true" android:name=".MyService" />
+
+        <service
+            android:name=".MyService"
+            android:enabled="true" />
+
+        <activity
+            android:name=".SettingsActivity"
+            android:label="@string/title_activity_settings" >
+        </activity>
+        <activity
+            android:name=".SettingsFragment"
+            android:label="@string/title_activity_settings_fragment" >
+        </activity>
+        <activity
+            android:name=".HelpActivity"
+            android:label="@string/title_activity_help" >
+        </activity>
+        <activity
+            android:name=".AboutActivity"
+            android:label="@string/title_activity_about" >
+        </activity>
     </application>
 
 </manifest>
