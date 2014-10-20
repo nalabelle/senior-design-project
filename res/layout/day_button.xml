@@ -14,10 +14,13 @@
      
     <TextView
         android:id="@+id/num_events"
+        android:layout_width="25dip"
+        android:layout_height="25dip"
         android:layout_gravity="right"
-        android:layout_width="10dip"
-        android:layout_height="10dip"
-        android:text="0">
+        android:text="0"
+        android:textColor="#cd5b45"
+        android:textSize="15sp" >
+
     </TextView>
 
 </RelativeLayout>
