@@ -1,74 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="8dip" >
-
-    <TextView
-        android:id="@+id/textView1"
+    tools:context="com.comp490.studybuddy.todolist.ToDoList">
+    
+        
+        <RelativeLayout
+        android:id="@+id/relativeLayout1"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dip"
-        android:layout_marginTop="10dip"
-        android:gravity="center"
-        android:text="@string/todo"
-        android:textColor="#007FFF"
-        android:textSize="22sp"
-        />
+        android:layout_height="40dp"
+        android:background="#000000"
+        android:orientation="vertical" 
+        android:padding="5dp" >
+        
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:text="To do"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="#FFFFFF" 
+            android:textSize="22sp"
+            />
 
-     <LinearLayout
-         android:layout_width="fill_parent"
-         android:layout_height="294dp"
-         android:background="@drawable/border" >
+        
+        <ImageButton
+         android:id="@+id/button1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/taskName"
+            android:onClick="displayAddTask"
+            android:src="@drawable/ic_do"
+            android:contentDescription="Add task"
+            android:background="#000000"/>
+
+    </RelativeLayout>
     
-   <ListView
-       android:id="@android:id/list"
-       android:layout_width="fill_parent"
-       android:layout_height="249dp"
-       android:layout_marginBottom="5dip"
-       android:layout_marginTop="5dip"
-       android:choiceMode="multipleChoice" >
 
-   </ListView>
-   </LinearLayout>
+     <ListView
+         android:id="@android:id/list"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:layout_above="@+id/button1"
+         android:layout_alignParentLeft="true"
+         android:layout_below="@+id/textView1"
+         android:layout_margin="5dp" >
+     </ListView>
 
-    <EditText
-        android:id="@+id/txtItem"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="5dip"
-        android:layout_weight="0.01"
-        android:ems="10"
-        android:hint="@string/enter_task"
-        android:inputType="text" />
-    
-    <LinearLayout 
-      android:layout_height="wrap_content" 
-      android:layout_width="fill_parent" 
-      >
-
-    <Button
-        android:id="@+id/addBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="8dip"
-        android:layout_weight="0.94"
-        android:background="@drawable/button2"
-        android:onClick="onClick"
-        android:text="@string/add_button" />
-
-    <Button
-        android:id="@+id/delBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:background="@drawable/button2"
-        android:gravity="center"
-        android:onClick="onClick"
-        android:text="@string/del_button" 
-        android:layout_alignLeft="@+id/addBtn" 
-        />
-    </LinearLayout>
 
 </LinearLayout>

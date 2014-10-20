@@ -1,73 +1,62 @@
-package com.comp490.studybuddy.todolist;
+/**
+ * Author: Uyen Nguyen
+ * Date started: 9/26/2014
+ * Date Completed: IP
+ * Peer Review: IP 
+ * Team members: Buddy Corp
+ * Contribution: Uyen Nguyen
+ */
 
+package com.comp490.studybuddy.todolist;
 import com.comp490.studybuddy.R;
-import java.util.ArrayList;
+import com.comp490.studybuddy.todolist.DBHelper;
+import com.comp490.studybuddy.todolist.AddTask;
 import android.app.ListActivity;
-import android.os.Bundle;
-import android.util.SparseBooleanArray;
+import android.content.Intent;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
+import android.os.Bundle;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ListAdapter;
+import android.widget.SimpleAdapter;
+import android.widget.TextView;
+import android.widget.ListView;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ToDoList extends ListActivity {
-
-    /** ArrayList to store tasks */
-    ArrayList<String> list = new ArrayList<String>();
-
-    /** ArrayAdapter to set items to ListView */
-    ArrayAdapter<String> adapter;
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-
-       super.onCreate(savedInstanceState);
-       setContentView(R.layout.activity_to_do_list);
-       
-       Button addButton = (Button) findViewById(R.id.addBtn);
-       Button delButton = (Button) findViewById(R.id.delBtn);
-
-       /** Defining the ArrayAdapter to set items to ListView with check box format*/
-       adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_multiple_choice, list);
+   public static final String TASK_ID = "taskId";
+   public static final String TASK_NAME = "taskName";
+   public static final String TASK_DATE = "taskDate";
+   Intent intent;
+   TextView task;
+   DBHelper db = new DBHelper(this);
    
-       /** Mouse click listener for add button */
-       OnClickListener addListener = new OnClickListener() {
-          @Override
-          public void onClick(View v) {
-             EditText addText = (EditText) findViewById(R.id.txtItem);
-             list.add(addText.getText().toString());
-             addText.setText("");
-             adapter.notifyDataSetChanged();
-             }
-       };
-               
-       /** Mouse click listener for delete button */
-       OnClickListener delListener = new OnClickListener() {
-          @Override
-          public void onClick(View v) {
-             /** Get checked items from listview */
-             SparseBooleanArray checkedItemPositions = getListView().getCheckedItemPositions();
-             int count = getListView().getCount();
-            
-             for(int i = count-1; i >= 0; i--) {
-                if(checkedItemPositions.get(i)) {                
-                   adapter.remove(list.get(i));
-                }
-             }  
-             checkedItemPositions.clear();
-             adapter.notifyDataSetChanged();
-          }
-       };            
-           
+   @Override
+   protected void onCreate(Bundle savedInstanceState) {
+      super.onCreate(savedInstanceState);
+      setContentView(R.layout.activity_to_do_list);
+      ArrayList<HashMap<String, String>> taskList =  db.getAllTasks();
+      if(taskList.size()!=0) {
+         ListView lv = getListView();
+         lv.setOnItemClickListener(new OnItemClickListener() {
+            @Override 
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+               task = (TextView) view.findViewById(R.id.taskId);
+               String task_tag = task.getText().toString();               
+               Intent  intent = new Intent(getApplicationContext(), UpdateTask.class);
+               intent.putExtra(TASK_ID, task_tag); 
+               startActivity(intent); 
+            }
+         }); 
+         ListAdapter adapter = new SimpleAdapter(ToDoList.this, taskList, R.layout.task_view, new String[] {TASK_ID, TASK_NAME}, new int[] {R.id.taskId, R.id.taskName}); 
+         setListAdapter(adapter);
+      }
+   }
    
-       /** Set event listener for the add button */
-       addButton.setOnClickListener(addListener);
-       
-       /** Set event listener for the delete button */
-       delButton.setOnClickListener(delListener);      
+   public void displayAddTask(View view) {
+      Intent intent = new Intent(getApplicationContext(), AddTask.class);
+      startActivity(intent);
+   }
    
-       /** Set adapter to the ListView */
-       setListAdapter(adapter);
-    }
 }
