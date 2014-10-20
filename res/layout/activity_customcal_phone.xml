@@ -3,37 +3,40 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-    
+
     <LinearLayout
-    	android:layout_width="match_parent"
-    	android:layout_height="wrap_content"
-    	android:orientation="horizontal" >
-    	
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical|center_horizontal"
+        android:orientation="horizontal" >
+
         <ImageButton
             android:id="@+id/prevMonth"
-            android:text="Back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="movePast">
-        </ImageButton>
-        
-    	<TextView
-    	    android:id="@+id/curr_month"
-    	    android:layout_width="wrap_content"
-    	    android:layout_height="wrap_content"
-    	    android:text="PlaceHolder 0000"
-    	    android:textSize="20sp" />
-    	
-    	<ImageButton
+            android:background="#ffffff"
+            android:onClick="movePast"
+            android:src="@drawable/left"
+            android:text="Back" />
+
+        <TextView
+            android:id="@+id/curr_month"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="50dp"
+            android:paddingRight="50dp"
+            android:text="PlaceHolder 0000"
+            android:textSize="20sp" />
+
+        <ImageButton
             android:id="@+id/nextMonth"
-            android:text="Forw"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="moveFuture">
-        </ImageButton>
- 
+            android:background="#ffffff"
+            android:onClick="moveFuture"
+            android:src="@drawable/right"
+            android:text="Forw" />
     </LinearLayout>
-	
 
 	<TextView
 		 android:id="@+id/cal_header"
@@ -45,9 +48,10 @@
 	    android:layout_width="match_parent"
 	    android:layout_height="match_parent"
 	    android:gravity="center"
-	    android:horizontalSpacing="10dp"
+	    android:horizontalSpacing="5dp"
 	    android:numColumns="7"
-	    android:verticalSpacing="10dp" >
+	    android:verticalSpacing="5dp"
+	    android:paddingLeft="5dp" >
 	</GridView>
 
 </LinearLayout>

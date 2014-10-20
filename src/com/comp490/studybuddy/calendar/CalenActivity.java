@@ -74,6 +74,12 @@ public class CalenActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_customcal_phone);
 		
+		//Make it fit, get width and height
+        DisplayMetrics metrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        width = metrics.widthPixels;
+        height = metrics.heightPixels;
+		
 		calendar = Calendar.getInstance(Locale.getDefault());
 		month = calendar.get(Calendar.MONTH) + 1;
         year = calendar.get(Calendar.YEAR);
@@ -84,15 +90,11 @@ public class CalenActivity extends Activity {
         prevButton = (ImageButton) this.findViewById(R.id.prevMonth);
         nextButton = (ImageButton) this.findViewById(R.id.nextMonth);
         
-        //Make it fit, get width and height
-        DisplayMetrics metrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        width = metrics.widthPixels;
-        height = metrics.heightPixels;
+        
         
         //How to align to columns? Option for Su->Sa || M -> Su TODO
         calHeader = (TextView) this.findViewById(R.id.cal_header);
-        calHeader.setText("New Event"); //Esthetic bug fix for now
+       // calHeader.setText("New Event"); //Esthetic bug fix for now
 
         calendarGrid = (GridView) this.findViewById(R.id.gridView1);
         
@@ -344,7 +346,7 @@ public class CalenActivity extends Activity {
                     LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                     row = inflater.inflate(R.layout.day_button, parent, false);
                     //Workingish. Should be based on number of rows...
-                    row.setLayoutParams(new GridView.LayoutParams(width/7, height/9));
+                    row.setLayoutParams(new GridView.LayoutParams(width/8, height/9));
                 }
 
                 // day cells, button action
@@ -365,7 +367,6 @@ public class CalenActivity extends Activity {
                                 num_events_per_day = (TextView) row.findViewById(R.id.num_events);
                                 Integer numEvents = (Integer) eventsPerMonthMap.get(theday);
                                 num_events_per_day.setText(numEvents.toString());
-                                num_events_per_day.setTextColor(Color.parseColor("#cd5b45"));
                             }
                     }
 
