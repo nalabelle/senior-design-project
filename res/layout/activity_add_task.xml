@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:onClick="addNewTask"
-            android:src="@drawable/ic_do"
+            android:src="@drawable/ic_action_new"
             android:contentDescription="Add task"
             android:background="#000000"/>
         
