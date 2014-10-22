@@ -34,7 +34,7 @@
             android:background="#000000"
             android:contentDescription="Update task"
             android:onClick="updateTask"
-            android:src="@drawable/ic_do" />
+            android:src="@drawable/ic_action_edit" />
         
         <ImageButton
             android:id="@+id/button2"
@@ -46,7 +46,7 @@
             android:background="#000000"
             android:contentDescription="Delete task"
             android:onClick="removeTask"
-            android:src="@drawable/ic_done" />
+            android:src="@drawable/ic_action_discard" />
 
     </RelativeLayout>
 
