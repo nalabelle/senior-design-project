@@ -25,6 +25,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.media.MediaPlayer;
@@ -34,6 +35,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.provider.SyncStateContract.Constants;
 import android.text.InputType;
 import android.util.Log;
 import android.view.ActionMode;
@@ -50,6 +52,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.VideoView;
 
 import com.comp490.studybuddy.R;
 
@@ -69,10 +72,11 @@ public class TextNote extends Activity {
 	private static final String LOG_TAG = "Sound Record";
 	String soundFilePath;
 
-	// Photo related variables
+	// Photo and Video related variables
 	public static final int MEDIA_TYPE_IMAGE = 1;
 	public static final int MEDIA_TYPE_VIDEO = 2;	
 	private ImageView pic = null;
+	private VideoView vid = null;
 	@SuppressWarnings("unused")
 	private Uri fileUri;
 	private static File mediaFile;
@@ -146,6 +150,11 @@ public class TextNote extends Activity {
 		case R.id.action_take_photo: {
 			//onClick of photo icon
 			takePhoto();
+			return true;
+		}
+		case R.id.action_take_video: {
+			//onClick of video icon
+			takeVideo();
 			return true;
 		}
 		case R.id.action_create_text:{
@@ -301,34 +310,74 @@ public class TextNote extends Activity {
 	public void clickie(){ //for testing
 		Toast.makeText(this, "Listener working", Toast.LENGTH_SHORT).show();
 	}
-
+	
+	public void takeVideo() {
+		Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+		fileUri = getOutputMediaFileUri(MEDIA_TYPE_VIDEO);
+		//intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+		startActivityForResult(intent, MEDIA_TYPE_VIDEO);
+	}
+	
 	public void takePhoto() {
 		Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 		fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE);
 		//intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
-		startActivityForResult(intent, 1);
+		startActivityForResult(intent, MEDIA_TYPE_IMAGE);
 	}
 	
+	@SuppressWarnings("deprecation")
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		pic = new ImageView(getBaseContext());
-		pic.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
-		LinearLayout layout = (LinearLayout)findViewById(R.id.note_inner_layout);
-		layout.addView(pic);
-
-		if (resultCode == Activity.RESULT_OK) {
-				Bundle extras = data.getExtras();
-				Bitmap btm = (Bitmap) extras.get("data");
-				FileOutputStream fs;
-				try {
-					fs = new FileOutputStream(mediaFile);
-					btm.compress(Bitmap.CompressFormat.JPEG, 100, fs);
-				} catch (FileNotFoundException e) {
-					e.printStackTrace();
-				}
-				pic.setImageBitmap(btm);
-		}		
+		
+		
+		if (requestCode == MEDIA_TYPE_VIDEO && resultCode == Activity.RESULT_OK) {
+			vid = new VideoView(getBaseContext());
+			vid.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+			LinearLayout layout = (LinearLayout)findViewById(R.id.note_inner_layout);
+	       
+            layout.addView(vid);
+	        
+	        
+	        
+	    }
+		
+		else if ( requestCode == MEDIA_TYPE_IMAGE && resultCode == Activity.RESULT_OK) {
+			pic = new ImageView(getBaseContext());
+			pic.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+			LinearLayout layout = (LinearLayout)findViewById(R.id.note_inner_layout);
+			layout.addView(pic);
+			
+			Bundle extras = data.getExtras();
+			Bitmap btm = (Bitmap) extras.get("data");
+			FileOutputStream fs;
+			
+			try {
+				fs = new FileOutputStream(mediaFile);
+				btm.compress(Bitmap.CompressFormat.JPEG, 100, fs);
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			}
+			pic.setImageBitmap(btm);
+		}	
+		
+		else
+			;//error
+	}
+	
+	public String getRealPathFromURI(Context context, Uri contentUri) {
+		  Cursor cursor = null;
+		  try { 
+		    String[] proj = { MediaStore.Images.Media.DATA };
+		    cursor = context.getContentResolver().query(contentUri,  proj, null, null, null);
+		    int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+		    cursor.moveToFirst();
+		    return cursor.getString(column_index);
+		  } finally {
+		    if (cursor != null) {
+		      cursor.close();
+		    }
+		  }
 	}
 	
 	private static Uri getOutputMediaFileUri(int type) {
@@ -339,7 +388,7 @@ public class TextNote extends Activity {
 		File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),"MyCameraApp");
 		if (!mediaStorageDir.exists()) {
 			if (!mediaStorageDir.mkdirs()) {
-				Log.d("MyCameraApp", "failed to create directory");
+				Log.d("TextNote", "failed to create directory");
 				return null;
 			}
 		}
