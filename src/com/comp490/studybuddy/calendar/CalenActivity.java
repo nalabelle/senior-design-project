@@ -90,14 +90,11 @@ public class CalenActivity extends Activity {
         prevButton = (ImageButton) this.findViewById(R.id.prevMonth);
         nextButton = (ImageButton) this.findViewById(R.id.nextMonth);
         
-        
-        
         //How to align to columns? Option for Su->Sa || M -> Su TODO
         calHeader = (TextView) this.findViewById(R.id.cal_header);
        // calHeader.setText("New Event"); //Esthetic bug fix for now
 
         calendarGrid = (GridView) this.findViewById(R.id.gridView1);
-        
         
         // Grid --> Calendar
         adapter = new GridCellAdapter(getApplicationContext(), R.id.grid_day, month, year);
@@ -399,6 +396,7 @@ public class CalenActivity extends Activity {
         {
         	//Get info for day poked
         	String date_month_year = (String) view.getTag();
+        	
         }
         
 	} //End GridCellAdapter
