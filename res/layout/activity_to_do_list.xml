@@ -35,7 +35,7 @@
             android:layout_alignParentRight="true"
             android:layout_below="@+id/taskName"
             android:onClick="displayAddTask"
-            android:src="@drawable/ic_do"
+            android:src="@drawable/ic_action_new"
             android:contentDescription="Add task"
             android:background="#000000"/>
 
