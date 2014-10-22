@@ -29,6 +29,7 @@ import java.util.Locale;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.format.DateFormat;
@@ -47,6 +48,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.comp490.studybuddy.R;
+import com.comp490.studybuddy.textnote.TextNote;
 
 public class CalenActivity extends Activity {
 	
@@ -396,7 +398,9 @@ public class CalenActivity extends Activity {
         {
         	//Get info for day poked
         	String date_month_year = (String) view.getTag();
-        	
+        	Intent dayLaunch = new Intent(CalenActivity.this, DayDetails.class);
+        	dayLaunch.putExtra("Day", date_month_year);        	
+    		startActivity(dayLaunch);
         }
         
 	} //End GridCellAdapter
