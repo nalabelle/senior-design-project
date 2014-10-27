@@ -88,8 +88,12 @@
                 android:value="com.comp490.studybuddy.todolist.ToDoList" />
         </activity>
         <activity
-            android:name="com.comp490.studybuddy.flashcards.FlashMain"
+            android:name=".flashcards.FlashMain"
             android:label="@string/title_activity_flash_main" >
+        </activity>
+        <activity
+            android:name="com.comp490.studybuddy.handwritingnote.HandwritingMain"
+            android:label="@string/title_activity_handwriting_main" >
         </activity>
     </application>
 

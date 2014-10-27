@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Study Buddy</string>
+    <string name="app_name">StudyBuddy</string>
     <string name="hello_world">!dlrow olleH</string>
     <string name="welcome">Welcome to StudyBuddy</string>
     <string name="gWiz">All bow to the Git Wizard Sniggles the Poo!</string>
@@ -38,5 +38,7 @@
     <string name="title_activity_update_task">UpdateTask</string>
     <string name="title_activity_update_tast">UpdateTast</string>
     <string name="title_activity_flash_main">FlashMain</string>
+    <string name="title_activity_handwriting_main">HandwritingMain</string>
+    <string name="date_time_format">MM/dd/yy - h:mm a</string>
 
 </resources>
