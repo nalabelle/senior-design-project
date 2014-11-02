@@ -2,7 +2,7 @@
  * Author: Uyen Nguyen
  * Date started: 10/6/2014
  * Date Completed: IP
- * Peer Review: IP 
+ * Peer Review: Anthony Sager 10/21/2014 
  * Team members: Buddy Corp
  * Contribution: Uyen Nguyen
  */

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Study Buddy</string>
+    <string name="app_name">StudyBuddy</string>
     <string name="hello_world">!dlrow olleH</string>
     <string name="welcome">Welcome to StudyBuddy</string>
     <string name="gWiz">All bow to the Git Wizard Sniggles the Poo!</string>
@@ -21,6 +21,7 @@
     <string name="action_create_text">Enter Text</string>
     <string name="action_record_sound">Record Sound</string>
     <string name="action_take_photo">Take Picture</string>
+    <string name="action_take_video">Take Video</string>
     <string name="action_button_record">Rec</string>
     <string name="action_play_sound">Play Sound</string>
     <string name="action_pause_sound">Pause Sound</string>
@@ -29,6 +30,7 @@
     <string name="action_save_note">Save Note</string>
     <string name="action_new_note">New Note</string>
     <string name="action_delete_sound">Delete Sound</string>
+    <string name="action_sound_rename">Rename</string>
     <string name="title_activity_settings">SettingsActivity</string>
     <string name="title_activity_settings_fragment">SettingsFragment</string>
     <string name="title_activity_help">Help</string>
@@ -36,5 +38,8 @@
     <string name="title_activity_add_task">AddTask</string>
     <string name="title_activity_update_task">UpdateTask</string>
     <string name="title_activity_update_tast">UpdateTast</string>
+    <string name="title_activity_flash_main">FlashMain</string>
+    <string name="title_activity_handwriting_main">HandwritingMain</string>
+    <string name="date_time_format">MM/dd/yy - h:mm a</string>
 
 </resources>

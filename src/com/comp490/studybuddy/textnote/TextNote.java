@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Random;
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -25,6 +26,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.media.MediaPlayer;
@@ -43,6 +45,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -50,6 +54,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.VideoView;
 
 import com.comp490.studybuddy.R;
 
@@ -66,13 +71,16 @@ public class TextNote extends Activity {
 	MediaPlayer player = null;
 	int soundPlayBackPosition; 
 	int currentResourceID = -1;
+	int currentSoundTitleID = -1;
 	private static final String LOG_TAG = "Sound Record";
 	String soundFilePath;
 
-	// Photo related variables
+
+	// Photo and Video related variables
 	public static final int MEDIA_TYPE_IMAGE = 1;
 	public static final int MEDIA_TYPE_VIDEO = 2;	
 	private ImageView pic = null;
+	private VideoView vid = null;
 	@SuppressWarnings("unused")
 	private Uri fileUri;
 	private static File mediaFile;
@@ -146,6 +154,11 @@ public class TextNote extends Activity {
 		case R.id.action_take_photo: {
 			//onClick of photo icon
 			takePhoto();
+			return true;
+		}
+		case R.id.action_take_video: {
+			//onClick of video icon
+			takeVideo();
 			return true;
 		}
 		case R.id.action_create_text:{
@@ -226,7 +239,6 @@ public class TextNote extends Activity {
 								} catch (Exception e) {
 									Log.e(LOG_TAG, "Delete of sound file failed");
 								}
-
 								mode.finish(); // close the contextual menu
 							}
 						});
@@ -238,6 +250,37 @@ public class TextNote extends Activity {
 						});
 				AlertDialog dialog = builder.create();
 				dialog.show();
+				return true;
+			}			
+			case R.id.menuSoundRename: {
+				// Pop up dialog to rename sound file
+				final EditText editName = new EditText(context);
+				final TextView soundTitle;
+				soundTitle = (TextView) findViewById(currentSoundTitleID);	
+				try {
+					editName.setText(((TextView) soundTitle).getText());
+					editName.selectAll();
+				} catch (Exception e) {
+					Log.e(LOG_TAG, "Sound title textview failed to open");
+					e.printStackTrace();
+				}				
+				new AlertDialog.Builder(context)
+					.setTitle("Rename Sound Title")
+					.setView(editName)
+					.setPositiveButton("Rename", new DialogInterface.OnClickListener(){
+						public void onClick(DialogInterface dialog, int whichButton){
+								try {
+									soundTitle.setText(editName.getText().toString());
+								} catch (Exception e) {
+									Log.e(LOG_TAG, "Sound title textview failed to rename");
+									e.printStackTrace();
+								}
+						}
+					})
+					.setNegativeButton("Cancel", new DialogInterface.OnClickListener(){
+						public void onClick(DialogInterface dialog, int whichButton){}
+					})
+					.show();
 				return true;
 			}
 			default:
@@ -274,9 +317,18 @@ public class TextNote extends Activity {
 		soundButtonAndTitle.setLayoutParams(llParams);		
 		ImageButton soundButton = new ImageButton(getBaseContext());
 		soundButton.setImageResource(R.drawable.ic_action_volume_on);
+		
+		//TextView displays name of sound
 		final TextView soundTitle = new TextView(getBaseContext());
 		soundTitle.setText("Sound " + count);
+		int randomViewID;
+		Random rand = new Random();
+		do { //must create unused ID to be able to refer to sound title textview
+			randomViewID = rand.nextInt(2000 + count);		
+		} while (findViewById(randomViewID) != null);
+		soundTitle.setId(randomViewID);
 		count++;
+		
 		soundButtonAndTitle.addView(soundButton);
 		soundButtonAndTitle.addView(soundTitle);
 		LinearLayout layout = (LinearLayout)findViewById(R.id.note_inner_layout);
@@ -285,50 +337,92 @@ public class TextNote extends Activity {
 		soundButtonAndTitle.setId(count + 1000);
 		
 		soundButton.setOnClickListener(new View.OnClickListener(){
-				public void onClick(View v1) {
-			        if (mActionMode != null) {}			 
-			        else { // Start the CAB using the ActionMode.Callback defined above
-			      	  soundFilePath = (String) soundTitle.getContentDescription(); //update to current button file path
-			      	  currentResourceID = soundButtonAndTitle.getId();
-			      	  mActionMode = startActionMode(mActionModeCallback);
-			      	  v1.setSelected(true);
-			        }
+			public void onClick(View v1) {
+				if (mActionMode != null) {
+				} else { // Start the CAB using the ActionMode.Callback defined
+							// above
+					soundFilePath = (String) soundTitle.getContentDescription(); // update to current button file path
+					currentResourceID = soundButtonAndTitle.getId();
+					currentSoundTitleID = soundTitle.getId();
+					mActionMode = startActionMode(mActionModeCallback);
+					v1.setSelected(true);
 				}
-			});
-		aRecordingExists = false;		
+			}
+		});
+		aRecordingExists = false;
 	}
 	
 	public void clickie(){ //for testing
 		Toast.makeText(this, "Listener working", Toast.LENGTH_SHORT).show();
 	}
-
+	
+	public void takeVideo() {
+		Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+		fileUri = getOutputMediaFileUri(MEDIA_TYPE_VIDEO);
+		//intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+		startActivityForResult(intent, MEDIA_TYPE_VIDEO);
+	}
+	
 	public void takePhoto() {
 		Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 		fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE);
 		//intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
-		startActivityForResult(intent, 1);
+		startActivityForResult(intent, MEDIA_TYPE_IMAGE);
 	}
 	
+//	@SuppressWarnings("deprecation")
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		pic = new ImageView(getBaseContext());
-		pic.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
-		LinearLayout layout = (LinearLayout)findViewById(R.id.note_inner_layout);
-		layout.addView(pic);
-
-		if (resultCode == Activity.RESULT_OK) {
-				Bundle extras = data.getExtras();
-				Bitmap btm = (Bitmap) extras.get("data");
-				FileOutputStream fs;
-				try {
-					fs = new FileOutputStream(mediaFile);
-					btm.compress(Bitmap.CompressFormat.JPEG, 100, fs);
-				} catch (FileNotFoundException e) {
-					e.printStackTrace();
-				}
-				pic.setImageBitmap(btm);
-		}		
+		
+		
+		if (requestCode == MEDIA_TYPE_VIDEO && resultCode == Activity.RESULT_OK) {
+			vid = new VideoView(getBaseContext());
+			vid.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+			LinearLayout layout = (LinearLayout)findViewById(R.id.note_inner_layout);
+	       
+            layout.addView(vid);
+	        
+	        
+	        
+	    }
+		
+		else if ( requestCode == MEDIA_TYPE_IMAGE && resultCode == Activity.RESULT_OK) {
+			pic = new ImageView(getBaseContext());
+			pic.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+			LinearLayout layout = (LinearLayout)findViewById(R.id.note_inner_layout);
+			layout.addView(pic);
+			
+			Bundle extras = data.getExtras();
+			Bitmap btm = (Bitmap) extras.get("data");
+			FileOutputStream fs;
+			
+			try {
+				fs = new FileOutputStream(mediaFile);
+				btm.compress(Bitmap.CompressFormat.JPEG, 100, fs);
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			}
+			pic.setImageBitmap(btm);
+		}	
+		
+		else
+			;//error
+	}
+	
+	public String getRealPathFromURI(Context context, Uri contentUri) {
+		  Cursor cursor = null;
+		  try { 
+		    String[] proj = { MediaStore.Images.Media.DATA };
+		    cursor = context.getContentResolver().query(contentUri,  proj, null, null, null);
+		    int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+		    cursor.moveToFirst();
+		    return cursor.getString(column_index);
+		  } finally {
+		    if (cursor != null) {
+		      cursor.close();
+		    }
+		  }
 	}
 	
 	private static Uri getOutputMediaFileUri(int type) {
@@ -339,7 +433,7 @@ public class TextNote extends Activity {
 		File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),"MyCameraApp");
 		if (!mediaStorageDir.exists()) {
 			if (!mediaStorageDir.mkdirs()) {
-				Log.d("MyCameraApp", "failed to create directory");
+				Log.d("TextNote", "failed to create directory");
 				return null;
 			}
 		}
@@ -467,5 +561,9 @@ public class TextNote extends Activity {
  * rename buttons
  * 
  * */
+
+/* SOUND: TO DO 11/2/2014
+ * discovered bug when switching between files
+*/
 
 	

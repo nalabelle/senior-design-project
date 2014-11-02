@@ -80,12 +80,21 @@
                 android:value="com.comp490.studybuddy.todolist.ToDoList" />
         </activity>
         <activity
-            android:name="com.comp490.studybuddy.todolist.AddTask"
+            android:name=".todolist.AddTask"
             android:label="@string/title_activity_add_task"
             android:parentActivityName=".todolist.ToDoList" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.comp490.studybuddy.todolist.ToDoList" />
+        </activity>
+
+        <activity
+            android:name=".flashcards.FlashMain"
+            android:label="@string/title_activity_flash_main" >
+        </activity>
+        <activity
+            android:name="com.comp490.studybuddy.handwritingnote.HandwritingMain"
+            android:label="@string/title_activity_handwriting_main" >
         </activity>
     </application>
 

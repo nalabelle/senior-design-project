@@ -22,4 +22,8 @@
           android:title="@string/action_delete_sound"
           android:showAsAction="ifRoom" />
     
+    <item android:id="@+id/menuSoundRename"
+          android:title="@string/action_sound_rename"
+          android:showAsAction="never" />
+    
 </menu>
