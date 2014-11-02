@@ -45,8 +45,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
-import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -165,6 +163,10 @@ public class TextNote extends Activity {
 			//onClick of keyboard icon
 			createEditText();
 			return true;
+		}
+		case R.id.action_launch_handwritting:{
+			// launcher for handwritting
+			clickie("TODO: Link to handwritting implementation");
 		}
 		// TO DO: SAVE NOTE AND NEW NOTE
 		
@@ -352,8 +354,8 @@ public class TextNote extends Activity {
 		aRecordingExists = false;
 	}
 	
-	public void clickie(){ //for testing
-		Toast.makeText(this, "Listener working", Toast.LENGTH_SHORT).show();
+	public void clickie(String message){ //for testing
+		Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
 	}
 	
 	public void takeVideo() {
