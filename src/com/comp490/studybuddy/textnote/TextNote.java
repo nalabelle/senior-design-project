@@ -214,6 +214,11 @@ public class TextNote extends Activity {
 				stopPlayback();
 				return true;
 			}
+			case R.id.menuUnlockView: {
+				clickie("TODO: be able to move view");
+				item.setIcon(R.drawable.ic_action_secure);
+				return true;
+			}			
 			case R.id.menuSoundDelete: {
 				stopPlayback();
 				
@@ -299,7 +304,7 @@ public class TextNote extends Activity {
 	    }
 	};	
 	
-	// Contextual action mode for options to perform on Views other than sound.
+	// Contextual action mode options for Views other than sound.
 	// Pictures are only removed from the note, not from device.
 	private ActionMode.Callback optionsActionModeCallback = new ActionMode.Callback() {
 		
@@ -350,6 +355,7 @@ public class TextNote extends Activity {
 			case R.id.menuUnlockView: {
 				clickie("TODO: be able to move view");
 				item.setIcon(R.drawable.ic_action_secure);
+				return true;
 			}			
 			default:
 				return false;
@@ -405,7 +411,7 @@ public class TextNote extends Activity {
 		LinearLayout layout = (LinearLayout)findViewById(R.id.note_inner_layout);
 		layout.addView(soundButtonAndTitle);
 		soundTitle.setContentDescription(soundFilePath);
-		soundButtonAndTitle.setId(count + 1000);
+		soundButtonAndTitle.setId(generateViewID());
 		
 		soundButton.setOnClickListener(new View.OnClickListener(){
 			public void onClick(View v2) {

@@ -17,6 +17,11 @@
           android:title="@string/action_stop_sound"
           android:showAsAction="ifRoom" />
     
+    <item android:id="@+id/menuUnlockView"
+          android:icon="@drawable/ic_action_not_secure"
+          android:title="@string/action_unlock_view"
+          android:showAsAction="ifRoom"/>
+    
     <item android:id="@+id/menuSoundDelete"
           android:icon="@drawable/ic_action_discard"
           android:title="@string/action_delete_sound"
