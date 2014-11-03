@@ -65,7 +65,7 @@ public class TextNote extends Activity {
 	final Context context = this;
 	int count = 1; 
 	MediaRecorder recorder = null;
-	ActionMode mActionMode;
+	ActionMode mActionMode, oActionMode;
 	MediaPlayer player = null;
 	int soundPlayBackPosition; 
 	int currentResourceID = -1;
@@ -299,18 +299,92 @@ public class TextNote extends Activity {
 	    }
 	};	
 	
+	// Contextual action mode for options to perform on Views other than sound.
+	// Pictures are only removed from the note, not from device.
+	private ActionMode.Callback optionsActionModeCallback = new ActionMode.Callback() {
+		
+		@Override
+		public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+			MenuInflater inflater = mode.getMenuInflater();
+			inflater.inflate(R.menu.note_edittext_pics, menu);
+			return true;
+		}
+
+		@Override
+		public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+			return false; 
+		}
+
+		// Called when the user selects a contextual menu item
+		@Override
+		public boolean onActionItemClicked(final ActionMode mode, MenuItem item) {
+			switch (item.getItemId()) {
+			// menu selection responses:
+			case R.id.menuDeleteView: {				
+				// Pop up Confirmation dialog box for deletion
+				AlertDialog.Builder builder = new AlertDialog.Builder(context);
+				builder.setMessage("Delete Item?");
+				builder.setPositiveButton("Yes",
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int id) {
+								try { //clicked yes
+									View viewToDelete = findViewById(currentResourceID);
+									((LinearLayout) viewToDelete.getParent())
+											.removeView(viewToDelete);
+								} catch (Exception e1) {
+									Log.e(LOG_TAG, "Delete of view failed");
+								}
+								mode.finish(); // close the contextual menu
+							}
+						});
+				builder.setNegativeButton("Cancel",
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int id) {
+								dialog.cancel();
+							}
+						});
+				AlertDialog dialog = builder.create();
+				dialog.show();
+				return true;
+			}
+			case R.id.menuUnlockView: {
+				clickie("TODO: be able to move view");
+				item.setIcon(R.drawable.ic_action_secure);
+			}			
+			default:
+				return false;
+			}
+		}
+		
+	    // Called when the user exits the action mode (check mark)
+	    @Override
+	    public void onDestroyActionMode(ActionMode mode) {
+	   	 oActionMode = null;
+	    }
+	};		
+	
 	private void createEditText(){
-		EditText textBox = new EditText(getBaseContext());
+		final EditText textBox = new EditText(getBaseContext());
 		textBox.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 		textBox.setMaxLines(10);
 		textBox.setHint("Enter note here");
 		textBox.requestFocus();
+		textBox.setId(generateViewID());
 		textBox.setRawInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
 		LinearLayout layout = (LinearLayout)findViewById(R.id.note_inner_layout);
 		layout.addView(textBox);
-	}
+		textBox.setOnClickListener(new View.OnClickListener(){
+			public void onClick(View v1) {
+				if (oActionMode != null) {
+				} else { // Start the CAB using the ActionMode.Callback defined above
+					currentResourceID = textBox.getId();
+					oActionMode = startActionMode(optionsActionModeCallback);
+					v1.setSelected(true);
+				}
+			}
+		});
+	}	
 	
-
 	protected void createSoundButton(){
 		// Creating dynamic container (linearlayout) to hold imagebutton and title
 		stopRecording();
@@ -323,12 +397,7 @@ public class TextNote extends Activity {
 		//TextView displays name of sound
 		final TextView soundTitle = new TextView(getBaseContext());
 		soundTitle.setText("Sound " + count);
-		int randomViewID;
-		Random rand = new Random();
-		do { //must create unused ID to be able to refer to sound title textview
-			randomViewID = rand.nextInt(2000 + count);		
-		} while (findViewById(randomViewID) != null);
-		soundTitle.setId(randomViewID);
+		soundTitle.setId(generateViewID());
 		count++;
 		
 		soundButtonAndTitle.addView(soundButton);
@@ -339,7 +408,7 @@ public class TextNote extends Activity {
 		soundButtonAndTitle.setId(count + 1000);
 		
 		soundButton.setOnClickListener(new View.OnClickListener(){
-			public void onClick(View v1) {
+			public void onClick(View v2) {
 				if (mActionMode != null) {
 				} else { // Start the CAB using the ActionMode.Callback defined
 							// above
@@ -347,11 +416,21 @@ public class TextNote extends Activity {
 					currentResourceID = soundButtonAndTitle.getId();
 					currentSoundTitleID = soundTitle.getId();
 					mActionMode = startActionMode(mActionModeCallback);
-					v1.setSelected(true);
+					v2.setSelected(true);
 				}
 			}
 		});
 		aRecordingExists = false;
+	}
+	
+	// generate a random ID for a view that isn't being used
+	private int generateViewID(){
+		int result;
+		Random rand = new Random();
+		do { //must create unused ID to be able to refer to sound title textview
+			result = rand.nextInt(10000 + count);		
+		} while (findViewById(result) != null);
+		return result;
 	}
 	
 	public void clickie(String message){ //for testing
@@ -393,7 +472,20 @@ public class TextNote extends Activity {
 			pic = new ImageView(getBaseContext());
 			pic.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 			LinearLayout layout = (LinearLayout)findViewById(R.id.note_inner_layout);
+			pic.setId(generateViewID());
 			layout.addView(pic);
+			
+			// For deletion and other options
+			pic.setOnClickListener(new View.OnClickListener(){
+				public void onClick(View v1) {
+					if (oActionMode != null) {
+					} else { 
+						currentResourceID = pic.getId();
+						oActionMode = startActionMode(optionsActionModeCallback);
+						v1.setSelected(true);
+					}
+				}
+			});
 			
 			Bundle extras = data.getExtras();
 			Bitmap btm = (Bitmap) extras.get("data");
@@ -553,19 +645,20 @@ public class TextNote extends Activity {
  * Sound file selection - DONE
  * Create buttons representing saved sound files, allow them to display actionView controls.  - DONE
  * Save the sound files and buttons for later use 
- * Allow the user to rename the sound files
+ * Allow the user to rename the sound files - DONE
  * Put sound files in a directory
  * */
 
 /* SOUND: TO DO 10/18/2014
  * figure out how to get correct file path to play multiple files - DONE
  * delete sound icons and files - DONE
- * rename buttons
+ * rename buttons - DONE
  * 
  * */
 
-/* SOUND: TO DO 11/2/2014
- * discovered bug when switching between files
+/* SOUND & OTHER THINGS: TO DO 11/2/2014
+ * discovered bug when switching between files - DONE
+ * fix edittext constant focus
 */
 
 	

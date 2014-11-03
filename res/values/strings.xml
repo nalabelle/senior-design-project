@@ -29,6 +29,9 @@
     <string name="action_save">Save Sound</string>
     <string name="action_save_note">Save Note</string>
     <string name="action_new_note">New Note</string>
+    <string name="action_unlock_view">Unlock Position</string>
+    <string name="action_lock_view">Lock Position</string>
+    <string name="action_delete_view">Remove</string>
     <string name="action_delete_sound">Delete Sound</string>
     <string name="action_sound_rename">Rename</string>
     <string name="action_launch_handwrite">Handwrite</string>
