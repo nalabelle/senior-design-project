@@ -2,15 +2,17 @@
  * Author: Uyen Nguyen
  * Date started: 9/26/2014
  * Date Completed: IP
- * Peer Review: IP 
+ * Peer Review: Anthony Sager 10/21/2014 
  * Team members: Buddy Corp
  * Contribution: Uyen Nguyen
  */
 
 package com.comp490.studybuddy.todolist;
+
 import com.comp490.studybuddy.R;
 import com.comp490.studybuddy.todolist.DBHelper;
 import com.comp490.studybuddy.todolist.AddTask;
+import android.app.ActionBar;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.view.View;
@@ -33,9 +35,24 @@ public class ToDoList extends ListActivity {
    DBHelper db = new DBHelper(this);
    
    @Override
+   /**Initialize activity*/
    protected void onCreate(Bundle savedInstanceState) {
       super.onCreate(savedInstanceState);
       setContentView(R.layout.activity_to_do_list);
+      ActionBar actionBar = getActionBar();
+      actionBar.hide();
+      displayTaskList();
+   }
+   
+   @Override
+   /**Restarts activity when back button is pressed*/
+   public void onRestart() { 
+       super.onRestart();
+       displayTaskList();
+   }
+   
+   /**Uses list adapter for array list of tasks and click listener to update a task*/
+   public void displayTaskList() {
       ArrayList<HashMap<String, String>> taskList =  db.getAllTasks();
       if(taskList.size()!=0) {
          ListView lv = getListView();
@@ -49,11 +66,13 @@ public class ToDoList extends ListActivity {
                startActivity(intent); 
             }
          }); 
-         ListAdapter adapter = new SimpleAdapter(ToDoList.this, taskList, R.layout.task_view, new String[] {TASK_ID, TASK_NAME}, new int[] {R.id.taskId, R.id.taskName}); 
+         ListAdapter adapter = new SimpleAdapter(ToDoList.this, taskList, R.layout.task_view, 
+               new String[] {TASK_ID, TASK_NAME}, new int[] {R.id.taskId, R.id.taskName}); 
          setListAdapter(adapter);
       }
    }
    
+   /**Opens add new task activity */
    public void displayAddTask(View view) {
       Intent intent = new Intent(getApplicationContext(), AddTask.class);
       startActivity(intent);
