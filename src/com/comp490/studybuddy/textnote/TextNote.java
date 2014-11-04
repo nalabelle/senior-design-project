@@ -55,6 +55,8 @@ import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.comp490.studybuddy.R;
+import com.comp490.studybuddy.models.NoteEntryModel;
+import com.comp490.studybuddy.models.NoteModel;
 
 public class TextNote extends Activity {
 	
@@ -79,10 +81,12 @@ public class TextNote extends Activity {
 	public static final int MEDIA_TYPE_VIDEO = 2;	
 	private ImageView pic = null;
 	private VideoView vid = null;
-	@SuppressWarnings("unused")
 	private Uri fileUri;
 	private static File mediaFile;
 	
+	
+	//let's make us one Note for now, can add more later!
+	private NoteModel note = new NoteModel();
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -370,6 +374,8 @@ public class TextNote extends Activity {
 	};		
 	
 	private void createEditText(){
+		NoteEntryModel noteEntry = this.note.add(NoteEntryModel.NoteType.TEXT);
+		
 		final EditText textBox = new EditText(getBaseContext());
 		textBox.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 		textBox.setMaxLines(10);
@@ -457,7 +463,6 @@ public class TextNote extends Activity {
 		startActivityForResult(intent, MEDIA_TYPE_IMAGE);
 	}
 	
-//	@SuppressWarnings("deprecation")
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
