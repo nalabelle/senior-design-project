@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:orientation="vertical" >
     
     <RelativeLayout
@@ -13,12 +13,12 @@
         android:padding="5dp" >
         
         <TextView
-            android:id="@+id/ActivityTitle"
+            android:id="@+id/textView1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:text="Calendar"
+            android:text="Add Event"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="#FFFFFF" 
             android:textSize="22sp"
@@ -30,7 +30,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_below="@+id/taskName"
             android:onClick="displayAddTask"
             android:src="@drawable/ic_action_new"
             android:contentDescription="Add task"
@@ -38,11 +37,15 @@
 
     </RelativeLayout>
 
-    <TextView
-        android:id="@+id/textView1"
+    <DatePicker
+        android:id="@+id/datePicker1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Placeholder Text"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:calendarViewShown="false" />
+
+    <TimePicker
+        android:id="@+id/timePicker1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

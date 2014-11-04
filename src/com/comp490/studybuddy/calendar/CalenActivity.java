@@ -26,6 +26,7 @@ import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -70,6 +71,8 @@ public class CalenActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_customcal_phone);
+		ActionBar actionBar = getActionBar();
+	    actionBar.hide();
 		
 		//Make it fit, get width and height
         DisplayMetrics metrics = new DisplayMetrics();
@@ -97,6 +100,11 @@ public class CalenActivity extends Activity {
         calendarGrid.setAdapter(adapter);
 	}
 	
+	public void displayAddEvent(View view) {
+	      Intent intent = new Intent(getApplicationContext(), AddEvent.class);
+	      startActivity(intent);
+	   }
+	
     private void changeCalendarDisplay()
     {
         adapter = new GridCellAdapter(getApplicationContext(), R.id.grid_day);
@@ -123,7 +131,6 @@ public class CalenActivity extends Activity {
 		}
 		return super.onOptionsItemSelected(item);
 	}//Autogen
-	
 	
 	public void movePast(View v)
 	{

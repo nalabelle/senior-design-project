@@ -96,6 +96,10 @@
             android:name="com.comp490.studybuddy.handwritingnote.HandwritingMain"
             android:label="@string/title_activity_handwriting_main" >
         </activity>
+        <activity
+            android:name="com.comp490.studybuddy.calendar.AddEvent"
+            android:label="@string/title_activity_event" >
+        </activity>
     </application>
 
 </manifest>
