@@ -13,7 +13,7 @@
         android:padding="5dp" >
         
         <TextView
-            android:id="@+id/textView1"
+            android:id="@+id/ActivityTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
@@ -26,14 +26,13 @@
 
         
         <ImageButton
-         android:id="@+id/button1"
+         android:id="@+id/newEventButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_below="@+id/taskName"
-            android:onClick="displayAddTask"
+            android:onClick="displayAddEvent"
             android:src="@drawable/ic_action_new"
-            android:contentDescription="Add task"
+            android:contentDescription="Add Event"
             android:background="#000000"/>
 
     </RelativeLayout>

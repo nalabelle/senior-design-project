@@ -50,6 +50,7 @@ import android.widget.TextView;
 
 import com.comp490.studybuddy.R;
 import com.comp490.studybuddy.textnote.TextNote;
+import com.comp490.studybuddy.todolist.AddTask;
 
 public class CalenActivity extends Activity {
 	
@@ -106,6 +107,11 @@ public class CalenActivity extends Activity {
         adapter.notifyDataSetChanged();
         calendarGrid.setAdapter(adapter);
 	}
+	
+	public void displayAddEvent(View view) {
+	      Intent intent = new Intent(getApplicationContext(), AddEvent.class);
+	      startActivity(intent);
+	   }
 	
     private void changeCalendarDisplay(int month, int year)
     {
