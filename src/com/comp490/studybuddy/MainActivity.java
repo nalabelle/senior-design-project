@@ -59,10 +59,10 @@ public class MainActivity extends Activity {
 		startActivity(calLaunch);
 		return true;
 	}
-	
-   public boolean onTodoClick(View view) {
-      Intent todoLaunch = new Intent(this.getApplicationContext(), ToDoList.class);
-      startActivity(todoLaunch);
-      return true;
-   }
+
+	public boolean onTodoClick(View view) {
+		Intent todoLaunch = new Intent(this.getApplicationContext(), ToDoList.class);
+		startActivity(todoLaunch);
+		return true;
+	}
  }
