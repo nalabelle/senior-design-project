@@ -1,6 +1,7 @@
 package com.comp490.studybuddy;
 
 import com.comp490.studybuddy.calendar.CalenActivity;
+import com.comp490.studybuddy.handwritingnote.HandwritingMain;
 import com.comp490.studybuddy.textnote.TextNote;
 import com.comp490.studybuddy.todolist.ToDoList;
 
@@ -65,4 +66,9 @@ public class MainActivity extends Activity {
       startActivity(todoLaunch);
       return true;
    }
+   public boolean onHandwritingClick(View view) {
+	      Intent handwritingLaunch = new Intent(this.getApplicationContext(), HandwritingMain.class);
+	      startActivity(handwritingLaunch);
+	      return true;
+	   }
  }

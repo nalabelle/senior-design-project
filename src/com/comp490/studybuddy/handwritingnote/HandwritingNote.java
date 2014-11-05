@@ -1,29 +1,76 @@
-//Author: Xintong Shi (Summer)
+//Author: Tom
 package com.comp490.studybuddy.handwritingnote;
 
-import android.app.Application;
+import android.content.Context;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Path;
+import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup.LayoutParams;
+import android.widget.Button;
 
-public class HandwritingNote extends Application {
-	//application name
-	public static final String appName = "StudyBuddy";
-	//thumbnail saved in sub folder
-	public static final String saveThumbnail = "/thumbnail/";
-	//cache saved in sub folder
-	public static final String saveCache = "/studybuddy/.chache/";
-	
-	public static final String handwritingNoteName = "saveHwNoteName";
-	//error message
-	public static final String fileError = "FILE ERROR";
-	
-	public static final int jpgQuality = 70;
-	
-	public static final int pngQuality = 100;
-	
-	public static final String jpgExtension = ".jpg";
-	
-	public static final String pngExtension = ".png";
-	
-	public static final int maxHwNotePage = 2;
-	
-	//TODO: color and pen width
+public class HandwritingNote extends View {
+	private Paint brush = new Paint();
+	private Path path = new Path();
+	public Button btnEraseAll;
+	public LayoutParams params;
+
+	public HandwritingNote(Context context) {
+		super(context);
+		brush.setAntiAlias(true);
+		brush.setColor(Color.BLACK);
+		brush.setStyle(Paint.Style.STROKE);
+		brush.setStrokeJoin(Paint.Join.ROUND);
+		brush.setStrokeWidth(15f);
+
+		btnEraseAll = new Button(context);
+		btnEraseAll.setText("Erase Everything!!");
+		params = new LayoutParams(LayoutParams.MATCH_PARENT,
+				LayoutParams.WRAP_CONTENT);
+		btnEraseAll.setLayoutParams(params);
+		btnEraseAll.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+				// reset the path
+				path.reset();
+				// invalidate the view
+				postInvalidate();
+
+			}
+		});
+	}
+
+	@Override
+	public boolean onTouchEvent(MotionEvent event) {
+		float pointX = event.getX();
+		float pointY = event.getY();
+
+		// Checks for the event that occurs
+		switch (event.getAction()) {
+		case MotionEvent.ACTION_DOWN:
+			path.moveTo(pointX, pointY);
+
+			return true;
+		case MotionEvent.ACTION_MOVE:
+			path.lineTo(pointX, pointY);
+			break;
+		case MotionEvent.ACTION_UP:
+			break;
+		default:
+			return false;
+		}
+		// Force a view to draw.
+		postInvalidate();
+		return false;
+
+	}
+	@Override
+	protected void onDraw(Canvas canvas) {
+		canvas.drawPath(path, brush);
+	}
 }
+
