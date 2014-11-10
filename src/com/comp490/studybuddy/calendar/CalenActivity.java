@@ -100,11 +100,6 @@ public class CalenActivity extends Activity {
         calendarGrid.setAdapter(adapter);
 	}
 	
-	public void displayAddEvent(View view) {
-	      Intent intent = new Intent(getApplicationContext(), AddEvent.class);
-	      startActivity(intent);
-	   }
-	
     private void changeCalendarDisplay()
     {
         adapter = new GridCellAdapter(getApplicationContext(), R.id.grid_day);
@@ -120,7 +115,7 @@ public class CalenActivity extends Activity {
 	    actionBar.show();
 		getMenuInflater().inflate(R.menu.calen, menu);
 		return super.onCreateOptionsMenu(menu);
-	}//Autogen
+	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -137,7 +132,7 @@ public class CalenActivity extends Activity {
 			default:
 				return super.onOptionsItemSelected(item);
 		}		
-	}//Autogen
+	}
 	
 	public void movePast(View v)
 	{

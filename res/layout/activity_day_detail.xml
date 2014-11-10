@@ -3,40 +3,6 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical" >
-    
-    <RelativeLayout
-        android:id="@+id/relativeLayout1"
-        android:layout_width="fill_parent"
-        android:layout_height="40dp"
-        android:background="#000000"
-        android:orientation="vertical" 
-        android:padding="5dp" >
-        
-        <TextView
-            android:id="@+id/ActivityTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:text="Calendar"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="#FFFFFF" 
-            android:textSize="22sp"
-            />
-
-        
-        <ImageButton
-         android:id="@+id/button1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/taskName"
-            android:onClick="displayAddTask"
-            android:src="@drawable/ic_action_new"
-            android:contentDescription="Add task"
-            android:background="#000000"/>
-
-    </RelativeLayout>
 
     <TextView
         android:id="@+id/textView1"
