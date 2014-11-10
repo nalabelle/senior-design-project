@@ -36,6 +36,7 @@
     <string name="action_delete_sound">Delete Sound</string>
     <string name="action_sound_rename">Rename</string>
     <string name="action_launch_handwrite">Handwrite</string>
+    <string name="action_add_event">Add Event</string>
     <string name="title_activity_settings">SettingsActivity</string>
     <string name="title_activity_settings_fragment">SettingsFragment</string>
     <string name="title_activity_help">Help</string>

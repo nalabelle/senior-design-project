@@ -67,12 +67,12 @@ public class CalenActivity extends Activity {
     private int width;
     private static int height;
     
+    private ActionBar actionBar;
+    
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_customcal_phone);
-		ActionBar actionBar = getActionBar();
-	    actionBar.hide();
 		
 		//Make it fit, get width and height
         DisplayMetrics metrics = new DisplayMetrics();
@@ -116,8 +116,10 @@ public class CalenActivity extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
+		actionBar = getActionBar();
+	    actionBar.show();
 		getMenuInflater().inflate(R.menu.calen, menu);
-		return true;
+		return super.onCreateOptionsMenu(menu);
 	}//Autogen
 
 	@Override
@@ -126,10 +128,15 @@ public class CalenActivity extends Activity {
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
+		switch(id) {
+			case R.id.action_settings:
+				return true;
+			case R.id.addEvent:
+				Intent intent = new Intent(getApplicationContext(), AddEvent.class);
+			    startActivity(intent);
+			default:
+				return super.onOptionsItemSelected(item);
+		}		
 	}//Autogen
 	
 	public void movePast(View v)
