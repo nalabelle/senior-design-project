@@ -20,6 +20,13 @@
         android:orderInCategory="100"
         android:showAsAction="ifRoom"
         android:icon="@drawable/ic_action_edit"
-        android:title="@string/action_add_event"/>
+        android:title="@string/action_edit_event"/>
+    
+    <item 
+        android:id="@+id/createEvent"
+        android:orderInCategory="100"
+        android:showAsAction="ifRoom"
+        android:icon="@drawable/ic_action_accept"
+        android:title="@string/action_create_event"/>
 
 </menu>

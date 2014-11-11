@@ -56,6 +56,8 @@ public class AddEvent extends Activity {
 		actionBar = getActionBar();
 	    actionBar.show();
 		getMenuInflater().inflate(R.menu.calen, menu);
+		menu.findItem(R.id.addEvent).setVisible(false);
+		menu.findItem(R.id.editEvent).setVisible(false);
 		return super.onCreateOptionsMenu(menu);
 	}
 
