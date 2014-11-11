@@ -26,6 +26,7 @@ import android.widget.CalendarView;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 
 public class AddEvent extends Activity {
@@ -66,16 +67,26 @@ public class AddEvent extends Activity {
 		// Handle action bar item clicks here. The action bar will
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
-		EditText eventText = (EditText) findViewById(R.id.eventName);
-		startDateTime = new DateTime(startYear, startMonth, startDay, startHour, startMin);
+		
 		
 		int id = item.getItemId();
 		switch(id) {
 			case R.id.action_settings:
 				return true;
-			case R.id.addEvent:
-				String eventName = eventText.getText().toString(); 
-				event = new CalendarEventModel(eventName, startDateTime);
+			case R.id.createEvent:
+				try {
+					startDateTime = new DateTime(startYear, startMonth, startDay, startHour, startMin);
+					EditText eventText = (EditText) findViewById(R.id.eventName);
+					String eventName = eventText.getText().toString(); 
+					event = new CalendarEventModel(eventName, startDateTime);
+					// Save Event
+					//TODO this
+					//Return to Calendar
+					Intent back2Cal = new Intent(this, CalenActivity.class);       	
+		    		startActivity(back2Cal);
+				} catch (Exception e) {
+					Toast.makeText(getApplicationContext(), "Uhoh, check your fields", 20).show();
+				}
 				return true;
 			default:
 				return super.onOptionsItemSelected(item);
