@@ -7,6 +7,7 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import com.comp490.studybuddy.R;
+import com.comp490.studybuddy.models.CalendarEventModel;
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -23,14 +24,23 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.TimePicker;
 
 
 public class AddEvent extends Activity {
 	
 	private ActionBar actionBar;
-	private static boolean butt = false;
-	
+	private int dateButt = -1;
+	private int timeButt = -1;
+	private CalendarEventModel event;
+	private DateTime startDateTime;
+	private DateTime finishDateTime;
+	private int startYear;
+	private int startMonth;
+	private int startDay;
+	private int startHour;
+	private int startMin;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -54,19 +64,23 @@ public class AddEvent extends Activity {
 		// Handle action bar item clicks here. The action bar will
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
+		EditText eventText = (EditText) findViewById(R.id.eventName);
+		startDateTime = new DateTime(startYear, startMonth, startDay, startHour, startMin);
+		
 		int id = item.getItemId();
 		switch(id) {
 			case R.id.action_settings:
 				return true;
 			case R.id.addEvent:
-				//Todo Finish Save event
+				String eventName = eventText.getText().toString(); 
+				event = new CalendarEventModel(eventName, startDateTime);
 				return true;
 			default:
 				return super.onOptionsItemSelected(item);
 		}		
 	}
 	
-	public static class TimePickerFragment extends DialogFragment
+	public class TimePickerFragment extends DialogFragment
     	implements TimePickerDialog.OnTimeSetListener {
 
 		@Override
@@ -81,12 +95,25 @@ public class AddEvent extends Activity {
 					DateFormat.is24HourFormat(getActivity()));
 		}
 
+		// Do something with user selected time
 		public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-			// Do something with the time chosen by the user
+			final DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("h:mm a");
+			DateTime time = new DateTime(1, 1, 1, hourOfDay, minute);
+					
+			if (timeButt == 1) {
+				startHour = hourOfDay;
+				startMin = minute;
+				Button fromTimeButt = (Button) getActivity().findViewById(R.id.fromButtTime);
+				fromTimeButt.setText(time.toString(dateFormatter));
+			}
+			else if (timeButt == 0) {
+				Button toTimeButt = (Button) getActivity().findViewById(R.id.toButtTime);
+				toTimeButt.setText(time.toString(dateFormatter));
+			}
 		}
 	}
 	
-	public static class DatePickerFragment extends DialogFragment
+	public class DatePickerFragment extends DialogFragment
     	implements DatePickerDialog.OnDateSetListener {
 		
 		final DateTime currentDateTime = new DateTime();
@@ -110,45 +137,50 @@ public class AddEvent extends Activity {
 					
 		}
 
+		// Do something with user selected date
 		public void onDateSet(DatePicker view, int year, int month, int day) {
 			final DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("MMMM dd, yyyy");
 			
 			//How to figure out what button was pressed?
-			if (butt) {
+			if (dateButt == 1) {
+				startYear = year;
+				startMonth = month+1;
+				startDay = day;
 				Button fromDateButt = (Button) getActivity().findViewById(R.id.fromButtDate);
 				DateTime from = new DateTime(year, ++month, day, 0, 0);
 				fromDateButt.setText(from.toString(dateFormatter));
 			}
-			else {
+			else if (dateButt == 0){
 				Button toDateButt = (Button) getActivity().findViewById(R.id.toButtDate);
 				DateTime to = new DateTime(year, ++month, day, 0, 0);
 				toDateButt.setText(to.toString(dateFormatter));
-			}
-			
-			 /*
-			switch (getActivity().getView().getId()) {
-				case R.id.fromButtDate:
-					fromDateButt.setText();
-				case R.id.toButtDate:
-					toDateButt.setText(monthName+" "+day+" "+year);
-			}
-			*/
-				
+			}		
 		}
 	}
 	
 	public void showDatePickerDialog(View v) {
-	    DialogFragment newFragment = new DatePickerFragment();
-	    newFragment.show(getFragmentManager(), "datePicker");
-	    switch (v.getId()) {
+		 switch (v.getId()) {
 	    	case R.id.fromButtDate:
-	    		butt = true;
+	    		dateButt = 1;
+	    		break;
 	    	case R.id.toButtDate:
-	    		butt = false;
+	    		dateButt = 0;
+	    		break;
 	    }
+		
+		DialogFragment newFragment = new DatePickerFragment();
+	    newFragment.show(getFragmentManager(), "datePicker");
 	}
 	
 	public void showTimePickerDialog(View v) {
+		switch (v.getId()) {
+    	case R.id.fromButtTime:
+    		timeButt = 1;
+    		break;
+    	case R.id.toButtTime:
+    		timeButt = 0;
+    		break;
+    }
 	    DialogFragment newFragment = new TimePickerFragment();
 	    newFragment.show(getFragmentManager(), "timePicker");
 	}
