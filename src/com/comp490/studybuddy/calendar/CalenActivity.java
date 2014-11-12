@@ -2,8 +2,8 @@
  * Author: Alex Swanson 103706731?
  * Date started: Early Sept
  * Date Completed: IP
- * Peer Review: IP
- * Date: You mean today?
+ * Peer Review: Anthony Sager 
+ * Date: 11/12/2014 (Reviewed)
  * Team members: Buddy Corp
  * Contribution: IP
  * 
