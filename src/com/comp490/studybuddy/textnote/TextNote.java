@@ -1,11 +1,11 @@
 /*
-Author Name and CSUN ID: Anthony Summer Nik
+Author Name and CSUN ID: Anthony Xintong Nik
 Date started: 9/26/2014
 Date Completed:
 Peer review: 
 Date:
 Team members:
-Contributing team members: Anthony Summer Nik
+Contributing team members: Anthony Xintong Nik
  */
 
 package com.comp490.studybuddy.textnote;

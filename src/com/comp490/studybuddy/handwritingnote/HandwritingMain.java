@@ -1,11 +1,8 @@
-//Author: Tom
+//Author: Tom, Xintong
 package com.comp490.studybuddy.handwritingnote;
-
-
 
 import android.os.Bundle;
 import android.app.Activity;
-import android.view.Menu;
 
 public class HandwritingMain extends Activity {
 	@Override
