@@ -13,7 +13,7 @@ public class buddyDBOpenHelper extends SQLiteOpenHelper{
 	protected static final int DATABASE_VERSION = 1;
 	private static final String TAG = "buddyDB";
 	
-	private static final String EVENT_TABLE = "CalEvents";
+	protected static final String EVENT_TABLE = "calEvents";
 	private static final String EVENT_ID = "eventId";
 	private static final String EVENT_NAME = "eventName";
 	private static final String EVENT_START_DATE = "startDate";
