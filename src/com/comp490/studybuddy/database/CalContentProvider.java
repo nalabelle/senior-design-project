@@ -30,7 +30,6 @@ public class CalContentProvider extends ContentProvider {
 	// Differentiates queries 
 	// if the request is for the whole table (ALL_ROWS)
 	// or if the request is for a particular row (SINGLE_ROW)
-	// Used in getType(Uri uri)
 	private static final int ALL_ROWS = 10;
 	private static final int SINGLE_ROW = 20;
 	private static final UriMatcher uriMatcher;

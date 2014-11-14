@@ -100,6 +100,10 @@
             android:name="com.comp490.studybuddy.calendar.AddEvent"
             android:label="@string/title_activity_event" >
         </activity>
+        <provider
+       		android:name="com.comp490.studybuddy.database.CalContentProvider" 
+       		android:authorities="com.example.database.provider.CalContentProvider" 
+		/>
     </application>
 
 </manifest>
