@@ -1,12 +1,14 @@
 package com.comp490.studybuddy.database;
 
 import android.content.ContentProvider;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
+import android.text.TextUtils;
 
 public class CalContentProvider extends ContentProvider {
 	
@@ -92,23 +94,75 @@ public class CalContentProvider extends ContentProvider {
 	}
 	
 	@Override
-	public int delete(Uri arg0, String arg1, String[] arg2) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int delete(Uri uri, String selection, String[] selectionArgs) {
+		SQLiteDatabase db = myOpenHelper.getWritableDatabase();
+	    
+	    // If this is a row URI, limit the deletion to the specified row.
+	    switch (uriMatcher.match(uri)) {
+	      case SINGLE_ROW : 
+	        String rowID = uri.getPathSegments().get(1);
+	        selection = EVENT_ID + "=" + rowID
+	            + (!TextUtils.isEmpty(selection) ? 
+	              " AND (" + selection + ')' : "");
+	      default: break;
+	    }
+
+	    // Execute the deletion.
+	    int deleteCount = db.delete(buddyDBOpenHelper.EVENT_TABLE, selection,
+	    		selectionArgs);
+	    
+	    // Notify any observers of the change in the data set.
+	    getContext().getContentResolver().notifyChange(uri, null);
+	    
+	    return deleteCount;
 	}
 
 	@Override
-	public Uri insert(Uri arg0, ContentValues arg1) {
-		// TODO Auto-generated method stub
-		return null;
+	public Uri insert(Uri uri, ContentValues values) {
+		
+	    SQLiteDatabase db = myOpenHelper.getWritableDatabase();
+	    
+	    // Insert the values into the table
+	    long id = db.insert(buddyDBOpenHelper.EVENT_TABLE, null, values);
+	    
+	    if (id > -1) {
+	      // Construct and return the URI of the newly inserted row.
+	      Uri insertedId = ContentUris.withAppendedId(CAL_URI, id);
+	      
+	      // Notify any observers of the change in the data set.
+	      getContext().getContentResolver().notifyChange(insertedId, null);
+	      
+	      return insertedId;
+	    }
+	    else
+	      return null;
 	}
 
+	/**
+	 * Returns the number of updated rows
+	 */
 	@Override
-	public int update(Uri arg0, ContentValues arg1, String arg2, String[] arg3) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+	public int update(Uri uri, ContentValues values, String selection, 
+			String[] selectionArgs) {
+		SQLiteDatabase db = myOpenHelper.getWritableDatabase();
 	
-	
+		switch (uriMatcher.match(uri)) {
+	    	case SINGLE_ROW : 
+	    		String rowID = uri.getPathSegments().get(1);
+	    		selection = EVENT_ID + "=" + rowID
+	            + (!TextUtils.isEmpty(selection) ? 
+	            " AND (" + selection + ')' : "");
+	    	default: break;
+		}
+	      
+	    //Perform Update	
+	    int updateCount = db.update(buddyDBOpenHelper.EVENT_TABLE, 
+	    		values, selection, selectionArgs);
 
+	    // Notify any observers of the change in the data set.
+	    getContext().getContentResolver().notifyChange(uri, null);
+
+	    return updateCount;
+		
+	}
 }
