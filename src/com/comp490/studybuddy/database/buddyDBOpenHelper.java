@@ -53,13 +53,6 @@ public class buddyDBOpenHelper extends SQLiteOpenHelper{
 		onCreate(db);
 		
 	}
-	
-	/* ------------------- CALENDAR DATABASE METHODS --------------------*/
-	
-	
-	
-	
-	/* ------------------- TODO DATABASE METHODS ---------------------*/
 }
 //butt
 //-gladreal
