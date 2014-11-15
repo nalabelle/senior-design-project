@@ -11,9 +11,7 @@ Contributing team members: Anthony Summer Nik
 package com.comp490.studybuddy.textnote;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -30,14 +28,10 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.media.MediaPlayer;
-import android.media.MediaPlayer.OnCompletionListener;
-import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.text.InputType;
 import android.util.Log;
 import android.view.ActionMode;
 import android.view.KeyEvent;
@@ -47,7 +41,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -66,6 +59,7 @@ public class TextNote extends Activity {
 	// Sound related variables
 	ActionBar actionBar;
 	final Context context = this;
+	TextNote textNote = this;
 	int count = 1; 
 	
 	ActionMode mActionMode, oActionMode;
@@ -240,7 +234,9 @@ public class TextNote extends Activity {
 		}
 		case R.id.action_create_text:{
 			//onClick of keyboard icon
-			createEditText();
+
+			NoteEntryModel noteEntry = this.note.add(NoteEntryModel.NoteType.TEXT);
+			TextObject text = new TextObject(this);
 			return true;
 		}
 		case R.id.action_launch_handwritting:{
@@ -254,31 +250,7 @@ public class TextNote extends Activity {
 				return super.onOptionsItemSelected(item);
 		}
 	}
-	
-	private void createEditText(){
-		NoteEntryModel noteEntry = this.note.add(NoteEntryModel.NoteType.TEXT);
-		
-		final EditText textBox = new EditText(getBaseContext());
-		textBox.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
-		textBox.setMaxLines(10);
-		textBox.setHint("Enter note here");
-		textBox.requestFocus();
-		textBox.setId(generateViewID());
-		textBox.setRawInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
-		LinearLayout layout = (LinearLayout)findViewById(R.id.note_inner_layout);
-		layout.addView(textBox);
-		textBox.setOnClickListener(new View.OnClickListener(){
-			public void onClick(View v1) {
-				if (oActionMode != null) {
-				} else { // Start the CAB using the ActionMode.Callback defined above
-					currentResourceID = textBox.getId();
-					oActionMode = startActionMode(optionsActionModeCallback);
-					v1.setSelected(true);
-				}
-			}
-		});
-	}	
-	
+
 	protected void createSoundButton(AudioNote audio){
 		// Creating dynamic container (linearlayout) to hold imagebutton and title
 		final LinearLayout soundButtonAndTitle = new LinearLayout(getBaseContext());
@@ -322,7 +294,7 @@ public class TextNote extends Activity {
 	}
 	
 	// generate a random ID for a view that isn't being used
-	private int generateViewID(){
+	protected int generateViewID(){
 		int result;
 		Random rand = new Random();
 		do { //must create unused ID to be able to refer to sound title textview
@@ -361,40 +333,39 @@ public class TextNote extends Activity {
 	       
             layout.addView(vid);
 	        
-	        
+	        //TODO: create VideoObject and fix the video data
 	        
 	    }
 		
 		else if ( requestCode == MEDIA_TYPE_IMAGE && resultCode == Activity.RESULT_OK) {
-			pic = new ImageView(getBaseContext());
-			pic.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
-			LinearLayout layout = (LinearLayout)findViewById(R.id.note_inner_layout);
-			pic.setId(generateViewID());
-			layout.addView(pic);
-			
-			// For deletion and other options
-			pic.setOnClickListener(new View.OnClickListener(){
-				public void onClick(View v1) {
-					if (oActionMode != null) {
-					} else { 
-						currentResourceID = pic.getId();
-						oActionMode = startActionMode(optionsActionModeCallback);
-						v1.setSelected(true);
-					}
-				}
-			});
-			
+
 			Bundle extras = data.getExtras();
 			Bitmap btm = (Bitmap) extras.get("data");
 			FileOutputStream fs;
 			
+			/* *********************************************
+			* BUG!!! MEDIAFILE not working all the time
+			***********************************************/
 			try {
-				fs = new FileOutputStream(mediaFile);
+				clickie(mediaFile.toString());
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+				Log.e(LOG_TAG, "Picture mediaFile not working");
+			}
+
+			try {
+				fs = new FileOutputStream(mediaFile); // Throws b/c mediafile 
 				btm.compress(Bitmap.CompressFormat.JPEG, 100, fs);
-			} catch (FileNotFoundException e) {
+			} catch (Exception e) {
+				Log.e(LOG_TAG, "Picture FileOutStream or compress exception");
 				e.printStackTrace();
 			}
-			pic.setImageBitmap(btm);
+			// End of bug!
+
+			// Creates picture object and view
+			PictureObject picObject = new PictureObject(textNote, btm);
+			NoteEntryModel noteEntry = this.note.add(NoteEntryModel.NoteType.PICTURE);
 		}	
 		
 		else
