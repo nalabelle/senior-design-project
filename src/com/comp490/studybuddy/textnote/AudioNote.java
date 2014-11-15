@@ -1,31 +1,21 @@
-package com.comp490.studybuddy.note;
+package com.comp490.studybuddy.textnote;
 
+import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import com.comp490.studybuddy.models.NoteEntryModel;
 import android.content.Context;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.media.MediaRecorder;
 import android.os.Environment;
 import android.util.Log;
-import android.view.ActionMode;
-import android.view.View;
-import android.view.ViewGroup.LayoutParams;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.comp490.studybuddy.R;
-import com.comp490.studybuddy.models.NoteEntryModel;
-
-public class AudioObject {
-	 //essentially another context of Note activity, but required for getting views
-	// temp fix for now
-	private NoteActivity noteContext;
+public class AudioNote {
 	private Context context;
 	private NoteEntryModel entry;
 	private MediaRecorder recorder = null;
@@ -35,13 +25,8 @@ public class AudioObject {
 	private String tempStorage = "/Temp/Notes/Audio/";  //move to Notes/Audio after save
 	private String soundFilePath;
 	
-	// Views 
-	private LinearLayout soundButtonAndTitle;
-	ImageButton soundButton;
-	TextView soundTitle;
 	
-	public AudioObject(Context context, NoteEntryModel note, NoteActivity noteContext) {
-		this.noteContext = noteContext;
+	public AudioNote(Context context, NoteEntryModel note) {
 		this.context = context;
 		//create a new audio type entry.
 		this.entry = note;
@@ -127,46 +112,9 @@ public class AudioObject {
 		if (status.equals(Status.PLAYING) || status.equals(Status.PAUSED)) {
 			Toast.makeText(this.context, "Stopped Playback", Toast.LENGTH_SHORT).show();
 			status = Status.PAUSED; //do we really need a full stop?
-			createSoundButton();
 			player.stop();
 			player.release();
 		}
-	}
-	
-	protected void createSoundButton(){
-		// Creating dynamic container (linearlayout) to hold imagebutton and title
-		soundButtonAndTitle = new LinearLayout(noteContext);
-		LayoutParams llParams = new LayoutParams(LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-		soundButtonAndTitle.setLayoutParams(llParams);		
-		soundButton = new ImageButton(context);
-		soundButton.setImageResource(R.drawable.ic_action_volume_on);
-		
-		//TextView displays name of sound
-		soundTitle = new TextView(context);
-		soundTitle.setText("Sound");
-		soundTitle.setId(noteContext.generateViewID());
-		
-		//set the audionote title and add it to the note
-		this.setName(soundTitle.getText().toString());
-		//we should store the actual noteentry somewhere
-		//this.note.add(audio);
-		//store the audionote for destroy		
-		
-		soundButtonAndTitle.addView(soundButton);
-		soundButtonAndTitle.addView(soundTitle);
-		LinearLayout layout = (LinearLayout)noteContext.findViewById(R.id.note_inner_layout);
-		layout.addView(soundButtonAndTitle);
-		soundTitle.setContentDescription(this.getFilePath());
-		soundButtonAndTitle.setId(noteContext.generateViewID());
-		
-		soundButton.setOnLongClickListener(new View.OnLongClickListener(){
-			@Override
-			public boolean onLongClick(View v) {
-				ActionMode.Callback soundMenu = new SoundPlayMenu(noteContext);
-				noteContext.startActionMode(soundMenu);
-				return true;
-			}
-		});
 	}
 	
 	public Status getStatus() {

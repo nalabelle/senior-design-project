@@ -1,7 +1,7 @@
 package com.comp490.studybuddy;
 
 import com.comp490.studybuddy.calendar.CalenActivity;
-import com.comp490.studybuddy.note.NoteActivity;
+import com.comp490.studybuddy.textnote.TextNote;
 import com.comp490.studybuddy.todolist.ToDoList;
 
 import android.app.Activity;
@@ -49,7 +49,7 @@ public class MainActivity extends Activity {
 	}
 	
 	public boolean onTextNoteClick(View view) {
-		Intent noteLaunch = new Intent(this.getApplicationContext(), NoteActivity.class);
+		Intent noteLaunch = new Intent(this.getApplicationContext(), TextNote.class);
 		startActivity(noteLaunch);
 		return true;
 	}
