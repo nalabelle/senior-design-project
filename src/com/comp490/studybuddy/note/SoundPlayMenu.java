@@ -1,7 +1,7 @@
-package com.comp490.studybuddy.textnote;
+package com.comp490.studybuddy.note;
 
 import com.comp490.studybuddy.R;
-import com.comp490.studybuddy.textnote.AudioNote.Status;
+import com.comp490.studybuddy.note.AudioObject.Status;
 
 import android.view.ActionMode;
 import android.view.Menu;
@@ -12,11 +12,11 @@ import android.view.MenuItem;
 /*
  * This is called when you click on a sound button!
  */
-public class SoundActionModeCallback implements ActionMode.Callback {
-	private TextNote textNote;
+public class SoundPlayMenu implements ActionMode.Callback {
+	private NoteActivity textNote;
 	private static final String LOG_TAG = "Sound Action Menu Callback";
 	
-	public SoundActionModeCallback(TextNote textNote) {
+	public SoundPlayMenu(NoteActivity textNote) {
 		this.textNote = textNote;
 	}
 
@@ -43,7 +43,7 @@ public class SoundActionModeCallback implements ActionMode.Callback {
 		switch (item.getItemId()) {
 		// menu selection responses:
 		case R.id.menuSoundPlay: {
-			this.textNote.audioState(item.getItemId(), AudioNote.Status.PLAYING);
+			this.textNote.audioState(item.getItemId(), AudioObject.Status.PLAYING);
 			return true;
 		}
 		case R.id.menuSoundPause: {

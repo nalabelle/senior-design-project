@@ -1,4 +1,4 @@
-package com.comp490.studybuddy.textnote;
+package com.comp490.studybuddy.note;
 
 import android.text.InputType;
 import android.view.ActionMode;
@@ -8,14 +8,18 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import com.comp490.studybuddy.R;
+import com.comp490.studybuddy.models.NoteEntryModel;
 
 public class TextObject{
 	protected EditText textBox;
-	private TextNote textNote;
+	private NoteActivity textNote;
 	private TextObject textObject = this;
+	private NoteEntryModel entry;	
 	
-	public TextObject(TextNote textNote){
+	
+	public TextObject(NoteActivity textNote, NoteEntryModel note){
 		this.textNote = textNote;
+		this.entry = note;
 		createTextView();
 	}
 	

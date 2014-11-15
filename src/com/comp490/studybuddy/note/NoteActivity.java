@@ -8,7 +8,7 @@ Team members:
 Contributing team members: Anthony Summer Nik
  */
 
-package com.comp490.studybuddy.textnote;
+package com.comp490.studybuddy.note;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -52,14 +52,14 @@ import com.comp490.studybuddy.R;
 import com.comp490.studybuddy.models.NoteEntryModel;
 import com.comp490.studybuddy.models.NoteEntryModel.NoteType;
 import com.comp490.studybuddy.models.NoteModel;
-import com.comp490.studybuddy.textnote.AudioNote.Status;
+import com.comp490.studybuddy.note.AudioObject.Status;
 
-public class TextNote extends Activity {
+public class NoteActivity extends Activity {
 	
 	// Sound related variables
 	ActionBar actionBar;
 	final Context context = this;
-	TextNote textNote = this;
+	NoteActivity noteContext = this;
 	int count = 1; 
 	
 	ActionMode mActionMode, oActionMode;
@@ -72,7 +72,6 @@ public class TextNote extends Activity {
 	// Photo and Video related variables
 	public static final int MEDIA_TYPE_IMAGE = 1;
 	public static final int MEDIA_TYPE_VIDEO = 2;	
-	private ImageView pic = null;
 	private VideoView vid = null;
 	private Uri fileUri;
 	private static File mediaFile;
@@ -84,134 +83,16 @@ public class TextNote extends Activity {
 	private NoteModel note = new NoteModel();
 	
 	//We need to stuff the audio notes somewhere temporarily so we can kill all recorders and players.
-	protected ArrayList<AudioNote> audioNotes = new ArrayList<AudioNote>();
+	protected ArrayList<AudioObject> audioNotes = new ArrayList<AudioObject>();
 	
 	// Contextual action mode for sound playback (when a sound icon is touched
 	// a menu is loaded to allow controls for the sound)
-	private ActionMode.Callback mActionModeCallback = new SoundActionModeCallback(this);
+	private ActionMode.Callback mActionModeCallback = new SoundPlayMenu(this);
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_text_note);
-	}
-
-/*  General note about sound interface. The recording interface is controlled
-	 by an actionView. That is when the mic button is clicked, the actionView 
-	 is created to display record options. The playback interface is created 
-	 using a contextual action mode, which is also a menu, but a different 
-	 implementation.	 */
-
-	// Contextual action mode options for Views other than sound.
-	// Pictures are only removed from the note, not from device.
-	private ActionMode.Callback optionsActionModeCallback = new ActionMode.Callback() {
-		
-		@Override
-		public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-			MenuInflater inflater = mode.getMenuInflater();
-			inflater.inflate(R.menu.note_edittext_pics, menu);
-			return true;
-		}
-
-		@Override
-		public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-			return false; 
-		}
-
-		// Called when the user selects a contextual menu item
-		@Override
-		public boolean onActionItemClicked(final ActionMode mode, MenuItem item) {
-			switch (item.getItemId()) {
-			// menu selection responses:
-			case R.id.menuDeleteView: {				
-				// Pop up Confirmation dialog box for deletion
-				AlertDialog.Builder builder = new AlertDialog.Builder(context);
-				builder.setMessage("Delete Item?");
-				builder.setPositiveButton("Yes",
-						new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog, int id) {
-								try { //clicked yes
-									View viewToDelete = findViewById(currentResourceID);
-									((LinearLayout) viewToDelete.getParent())
-											.removeView(viewToDelete);
-								} catch (Exception e1) {
-									Log.e(LOG_TAG, "Delete of view failed");
-								}
-								mode.finish(); // close the contextual menu
-							}
-						});
-				builder.setNegativeButton("Cancel",
-						new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog, int id) {
-								dialog.cancel();
-							}
-						});
-				AlertDialog dialog = builder.create();
-				dialog.show();
-				return true;
-			}
-			case R.id.menuUnlockView: {
-				clickie("TODO: be able to move view");
-				item.setIcon(R.drawable.ic_action_secure);
-				return true;
-			}			
-			default:
-				return false;
-			}
-		}
-		
-	    // Called when the user exits the action mode (check mark)
-	    @Override
-	    public void onDestroyActionMode(ActionMode mode) {
-	   	 oActionMode = null;
-	    }
-	};
-	protected AudioNote currentAudioNote;		
-	
-	//This is for the sound stuff.
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		if(!hasMic()) {
-			return false;
-		}
-
-		actionBar = getActionBar();
-		actionBar.setDisplayShowTitleEnabled(false); //hide actionbar title
-		actionBar.setDisplayShowHomeEnabled(false); //hide actionbar icon
-		getMenuInflater().inflate(R.menu.text_note, menu);
-
-		View v = (View) menu.findItem(R.id.action_record_sound).getActionView();
-		
-		//add the audionote entry.
-		final AudioNote audio = new AudioNote(this, new NoteEntryModel(NoteType.AUDIO));
-		
-		//listeners for Record actionView menu and appropriate response
-		final Button rec = (Button) v.findViewById(R.id.bActionSoundRecord);
-		v.findViewById(R.id.bActionSoundRecord).setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				if (!audio.getStatus().equals(AudioNote.Status.RECORDING)){
-					rec.setTextColor(Color.RED);
-				}
-				audio.startRecording();
-			}
-		});
-		v.findViewById(R.id.ibActionSoundStop).setOnClickListener(new View.OnClickListener(){
-			public void onClick(View v1) {
-				if (!audio.getStatus().equals(AudioNote.Status.RECORDING)){
-					rec.setTextColor(Color.WHITE);
-				}
-				audio.stopRecording();
-				createSoundButton(audio);
-				dispatchKeyEvent(new KeyEvent (KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK));
-				dispatchKeyEvent(new KeyEvent (KeyEvent.ACTION_UP, KeyEvent.KEYCODE_BACK));	
-			}
-		});
-		//the save button should be hidden until there's a recording, or not here. I'm going with not here for now.
-		//We have git history if you want to see what it was.
-
-		return true;
 	}
 	
 	@Override
@@ -236,7 +117,7 @@ public class TextNote extends Activity {
 			//onClick of keyboard icon
 
 			NoteEntryModel noteEntry = this.note.add(NoteEntryModel.NoteType.TEXT);
-			TextObject text = new TextObject(this);
+			TextObject text = new TextObject(this, noteEntry);
 			return true;
 		}
 		case R.id.action_launch_handwritting:{
@@ -250,7 +131,60 @@ public class TextNote extends Activity {
 				return super.onOptionsItemSelected(item);
 		}
 	}
+	
+	/*  General note about sound interface. The recording interface is controlled
+	 by an actionView. That is when the mic button is clicked, the actionView 
+	 is created to display record options. The playback interface is created 
+	 using a contextual action mode, which is also a menu, but a different 
+	 implementation.	 */
+	
+	//This is for the sound stuff.
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		if(!hasMic()) {
+			return false;
+		}
 
+		actionBar = getActionBar();
+		actionBar.setDisplayShowTitleEnabled(false); //hide actionbar title
+		actionBar.setDisplayShowHomeEnabled(false); //hide actionbar icon
+		getMenuInflater().inflate(R.menu.text_note, menu);
+
+		View v = (View) menu.findItem(R.id.action_record_sound).getActionView();
+		
+		//add the audionote entry.
+		final AudioObject audio = new AudioObject(this, new NoteEntryModel(NoteType.AUDIO), noteContext);
+		
+		//listeners for Record actionView menu and appropriate response
+		final Button rec = (Button) v.findViewById(R.id.bActionSoundRecord);
+		v.findViewById(R.id.bActionSoundRecord).setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if (!audio.getStatus().equals(AudioObject.Status.RECORDING)){
+					rec.setTextColor(Color.RED);
+				}
+				audio.startRecording();
+			}
+		});
+		v.findViewById(R.id.ibActionSoundStop).setOnClickListener(new View.OnClickListener(){
+			public void onClick(View v1) {
+				if (!audio.getStatus().equals(AudioObject.Status.RECORDING)){
+					rec.setTextColor(Color.WHITE);
+				}
+				audio.stopRecording();
+				audioNotes.add(audio);
+				//createSoundButton(audio);
+				dispatchKeyEvent(new KeyEvent (KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK));
+				dispatchKeyEvent(new KeyEvent (KeyEvent.ACTION_UP, KeyEvent.KEYCODE_BACK));	
+			}
+		});
+		//the save button should be hidden until there's a recording, or not here. I'm going with not here for now.
+		//We have git history if you want to see what it was.
+
+		return true;
+	}
+/*
 	protected void createSoundButton(AudioNote audio){
 		// Creating dynamic container (linearlayout) to hold imagebutton and title
 		final LinearLayout soundButtonAndTitle = new LinearLayout(getBaseContext());
@@ -292,6 +226,7 @@ public class TextNote extends Activity {
 			}
 		});
 	}
+	*/
 	
 	// generate a random ID for a view that isn't being used
 	protected int generateViewID(){
@@ -364,8 +299,9 @@ public class TextNote extends Activity {
 			// End of bug!
 
 			// Creates picture object and view
-			PictureObject picObject = new PictureObject(textNote, btm);
 			NoteEntryModel noteEntry = this.note.add(NoteEntryModel.NoteType.PICTURE);
+			PictureObject picObject = new PictureObject(noteContext, btm, noteEntry);
+
 		}	
 		
 		else
@@ -419,7 +355,7 @@ public class TextNote extends Activity {
 
 	@Override
 	protected void onDestroy() {
-		for(AudioNote audio : this.audioNotes) {
+		for(AudioObject audio : this.audioNotes) {
 			audio.onDestroy();
 		}
 		super.onDestroy();
@@ -427,8 +363,8 @@ public class TextNote extends Activity {
 
 	public void audioState(int i, Status change) {
 		String audioName = ((TextView) findViewById(currentSoundTitleID)).getText().toString();
-		AudioNote audioNote = null;
-		for(AudioNote note : this.audioNotes) {
+		AudioObject audioNote = null;
+		for(AudioObject note : this.audioNotes) {
 			if(note.getName().equals(audioName))
 				audioNote = note;
 		}
@@ -449,8 +385,8 @@ public class TextNote extends Activity {
 
 	public boolean deleteAudio() {
 		String audioName = ((TextView) findViewById(currentSoundTitleID)).getText().toString();
-		AudioNote audioNote = null;
-		for(AudioNote note : this.audioNotes) {
+		AudioObject audioNote = null;
+		for(AudioObject note : this.audioNotes) {
 			if(note.getName().equals(audioName))
 				audioNote = note;
 		}
