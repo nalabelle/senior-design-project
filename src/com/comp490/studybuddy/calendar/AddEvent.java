@@ -76,9 +76,10 @@ public class AddEvent extends Activity {
 			case R.id.createEvent:
 				try {
 					startDateTime = new DateTime(startYear, startMonth, startDay, startHour, startMin);
+					long startTime = startDateTime.getMillis();
 					EditText eventText = (EditText) findViewById(R.id.eventName);
 					String eventName = eventText.getText().toString(); 
-					event = new CalendarEventModel(eventName, startDateTime);
+					event = new CalendarEventModel(eventName, startTime);
 					// Save Event
 					//TODO this
 					//Return to Calendar
