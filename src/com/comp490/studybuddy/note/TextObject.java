@@ -12,33 +12,33 @@ import com.comp490.studybuddy.models.NoteEntryModel;
 
 public class TextObject{
 	protected EditText textBox;
-	private NoteActivity textNote;
+	private NoteActivity noteActivity;
 	private TextObject textObject = this;
 	private NoteEntryModel entry;	
 	
 	
 	public TextObject(NoteActivity textNote, NoteEntryModel note){
-		this.textNote = textNote;
+		this.noteActivity = textNote;
 		this.entry = note;
 		createTextView();
 	}
 	
 	private void createTextView(){
-		textBox = new EditText(textNote);
+		textBox = new EditText(noteActivity);
 		textBox.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 		textBox.setHint("Enter Text");
 		textBox.requestFocus();
-		textBox.setId(textNote.generateViewID()); //required for deletion
+		textBox.setId(noteActivity.generateViewID()); //required for deletion
 		textBox.setRawInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
-		LinearLayout layout = (LinearLayout) textNote.findViewById(R.id.note_inner_layout);
+		LinearLayout layout = (LinearLayout) noteActivity.findViewById(R.id.note_inner_layout);
 		layout.addView(textBox);
 
 		textBox.setOnLongClickListener(new View.OnLongClickListener() {
 			
 			@Override
 			public boolean onLongClick(View v) {
-				ActionMode.Callback textMenu = new TextMenu(textNote, textObject);
-				textNote.startActionMode(textMenu);
+				ActionMode.Callback textMenu = new TextMenu(noteActivity, textObject);
+				noteActivity.startActionMode(textMenu);
 				return true;
 			}
 		});

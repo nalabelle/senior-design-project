@@ -59,10 +59,7 @@ public class NoteActivity extends Activity {
 	// Sound related variables
 	ActionBar actionBar;
 	final Context context = this;
-	NoteActivity noteContext = this;
-	int count = 1; 
-	
-	ActionMode mActionMode, oActionMode;
+	NoteActivity noteActivity = this;
 
 	int soundPlayBackPosition; 
 	int currentResourceID = -1;
@@ -105,7 +102,10 @@ public class NoteActivity extends Activity {
 		}
 		case R.id.action_take_photo: {
 			//onClick of photo icon
-			takePhoto();
+			if (hasCamera()) //block if camera not present
+				takePhoto();
+			else
+				Log.w(LOG_TAG, "No camera on device");
 			return true;
 		}
 		case R.id.action_take_video: {
@@ -154,7 +154,7 @@ public class NoteActivity extends Activity {
 		View v = (View) menu.findItem(R.id.action_record_sound).getActionView();
 		
 		//add the audionote entry.
-		final AudioObject audio = new AudioObject(this, new NoteEntryModel(NoteType.AUDIO), noteContext);
+		final AudioObject audio = new AudioObject(this, new NoteEntryModel(NoteType.AUDIO), noteActivity);
 		
 		//listeners for Record actionView menu and appropriate response
 		final Button rec = (Button) v.findViewById(R.id.bActionSoundRecord);
@@ -233,13 +233,18 @@ public class NoteActivity extends Activity {
 		int result;
 		Random rand = new Random();
 		do { //must create unused ID to be able to refer to sound title textview
-			result = rand.nextInt(10000 + count);		
+			result = rand.nextInt(10000);		
 		} while (findViewById(result) != null);
 		return result;
 	}
 	
 	public void clickie(String message){ //for testing
 		Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+	}
+	
+	// verify device has a camera
+	private boolean hasCamera(){
+		return context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA);
 	}
 	
 	public void takeVideo() {
@@ -300,7 +305,8 @@ public class NoteActivity extends Activity {
 
 			// Creates picture object and view
 			NoteEntryModel noteEntry = this.note.add(NoteEntryModel.NoteType.PICTURE);
-			PictureObject picObject = new PictureObject(noteContext, btm, noteEntry);
+			noteEntry.setFilePath(mediaFile.toString());
+			PictureObject picObject = new PictureObject(noteActivity, btm, noteEntry);
 
 		}	
 		

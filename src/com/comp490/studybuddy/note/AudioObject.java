@@ -25,7 +25,7 @@ import com.comp490.studybuddy.models.NoteEntryModel;
 public class AudioObject {
 	 //essentially another context of Note activity, but required for getting views
 	// temp fix for now
-	private NoteActivity noteContext;
+	private NoteActivity noteActivity;
 	private Context context;
 	private NoteEntryModel entry;
 	private MediaRecorder recorder = null;
@@ -41,7 +41,7 @@ public class AudioObject {
 	TextView soundTitle;
 	
 	public AudioObject(Context context, NoteEntryModel note, NoteActivity noteContext) {
-		this.noteContext = noteContext;
+		this.noteActivity = noteContext;
 		this.context = context;
 		//create a new audio type entry.
 		this.entry = note;
@@ -135,7 +135,7 @@ public class AudioObject {
 	
 	protected void createSoundButton(){
 		// Creating dynamic container (linearlayout) to hold imagebutton and title
-		soundButtonAndTitle = new LinearLayout(noteContext);
+		soundButtonAndTitle = new LinearLayout(noteActivity);
 		LayoutParams llParams = new LayoutParams(LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 		soundButtonAndTitle.setLayoutParams(llParams);		
 		soundButton = new ImageButton(context);
@@ -144,7 +144,7 @@ public class AudioObject {
 		//TextView displays name of sound
 		soundTitle = new TextView(context);
 		soundTitle.setText("Sound");
-		soundTitle.setId(noteContext.generateViewID());
+		soundTitle.setId(noteActivity.generateViewID());
 		
 		//set the audionote title and add it to the note
 		this.setName(soundTitle.getText().toString());
@@ -154,16 +154,16 @@ public class AudioObject {
 		
 		soundButtonAndTitle.addView(soundButton);
 		soundButtonAndTitle.addView(soundTitle);
-		LinearLayout layout = (LinearLayout)noteContext.findViewById(R.id.note_inner_layout);
+		LinearLayout layout = (LinearLayout)noteActivity.findViewById(R.id.note_inner_layout);
 		layout.addView(soundButtonAndTitle);
 		soundTitle.setContentDescription(this.getFilePath());
-		soundButtonAndTitle.setId(noteContext.generateViewID());
+		soundButtonAndTitle.setId(noteActivity.generateViewID());
 		
 		soundButton.setOnLongClickListener(new View.OnLongClickListener(){
 			@Override
 			public boolean onLongClick(View v) {
-				ActionMode.Callback soundMenu = new SoundPlayMenu(noteContext);
-				noteContext.startActionMode(soundMenu);
+				ActionMode.Callback soundMenu = new SoundPlayMenu(noteActivity);
+				noteActivity.startActionMode(soundMenu);
 				return true;
 			}
 		});
