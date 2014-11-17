@@ -61,13 +61,40 @@ public class buddyDBOpenHelper extends SQLiteOpenHelper{
 		
 	}
 	
-	/* -------------------- CALENDAR EVENTS --------------------------------*/
+	/* -------------------- CALENDAR EVENT METHODS --------------------------*/
 	public boolean addEvent(CalendarEventModel event) {
-		ContentValues values = new ContentValues();
-		values.put(EVENT_NAME, event.getName());
-		//values.put(EVENT_START_DATE, event.getStartDate());
-		//values.put(EVENT_END_DATE, event.getEndDate());
-		
+		try {
+			ContentValues values = new ContentValues();
+			values.put(EVENT_NAME, event.getName());
+			values.put(EVENT_START_DATE, event.getStart());
+			values.put(EVENT_END_DATE, event.getEnd());
+			mContentResolver.insert(CalContentProvider.CAL_URI, values);
+			Log.d(TAG, "Added Event: " +values.toString());
+			return true;
+		} catch (Exception e) {
+			Log.d(TAG, "Failed to add event: " +e);
+			return false;
+		}		
+	}
+	
+	public boolean deleteEvent(String eventName) {
+		String selection = "EVENT_NAME = \"" +eventName +"\"";
+		int rowsDeleted;
+		try {
+			//Takes the uri to a provider, a selection, 
+			//and a String[] of additional selection Arguments
+			rowsDeleted = mContentResolver.delete(CalContentProvider.CAL_URI, 
+					selection, null);
+			Log.d(TAG, "Deleted Event(s) #:"+rowsDeleted);
+			return true;
+		} catch (Exception e) {
+			Log.d(TAG, "Failed to delete event: " +e);
+			return false;
+		}		
+	}
+	
+	//TODO
+	public boolean findEvent(String eventName) {
 		return false;
 	}
 }
