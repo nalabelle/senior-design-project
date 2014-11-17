@@ -1,5 +1,9 @@
 package com.comp490.studybuddy.database;
 
+import com.comp490.studybuddy.models.CalendarEventModel;
+
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
@@ -23,6 +27,8 @@ public class buddyDBOpenHelper extends SQLiteOpenHelper{
 	public static final String TASK_ID = "taskId";
 	public static final String TASK_NAME = "taskName";
 	public static final String TASK_DATE = "taskDate";
+	
+	private ContentResolver mContentResolver;
 
 	private static final String CREATE_EVENT_TABLE = "create table " +
 			EVENT_TABLE + " (" + EVENT_ID + " integer primary key autoincrement, " +
@@ -37,6 +43,7 @@ public class buddyDBOpenHelper extends SQLiteOpenHelper{
 	public buddyDBOpenHelper(Context context, String name,
 						CursorFactory factory, int version) {
 		super(context, DATABASE_NAME, factory, DATABASE_VERSION);
+		mContentResolver = context.getContentResolver();
 	}
 	
 	//Create the Database
@@ -52,6 +59,16 @@ public class buddyDBOpenHelper extends SQLiteOpenHelper{
 		db.execSQL("DROP TABLE IF EXISTS " +TASK_TABLE);
 		onCreate(db);
 		
+	}
+	
+	/* -------------------- CALENDAR EVENTS --------------------------------*/
+	public boolean addEvent(CalendarEventModel event) {
+		ContentValues values = new ContentValues();
+		values.put(EVENT_NAME, event.getName());
+		//values.put(EVENT_START_DATE, event.getStartDate());
+		//values.put(EVENT_END_DATE, event.getEndDate());
+		
+		return false;
 	}
 }
 //butt
