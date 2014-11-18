@@ -102,7 +102,7 @@
         </activity>
         <provider
        		android:name="com.comp490.studybuddy.database.CalContentProvider" 
-       		android:authorities="com.example.database.provider.CalContentProvider" 
+       		android:authorities="com.comp490.studybuddy.database.provider.CalContentProvider" 
 		/>
     </application>
 
