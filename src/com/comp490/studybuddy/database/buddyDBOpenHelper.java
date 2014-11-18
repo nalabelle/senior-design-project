@@ -5,6 +5,7 @@ import com.comp490.studybuddy.models.CalendarEventModel;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -94,8 +95,27 @@ public class buddyDBOpenHelper extends SQLiteOpenHelper{
 	}
 	
 	//TODO
-	public boolean findEvent(String eventName) {
-		return false;
+	public CalendarEventModel findEvent(String eventName) {
+		String[] projection = {EVENT_ID, EVENT_NAME, EVENT_START_DATE,
+				EVENT_END_DATE};
+		    	
+		    	String selection = "EVENT_NAME = \"" + eventName + "\"";
+		    	
+		    	Cursor cursor = mContentResolver.query(CalContentProvider.CAL_URI, 
+		              projection, selection, null, null);
+		    	
+		    	CalendarEventModel event = new CalendarEventModel();
+				
+			if (cursor.moveToFirst()) {
+				cursor.moveToFirst();
+				event.setName(cursor.getString(1));
+				event.setStart(Integer.parseInt(cursor.getString(2)));
+					event.setEnd(Integer.parseInt(cursor.getString(3)));
+				cursor.close();
+			} else {
+				event = null;
+			}
+			return event;
 	}
 }
 //butt

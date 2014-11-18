@@ -8,6 +8,12 @@ public class CalendarEventModel {
 	private String eventName;
 	private final String TAG = "EventModel";
 	
+	public CalendarEventModel() {
+		eventName = null;
+		eventStart = -1;
+		eventEnd = -1;
+	}
+	
 	//require both a name and a start time, others are optional.
 	public CalendarEventModel(String name, long start) {
 		this.eventStart = start;
