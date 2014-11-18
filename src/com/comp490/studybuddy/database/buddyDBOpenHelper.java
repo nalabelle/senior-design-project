@@ -41,9 +41,8 @@ public class buddyDBOpenHelper extends SQLiteOpenHelper{
             + TASK_NAME + " TEXT " + TASK_DATE + " INTEGER );";
 			
 		
-	public buddyDBOpenHelper(Context context, String name,
-						CursorFactory factory, int version) {
-		super(context, DATABASE_NAME, factory, DATABASE_VERSION);
+	public buddyDBOpenHelper(Context context) {
+		super(context, DATABASE_NAME, null, DATABASE_VERSION);
 		mContentResolver = context.getContentResolver();
 	}
 	

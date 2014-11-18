@@ -41,8 +41,7 @@ public class CalContentProvider extends ContentProvider {
 
 	@Override
 	public boolean onCreate() {
-		myOpenHelper = new buddyDBOpenHelper(getContext(), buddyDBOpenHelper.DATABASE_NAME,
-				null, buddyDBOpenHelper.DATABASE_VERSION );
+		myOpenHelper = new buddyDBOpenHelper(getContext());
 		return true;
 	}
 	

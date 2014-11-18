@@ -46,6 +46,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.comp490.studybuddy.R;
+import com.comp490.studybuddy.database.buddyDBOpenHelper;
+import com.comp490.studybuddy.models.CalendarEventModel;
 
 public class CalenActivity extends Activity {
 	
@@ -68,6 +70,11 @@ public class CalenActivity extends Activity {
     private static int height;
     
     private ActionBar actionBar;
+    
+    private buddyDBOpenHelper db;
+    private DateTime testDT = new DateTime();
+    private long testDTlong = testDT.getMillis();
+    private CalendarEventModel testEvent = new CalendarEventModel("Test", testDTlong);
     
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -98,6 +105,10 @@ public class CalenActivity extends Activity {
         adapter = new GridCellAdapter(getApplicationContext(), R.id.grid_day);
         adapter.notifyDataSetChanged();
         calendarGrid.setAdapter(adapter);
+        
+        //Add some events
+        db = new buddyDBOpenHelper(this);
+        db.addEvent(testEvent);
 	}
 	
     private void changeCalendarDisplay()
