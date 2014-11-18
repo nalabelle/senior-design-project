@@ -108,7 +108,7 @@ public class CalenActivity extends Activity {
         
         //Add some events
         db = new buddyDBOpenHelper(this);
-        db.addEvent(testEvent);
+        //db.addEvent(testEvent);
 	}
 	
     private void changeCalendarDisplay()

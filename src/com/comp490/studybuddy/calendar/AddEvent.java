@@ -85,7 +85,7 @@ public class AddEvent extends Activity {
 					event = new CalendarEventModel(eventName, startTime);
 					// Save Event
 					db = new buddyDBOpenHelper(this);
-					db.addEvent(event);
+					//db.addEvent(event);
 					//Return to Calendar
 					Intent back2Cal = new Intent(this, CalenActivity.class);       	
 		    		startActivity(back2Cal);
