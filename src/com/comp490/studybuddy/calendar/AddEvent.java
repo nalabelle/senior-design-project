@@ -7,6 +7,7 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import com.comp490.studybuddy.R;
+import com.comp490.studybuddy.database.buddyDBOpenHelper;
 import com.comp490.studybuddy.models.CalendarEventModel;
 
 import android.app.ActionBar;
@@ -42,6 +43,7 @@ public class AddEvent extends Activity {
 	private int startDay;
 	private int startHour;
 	private int startMin;
+	private buddyDBOpenHelper db;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -75,18 +77,21 @@ public class AddEvent extends Activity {
 				return true;
 			case R.id.createEvent:
 				try {
-					startDateTime = new DateTime(startYear, startMonth, startDay, startHour, startMin);
+					startDateTime = new DateTime(startYear, startMonth, startDay, 
+							startHour, startMin);
 					long startTime = startDateTime.getMillis();
 					EditText eventText = (EditText) findViewById(R.id.eventName);
 					String eventName = eventText.getText().toString(); 
 					event = new CalendarEventModel(eventName, startTime);
 					// Save Event
-					//TODO this
+					db.getWritableDatabase();
+					db.addEvent(event);
 					//Return to Calendar
 					Intent back2Cal = new Intent(this, CalenActivity.class);       	
 		    		startActivity(back2Cal);
 				} catch (Exception e) {
-					Toast.makeText(getApplicationContext(), "Uhoh, check your fields", 20).show();
+					Toast.makeText(getApplicationContext(), 
+							"Uhoh, check your fields\n"+e, 30).show();
 				}
 				return true;
 			default:
