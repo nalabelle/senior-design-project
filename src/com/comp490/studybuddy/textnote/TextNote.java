@@ -47,9 +47,11 @@ import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
@@ -461,15 +463,20 @@ public class TextNote extends Activity {
 		
 		
 		if (requestCode == MEDIA_TYPE_VIDEO && resultCode == Activity.RESULT_OK) {
-			vid = new VideoView(getBaseContext());
-			vid.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
-			LinearLayout layout = (LinearLayout)findViewById(R.id.note_inner_layout);
-	       
-            layout.addView(vid);
-	        
-	        
-	        
-	    }
+			vid = new VideoView(this);
+			vid.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT));
+
+			vid.setVideoURI(data.getData());
+			android.widget.FrameLayout.LayoutParams fl = new FrameLayout.LayoutParams(
+					300, 300); //Need to fix this to appropriate dimensions based on device
+			vid.setLayoutParams(fl);
+
+			MediaController media_Controller = new MediaController(this);
+			media_Controller.setAnchorView(vid);
+			vid.setMediaController(media_Controller);
+			LinearLayout layout = (LinearLayout) findViewById(R.id.note_inner_layout);
+			layout.addView(vid);	        
+	   }
 		
 		else if ( requestCode == MEDIA_TYPE_IMAGE && resultCode == Activity.RESULT_OK) {
 			pic = new ImageView(getBaseContext());
