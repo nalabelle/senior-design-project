@@ -32,18 +32,18 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.ActionMode;
 import android.view.KeyEvent;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.ImageView;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
@@ -72,6 +72,7 @@ public class NoteActivity extends Activity {
 	private VideoView vid = null;
 	private Uri fileUri;
 	private static File mediaFile;
+	static String path;
 	
 	
 	private static final String LOG_TAG = "Notes";
@@ -265,16 +266,31 @@ public class NoteActivity extends Activity {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		
+		if (resultCode != Activity.RESULT_OK){
+			Log.e(LOG_TAG, "fail");
+		}
 		
-		if (requestCode == MEDIA_TYPE_VIDEO && resultCode == Activity.RESULT_OK) {
-			vid = new VideoView(getBaseContext());
-			vid.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
-			LinearLayout layout = (LinearLayout)findViewById(R.id.note_inner_layout);
-	       
-            layout.addView(vid);
-	        
-	        //TODO: create VideoObject and fix the video data
-	        
+		if (requestCode == MEDIA_TYPE_VIDEO && resultCode == Activity.RESULT_OK) {	
+			vid = new VideoView(this);
+			vid.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT));
+
+			vid.setVideoURI(data.getData());
+			android.widget.FrameLayout.LayoutParams fl = new FrameLayout.LayoutParams(
+					300, 300); //Need to fix this to appropriate dimensions based on device
+			vid.setLayoutParams(fl);
+
+			MediaController media_Controller = new MediaController(this);
+			media_Controller.setAnchorView(vid);
+			vid.setMediaController(media_Controller);
+			LinearLayout layout = (LinearLayout) findViewById(R.id.note_inner_layout);
+			layout.addView(vid);
+			// DisplayMetrics dm = new DisplayMetrics();
+			// this.getWindowManager().getDefaultDisplay().getMetrics(dm);
+			// int height = dm.heightPixels;
+			// int width = dm.widthPixels;
+			// vid.setMinimumWidth(width);
+			// vid.setMinimumHeight(height);
+			// vid.setMediaController(media_Controller);	        
 	    }
 		
 		else if ( requestCode == MEDIA_TYPE_IMAGE && resultCode == Activity.RESULT_OK) {
@@ -347,6 +363,7 @@ public class NoteActivity extends Activity {
 		} 
 		else if (type == MEDIA_TYPE_VIDEO) {
 			mediaFile = new File(mediaStorageDir.getPath() + File.separator + "VID_" + timeStamp + ".mp4");
+			path = mediaFile.toString();
 		} 
 		else {
 			return null;
