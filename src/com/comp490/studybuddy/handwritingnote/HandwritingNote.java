@@ -26,27 +26,25 @@ public class HandwritingNote extends View {
 	private Paint bitmapPaint;
 	private Paint paint;
 	private float tempX, tempY;
+	private int screenWidth, screenHeight;
+	private DrawPath dp;
 	private static final float TOUCH_TOLERANCE = 4;
 
 	//store path history in array list
 	private static List<DrawPath> savePath;
 	
-	private DrawPath dp;
-
-	private int screenWidth, screenHeight;
-
 	private class DrawPath {
 		public Path dPath;
 		public Paint dPaint;
 	}
-
+	
+	//constructor
 	public HandwritingNote(Context context, int w, int h) {
 		super(context);
 		screenWidth = w;
 		screenHeight = h;
 
 		bitmap = Bitmap.createBitmap(screenWidth, screenHeight, Bitmap.Config.ARGB_8888);
-		// save
 		canvas = new Canvas(bitmap);
 
 		bitmapPaint = new Paint(Paint.DITHER_FLAG);
@@ -145,7 +143,7 @@ public class HandwritingNote extends View {
 
 	public void saveFile() {
 		String fileUrl = Environment.getExternalStorageDirectory().toString()
-				+ "/currAnswer.png";
+				+ "/handwriting.png";
 
 		try {
 			FileOutputStream fos = new FileOutputStream(new File(fileUrl));

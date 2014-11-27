@@ -1,7 +1,27 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.comp490.studybuddy.HandwritingMain" >
-
+    
+    <item android:id="@+id/action_startDraw"
+          android:icon="@drawable/ic_action_edit"
+          android:title="@string/action_startDraw"
+          android:showAsAction="ifRoom" />
+    
+    <item android:id="@+id/action_undo"
+          android:icon="@drawable/ic_action_undo"
+          android:title="@string/action_undoDraw" 
+          android:showAsAction="ifRoom" />
+    
+    <item android:id="@+id/action_clearAll"
+          android:icon="@drawable/ic_action_discard"
+          android:title="@string/action_clearAllDraw" 
+          android:showAsAction="ifRoom" />
+    
+    <item android:id="@+id/action_save"
+          android:icon="@drawable/ic_action_save"
+          android:title="@string/action_saveDraw" 
+          android:showAsAction="ifRoom" />
+    
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"

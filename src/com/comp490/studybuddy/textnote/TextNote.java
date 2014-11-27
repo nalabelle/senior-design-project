@@ -101,8 +101,8 @@ public class TextNote extends Activity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 
 		actionBar = getActionBar();
-		actionBar.setDisplayShowTitleEnabled(false); //hide actionbar title
-		actionBar.setDisplayShowHomeEnabled(false); //hide actionbar icon
+		actionBar.setDisplayShowTitleEnabled(false); //hide action bar title
+		actionBar.setDisplayShowHomeEnabled(false); //hide action bar icon
 		getMenuInflater().inflate(R.menu.text_note, menu);
 
 		View v = (View) menu.findItem(R.id.action_record_sound).getActionView();
