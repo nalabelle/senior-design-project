@@ -1,20 +1,50 @@
 //Author: Tom, Xintong
 package com.comp490.studybuddy.handwritingnote;
 
-import android.os.Bundle;
 import android.app.Activity;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.FrameLayout;
+
+import com.comp490.studybuddy.R;
 
 public class HandwritingMain extends Activity {
+
+	private HandwritingNote hNote = null;
+
+	FrameLayout flNote;
+
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		HandwritingNote view=new HandwritingNote(this);
-		setContentView(view);
-		addContentView(view.btnEraseAll, view.params);
+		setContentView(R.layout.activity_handwriting_main);
+
+		flNote = (FrameLayout) findViewById(R.id.flHandwriting);
 	}
-	@Override
-	protected void onPause() {
-		super.onPause();
-		finish();
+
+	public void clear(View v) {
+		hNote = new HandwritingNote(HandwritingMain.this, flNote.getWidth(), flNote.getHeight());
+		flNote.removeAllViews();
+		flNote.addView(hNote);
+	}
+
+	public void save(View v) {
+		if (hNote == null)
+			return;
+
+		hNote.saveFile();
+	}
+
+	public void undo(View v) {
+		if (hNote == null)
+			return;
+
+		hNote.undo();
+	}
+
+	public void testButton(View v) {
+		hNote = new HandwritingNote(HandwritingMain.this, flNote.getWidth(), flNote.getHeight());
+		flNote.removeAllViews();
+		flNote.addView(hNote);
 	}
 }

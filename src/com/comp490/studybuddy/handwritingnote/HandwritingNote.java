@@ -1,164 +1,162 @@
 //Author: Tom, Xintong
 package com.comp490.studybuddy.handwritingnote;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Bitmap.CompressFormat;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.util.Log;
+import android.os.Environment;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup.LayoutParams;
-import android.widget.Button;
 
 public class HandwritingNote extends View {
-	public Button btnEraseAll;
-	public LayoutParams params;
-	private Paint brush = new Paint();
-	private Path path = new Path();
+	private Bitmap bitmap;
 	private Canvas canvas;
-	//Will hold a history of previous paths to enable undo functionality.
-	private final List<Path> pathList = new ArrayList<Path>();
-    //Will hold a history of previous colors to enable undo functionality.
-	private final List<Paint> paintList = new ArrayList<Paint>();
-	//Stores the last coordinates for building a path.
-	private float lastX, lastY;
+	private Path path;
+	private Paint bitmapPaint;
+	private Paint paint;
+	private float tempX, tempY;
+	private static final float TOUCH_TOLERANCE = 4;
 
-	public HandwritingNote(Context context) {
+	//store path history in array list
+	private static List<DrawPath> savePath;
+	
+	private DrawPath dp;
+
+	private int screenWidth, screenHeight;
+
+	private class DrawPath {
+		public Path dPath;
+		public Paint dPaint;
+	}
+
+	public HandwritingNote(Context context, int w, int h) {
 		super(context);
-		brush.setAntiAlias(true);
-		brush.setDither(true);
-		brush.setColor(Color.BLACK);
-		brush.setStyle(Paint.Style.STROKE);
-		brush.setStrokeCap(Paint.Cap.ROUND);
-		brush.setStrokeJoin(Paint.Join.ROUND);
-		brush.setStrokeWidth(15f);
+		screenWidth = w;
+		screenHeight = h;
 
-		btnEraseAll = new Button(context);
-		btnEraseAll.setText("Erase Everything!!");
-		params = new LayoutParams(LayoutParams.MATCH_PARENT,
-				LayoutParams.WRAP_CONTENT);
-		btnEraseAll.setLayoutParams(params);
-		btnEraseAll.setOnClickListener(new View.OnClickListener() {
+		bitmap = Bitmap.createBitmap(screenWidth, screenHeight, Bitmap.Config.ARGB_8888);
+		// save
+		canvas = new Canvas(bitmap);
 
-			@Override
-			public void onClick(View view) {
-				// reset the path
-				path.reset();
-				//clear undo array list
-				clearUndoCache();
-				// invalidate the view
-				postInvalidate();
+		bitmapPaint = new Paint(Paint.DITHER_FLAG);
+		paint = new Paint();
+		paint.setAntiAlias(true);
+		paint.setStyle(Paint.Style.STROKE);
+		paint.setColor(Color.rgb(0xff, 0x58, 0x09));
+		paint.setStrokeJoin(Paint.Join.ROUND);
+		paint.setStrokeCap(Paint.Cap.ROUND);
+		paint.setStrokeWidth(5);
 
-			}
-		});
+		savePath = new ArrayList<DrawPath>();
 	}
 
 	@Override
-	protected void onDraw(Canvas drawCanvas) {
-		//Fill the bitmap with default background color
-		drawCanvas.drawColor(Color.WHITE);
-		//Draw path
-		drawCanvas.drawPath(path, brush);
+	public void onDraw(Canvas canvas) {
+		canvas.drawBitmap(bitmap, 0, 0, bitmapPaint);
+		if (path != null) {
+			canvas.drawPath(path, paint);
+		}
 	}
-	
-	public final void startDraw(final float x, final float y) {
-		path.reset();
+
+	private void startDraw(float x, float y) {
 		path.moveTo(x, y);
-		lastX = x;
-		lastY = y;
+		tempX = x;
+		tempY = y;
 	}
-	
-	public final void stopDraw() {
-		// end the path and draw it
-		path.lineTo(lastX, lastY);
-		canvas.drawPath(path, brush);
 
-		// storing undo information
-		pathList.add(new Path(path));
-		paintList.add(new Paint(brush));
+	private void continueDraw(float x, float y) {
+		float dx = Math.abs(x - tempX);
+		float dy = Math.abs(tempY - y);
+		if (dx >= TOUCH_TOLERANCE || dy >= TOUCH_TOLERANCE) {
+			path.quadTo(tempX, tempY, (x + tempX) / 2, (y + tempY) / 2);
+			tempX = x;
+			tempY = y;
+		}
+	}
 
-		path.reset();
+	private void finishDraw() {
+		path.lineTo(tempX, tempY);
+		canvas.drawPath(path, paint);
+		savePath.add(dp);
+		path = null;
+	}
+
+	public void undo() {
+		if (savePath != null && savePath.size() > 0) {
+			savePath.remove(savePath.size() - 1);
+			redraw();
+		}
+	}
+
+	public void redo() {
+		if (savePath != null && savePath.size() > 0) {
+			savePath.clear();
+			redraw();
+		}
+	}
+
+	private void redraw() {
+		bitmap = Bitmap.createBitmap(screenWidth, screenHeight,Bitmap.Config.ARGB_8888);
+		canvas.setBitmap(bitmap);
+		Iterator<DrawPath> iter = savePath.iterator();
+		while (iter.hasNext()) {
+			DrawPath drawPath = iter.next();
+			canvas.drawPath(drawPath.dPath, drawPath.dPaint);
+		}
 		invalidate();
 	}
-	
-	//undo the paths
-	public final void undo() {
-		// check if there is a path
-		if (pathList.isEmpty()) {
-			return;
-		}
 
-		pathList.remove(pathList.size() - 1);
-		paintList.remove(paintList.size() - 1);
-
-		redraw();
-	}
-	
-	//Redraws the saved Paths
-	public final void redraw() {
-		// check if there is a path
-		if (pathList.isEmpty()) {
-			return;
-		}
-
-		final int plsize = pathList.size();
-		for (int i = 0; i < plsize; i++) {
-			canvas.drawPath(pathList.get(i), paintList.get(i));
-		}
-	}
-	
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-		float pointX = event.getX();
-		float pointY = event.getY();
+		float x = event.getX();
+		float y = event.getY();
 
-		// Checks for the event that occurs
 		switch (event.getAction()) {
 		case MotionEvent.ACTION_DOWN:
-			path.moveTo(pointX, pointY);
-
-			return true;
+			path = new Path();
+			dp = new DrawPath();
+			dp.dPath = path;
+			dp.dPaint = paint;
+			startDraw(x, y);
+			invalidate();
+			break;
 		case MotionEvent.ACTION_MOVE:
-			path.lineTo(pointX, pointY);
+			continueDraw(x, y);
+			invalidate();
 			break;
 		case MotionEvent.ACTION_UP:
+			finishDraw();
+			invalidate();
 			break;
-		default:
-			return false;
 		}
-		// Force a view to draw.
-		//postInvalidate();
-		return false;
+		return true;
+	}
 
-	}
-	
-	//Setter for pen color
-	public final void setPaintColor(final int color) {
-		brush.setColor(color);
-	}
-	//Getter for pen color
-	public final int getPaintColor() {
-		return brush.getColor();
-	}
-	
-	//Setter for pen width
-	public final void setPenWidth(final float width) {
-		brush.setStrokeWidth(width);
-	}
-	//Getter for pen width
-	public final float getPenWidth() {
-		return brush.getStrokeWidth();
-	}
-	
-	//clear undo cache
-	public final void clearUndoCache() {
-		pathList.clear();
-		paintList.clear();
+	public void saveFile() {
+		String fileUrl = Environment.getExternalStorageDirectory().toString()
+				+ "/currAnswer.png";
+
+		try {
+			FileOutputStream fos = new FileOutputStream(new File(fileUrl));
+			bitmap.compress(CompressFormat.PNG, 100, fos);
+			fos.flush();
+			fos.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 	}
 }
-
