@@ -1,3 +1,10 @@
+/**
+ * Author: Uyen Nguyen (XML)
+ * Date started: 
+ * Date Completed: 
+ * Team members: 
+ * Contribution: 
+ */
 package com.comp490.studybuddy;
 
 import com.comp490.studybuddy.calendar.CalenActivity;
