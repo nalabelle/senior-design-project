@@ -21,7 +21,7 @@ public class Flashcard implements Serializable {
   
    public static final String FLASHCARD_BUNDLE = "flashcard_bundle";  
 
-   public Flashcard(){
+   public Flashcard() {
       this.id = "";
       this.front = "";
       this.back = "";
@@ -48,7 +48,7 @@ public class Flashcard implements Serializable {
       return front;
    }
 
-   public void setfront(String name) {
+   public void setFront(String name) {
       this.front = name;
    }
 
