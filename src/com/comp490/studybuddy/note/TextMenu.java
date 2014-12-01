@@ -15,10 +15,10 @@ import com.comp490.studybuddy.R;
 //Text Contextual Action Mode
 public class TextMenu implements ActionMode.Callback {
 	private NoteActivity textNote;
-	private TextObject textObject;
+	private TextBuilder textObject;
 	private static final String LOG_TAG = "Text Action Menu Callback";
 	
-	public TextMenu(NoteActivity textNote, TextObject textObject) {
+	public TextMenu(NoteActivity textNote, TextBuilder textObject) {
 		this.textNote = textNote;
 		this.textObject = textObject;
 	}

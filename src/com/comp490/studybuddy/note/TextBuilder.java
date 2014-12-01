@@ -10,14 +10,14 @@ import android.widget.LinearLayout;
 import com.comp490.studybuddy.R;
 import com.comp490.studybuddy.models.NoteEntryModel;
 
-public class TextObject{
+public class TextBuilder{
 	protected EditText textBox;
 	private NoteActivity noteActivity;
-	private TextObject textObject = this;
+	private TextBuilder textObject = this;
 	private NoteEntryModel entry;	
 	
 	
-	public TextObject(NoteActivity textNote, NoteEntryModel note){
+	public TextBuilder(NoteActivity textNote, NoteEntryModel note){
 		this.noteActivity = textNote;
 		this.entry = note;
 		createTextView();

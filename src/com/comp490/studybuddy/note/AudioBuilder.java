@@ -6,8 +6,6 @@ import java.util.Date;
 import java.util.Locale;
 
 import android.content.Context;
-import android.media.MediaPlayer;
-import android.media.MediaPlayer.OnCompletionListener;
 import android.media.MediaRecorder;
 import android.os.Environment;
 import android.util.Log;
@@ -22,14 +20,13 @@ import android.widget.Toast;
 import com.comp490.studybuddy.R;
 import com.comp490.studybuddy.models.NoteEntryModel;
 
-public class AudioObject {
+public class AudioBuilder {
 	 //essentially another context of Note activity, but required for getting views
 	// temp fix for now
 	private NoteActivity noteActivity;
 	private Context context;
 	private NoteEntryModel entry;
 	private MediaRecorder recorder = null;
-	private MediaPlayer player = null;
 	private Status status = Status.PAUSED;
 	private static final String LOG_TAG = "Sound Record";
 	private String tempStorage = "/Temp/Notes/Audio/";  //move to Notes/Audio after save
@@ -40,16 +37,16 @@ public class AudioObject {
 	ImageButton soundButton;
 	TextView soundTitle;
 	
-	public AudioObject(Context context, NoteEntryModel note, NoteActivity noteContext) {
+	public AudioBuilder(Context context, NoteEntryModel note, NoteActivity noteContext) {
 		this.noteActivity = noteContext;
 		this.context = context;
-		//create a new audio type entry.
 		this.entry = note;
 	}
 	
 	public boolean startRecording() { // on actionView REC button press
 		if (recorder == null) {
 			recorder = new MediaRecorder();
+			noteActivity.getRecorders().add(recorder);
 		}
 		
 		if(status.equals(Status.RECORDING)) {
@@ -70,6 +67,7 @@ public class AudioObject {
 			recorder.prepare();
 			recorder.start();
 			status = Status.RECORDING;
+			entry.setFilePath(soundFilePath);
 			return true;
 		} catch (IllegalStateException e) {
 			Log.e(LOG_TAG, "startRecording() broke illegalstate");
@@ -85,52 +83,17 @@ public class AudioObject {
 		if (status.equals(Status.RECORDING)) {
 			Toast.makeText(this.context, "Stopped Recording", Toast.LENGTH_SHORT).show();
 			recorder.stop();
+			noteActivity.getRecorders().remove(recorder);
+			recorder.release();
+			recorder = null;
 			status = Status.PAUSED;
 			this.entry.addFile(this.soundFilePath); //Add the file to the entry so it can be saved later.
+			
+			createSoundButton();
+			
 			return true;
 		}
 		return false;
-	}
-
-	public void playSound() {
-		try {
-			if (status.equals(Status.PAUSED)) {
-				Toast.makeText(this.context, "Playing Sound", Toast.LENGTH_SHORT).show();
-				player.start();
-				status = Status.PLAYING;
-			} else if (!status.equals(Status.PLAYING)) {
-				player = new MediaPlayer();
-				player.setDataSource(soundFilePath);
-				player.prepare();
-				player.start();
-				player.setOnCompletionListener(new OnCompletionListener() {
-					@Override
-					public void onCompletion(MediaPlayer mp) {
-						stopPlayback();
-					}
-				});
-				status = Status.PLAYING;
-			} // else was already playing, do nothing
-		} catch (Exception e) {
-			Log.e(LOG_TAG, "playBack() broke");
-		}
-	}
-
-	public void pauseSound() {
-		if (status.equals(Status.PLAYING)) {
-			player.pause();
-			status = Status.PAUSED;
-		}
-	}
-
-	private void stopPlayback() {
-		if (status.equals(Status.PLAYING) || status.equals(Status.PAUSED)) {
-			Toast.makeText(this.context, "Stopped Playback", Toast.LENGTH_SHORT).show();
-			status = Status.PAUSED; //do we really need a full stop?
-			createSoundButton();
-			player.stop();
-			player.release();
-		}
 	}
 	
 	protected void createSoundButton(){
@@ -144,10 +107,19 @@ public class AudioObject {
 		//TextView displays name of sound
 		soundTitle = new TextView(context);
 		soundTitle.setText("Sound");
-		soundTitle.setId(noteActivity.generateViewID());
+		
+		//Generate IDs, one for deletion and the other for renaming
+		int viewID = noteActivity.generateViewID();
+		soundButtonAndTitle.setId(viewID);
+		entry.setViewID(viewID);	
+		
+		//We can use this to rename the title later
+		int secondViewID = noteActivity.generateViewID();
+		soundTitle.setId(secondViewID);
+		entry.setSecondaryViewID(secondViewID);
 		
 		//set the audionote title and add it to the note
-		this.setName(soundTitle.getText().toString());
+		//this.setName(soundTitle.getText().toString());
 		//we should store the actual noteentry somewhere
 		//this.note.add(audio);
 		//store the audionote for destroy		
@@ -156,13 +128,11 @@ public class AudioObject {
 		soundButtonAndTitle.addView(soundTitle);
 		LinearLayout layout = (LinearLayout)noteActivity.findViewById(R.id.note_inner_layout);
 		layout.addView(soundButtonAndTitle);
-		soundTitle.setContentDescription(this.getFilePath());
-		soundButtonAndTitle.setId(noteActivity.generateViewID());
 		
 		soundButton.setOnLongClickListener(new View.OnLongClickListener(){
 			@Override
 			public boolean onLongClick(View v) {
-				ActionMode.Callback soundMenu = new SoundPlayMenu(noteActivity);
+				ActionMode.Callback soundMenu = new SoundPlayMenu(noteActivity, entry);
 				noteActivity.startActionMode(soundMenu);
 				return true;
 			}
@@ -177,24 +147,10 @@ public class AudioObject {
 		RECORDING, PLAYING, PAUSED;
 	}
 
-	public void setName(String text) {
-		this.entry.setName(text);
-	}
-	
-	public String getName() {
-		return this.entry.getName();
-	}
-	
-	public String getFilePath() {
-		return this.soundFilePath;
-	}
-
 	public void onDestroy() {
 		if (recorder != null){
 			recorder.release();
-		}
-		if (player != null){
-			player.release();
+			recorder = null;
 		}
 	}
 }

@@ -17,10 +17,10 @@ public class PictureMenu implements ActionMode.Callback {
 
 	//Picture Contextual Action Mode
 		private NoteActivity textNote;
-		private PictureObject picObject;
+		private PictureBuilder picObject;
 		private static final String LOG_TAG = "Picture Action Menu Callback";
 		
-		public PictureMenu(NoteActivity textNote, PictureObject picObject) {
+		public PictureMenu(NoteActivity textNote, PictureBuilder picObject) {
 			this.textNote = textNote;
 			this.picObject = picObject;
 		}

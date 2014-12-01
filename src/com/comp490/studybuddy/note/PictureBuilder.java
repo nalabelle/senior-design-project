@@ -12,16 +12,16 @@ import com.comp490.studybuddy.R;
 import com.comp490.studybuddy.models.NoteEntryModel;
 import com.comp490.studybuddy.models.NoteModel;
 
-public class PictureObject {
+public class PictureBuilder {
 	protected ImageView pic;
 	private NoteActivity noteActivity; //essentially context of Note activity
-	private PictureObject picObject = this;
+	private PictureBuilder picObject = this;
 	private Bitmap bitmap;
 	private NoteModel note;
 	private NoteEntryModel noteEntry;
 	private int viewID;
 	
-	public PictureObject(NoteActivity noteContext, Bitmap bitmap, NoteEntryModel noteEntry){
+	public PictureBuilder(NoteActivity noteContext, Bitmap bitmap, NoteEntryModel noteEntry){
 		this.noteEntry = noteEntry;
 		this.noteActivity = noteContext;
 		this.bitmap = bitmap;
