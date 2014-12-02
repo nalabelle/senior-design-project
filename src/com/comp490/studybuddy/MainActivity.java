@@ -7,6 +7,7 @@
  */
 package com.comp490.studybuddy;
 
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,7 +18,7 @@ import android.view.View;
 import com.comp490.studybuddy.calendar.CalenActivity;
 import com.comp490.studybuddy.handwritingnote.HandwritingMain;
 import com.comp490.studybuddy.note.NoteActivity;
-import com.comp490.studybuddy.todolist.ToDoList;
+import com.comp490.studybuddy.todolist.ToDoMain;
 
 public class MainActivity extends Activity {
 
@@ -69,7 +70,7 @@ public class MainActivity extends Activity {
 	}
 	
    public boolean onTodoClick(View view) {
-      Intent todoLaunch = new Intent(this.getApplicationContext(), ToDoList.class);
+      Intent todoLaunch = new Intent(this.getApplicationContext(), ToDoMain.class);
       startActivity(todoLaunch);
       return true;
    }

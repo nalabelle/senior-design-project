@@ -18,7 +18,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".MainActivity"
+            android:name="com.comp490.studybuddy.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -41,10 +41,6 @@
         <activity
             android:name=".calendar.DayDetails"
             android:label="@string/title_activity_day" >
-        </activity>
-        <activity
-            android:name=".todolist.ToDoList"
-            android:label="@string/title_activity_to_do_list" >
         </activity>
         <activity
             android:name=".MyService"
@@ -72,38 +68,26 @@
             android:label="@string/title_activity_about" >
         </activity>
         <activity
-            android:name=".todolist.UpdateTask"
-            android:label="@string/title_activity_update_task"
-            android:parentActivityName=".todolist.ToDoList" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.comp490.studybuddy.todolist.ToDoList" />
-        </activity>
-        <activity
-            android:name=".todolist.AddTask"
-            android:label="@string/title_activity_add_task"
-            android:parentActivityName=".todolist.ToDoList" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.comp490.studybuddy.todolist.ToDoList" />
-        </activity>
-
-        <activity
             android:name=".flashcards.FlashMain"
             android:label="@string/title_activity_flash_main" >
         </activity>
         <activity
-            android:name="com.comp490.studybuddy.handwritingnote.HandwritingMain"
+            android:name=".handwritingnote.HandwritingMain"
             android:label="@string/title_activity_handwriting_main" >
         </activity>
         <activity
-            android:name="com.comp490.studybuddy.calendar.AddEvent"
+            android:name=".calendar.AddEvent"
             android:label="@string/title_activity_event" >
         </activity>
+
         <provider
-       		android:name="com.comp490.studybuddy.database.CalContentProvider" 
-       		android:authorities="com.comp490.studybuddy.database.provider.CalContentProvider" 
-		/>
+            android:name=".database.CalContentProvider"
+            android:authorities="com.comp490.studybuddy.database.provider.CalContentProvider" />
+
+        <activity
+            android:name="com.comp490.studybuddy.todolist.ToDoMain"
+            android:label="@string/title_activity_to_do_main" >
+        </activity>
     </application>
 
 </manifest>
