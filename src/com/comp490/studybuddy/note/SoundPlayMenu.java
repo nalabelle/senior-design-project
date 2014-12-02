@@ -26,15 +26,16 @@ import com.comp490.studybuddy.models.NoteEntryModel;
  */
 public class SoundPlayMenu implements ActionMode.Callback {
 	private NoteActivity noteActivity;
+	private AudioBuilder audioBuilder;
 	MediaPlayer player = null;
 	NoteEntryModel entry;
 	private Status status = Status.PAUSED;
 	private static final String LOG_TAG = "Sound Action Menu Callback";
 	final String path;
 	
-	public SoundPlayMenu(NoteActivity noteActivity, NoteEntryModel entry) {
+	public SoundPlayMenu(NoteActivity noteActivity, AudioBuilder audioBuilder, NoteEntryModel entry) {
 		this.noteActivity = noteActivity;
-		this.entry = entry;
+		this.entry = entry;		
 		path = entry.getFilePath();
 	}
 
@@ -85,11 +86,8 @@ public class SoundPlayMenu implements ActionMode.Callback {
 			if (player != null){
 				stopPlayback(); //if ran to completion, would have already stopped
 			}
-			if (deleteAudio()){
-				noteActivity.getNoteModel().remove(entry); //remove entry from arraylist				
-			}
-			else {
-				Log.e(LOG_TAG, "Delete of soundbutton failed");
+			if (!deleteAudio()){
+				Log.e(LOG_TAG, "....Delete of sound button failed");
 			}
 			mode.finish(); // close the contextual menu
 			return true;
@@ -157,6 +155,7 @@ public class SoundPlayMenu implements ActionMode.Callback {
 						try { // clicked yes
 							View viewToDelete = noteActivity.findViewById(entry.getViewID());
 							((LinearLayout) viewToDelete.getParent()).removeView(viewToDelete);
+							noteActivity.getNoteModel().remove(entry);							
 						} catch (Exception e1) {
 							Log.e(LOG_TAG, "Delete of soundbutton failed");
 						}
@@ -181,7 +180,7 @@ public class SoundPlayMenu implements ActionMode.Callback {
 				});
 		AlertDialog dialog = builder.create();
 		dialog.show();
-		return false;
+		return true;
 	}	
 	
 	

@@ -5,7 +5,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import android.content.Context;
 import android.media.MediaRecorder;
 import android.os.Environment;
 import android.util.Log;
@@ -24,23 +23,23 @@ public class AudioBuilder {
 	 //essentially another context of Note activity, but required for getting views
 	// temp fix for now
 	private NoteActivity noteActivity;
-	private Context context;
+	private AudioBuilder audioBuilder = this;
 	private NoteEntryModel entry;
 	private MediaRecorder recorder = null;
 	private Status status = Status.PAUSED;
 	private static final String LOG_TAG = "Sound Record";
 	private String tempStorage = "/Temp/Notes/Audio/";  //move to Notes/Audio after save
 	private String soundFilePath;
+	private int viewID;
 	
 	// Views 
 	private LinearLayout soundButtonAndTitle;
 	ImageButton soundButton;
 	TextView soundTitle;
 	
-	public AudioBuilder(Context context, NoteEntryModel note, NoteActivity noteContext) {
+	public AudioBuilder(NoteEntryModel entry, NoteActivity noteContext) {
 		this.noteActivity = noteContext;
-		this.context = context;
-		this.entry = note;
+		this.entry = entry;
 	}
 	
 	public boolean startRecording() { // on actionView REC button press
@@ -81,10 +80,17 @@ public class AudioBuilder {
 
 	public boolean stopRecording() {
 		if (status.equals(Status.RECORDING)) {
-			Toast.makeText(this.context, "Stopped Recording", Toast.LENGTH_SHORT).show();
-			recorder.stop();
-			noteActivity.getRecorders().remove(recorder);
-			recorder.release();
+			Toast.makeText(noteActivity, "Stopped Recording", Toast.LENGTH_SHORT).show();
+			if (recorder != null) {
+				try {
+					recorder.stop();
+				} catch (IllegalStateException e) {
+					Log.e(LOG_TAG, "Failed to stop recorder");
+					e.printStackTrace();
+				}
+				noteActivity.getRecorders().remove(recorder);
+				recorder.release();
+			}
 			recorder = null;
 			status = Status.PAUSED;
 			this.entry.addFile(this.soundFilePath); //Add the file to the entry so it can be saved later.
@@ -101,15 +107,15 @@ public class AudioBuilder {
 		soundButtonAndTitle = new LinearLayout(noteActivity);
 		LayoutParams llParams = new LayoutParams(LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 		soundButtonAndTitle.setLayoutParams(llParams);		
-		soundButton = new ImageButton(context);
+		soundButton = new ImageButton(noteActivity);
 		soundButton.setImageResource(R.drawable.ic_action_volume_on);
 		
 		//TextView displays name of sound
-		soundTitle = new TextView(context);
+		soundTitle = new TextView(noteActivity);
 		soundTitle.setText("Sound");
 		
 		//Generate IDs, one for deletion and the other for renaming
-		int viewID = noteActivity.generateViewID();
+		viewID = noteActivity.generateViewID();
 		soundButtonAndTitle.setId(viewID);
 		entry.setViewID(viewID);	
 		
@@ -132,7 +138,7 @@ public class AudioBuilder {
 		soundButton.setOnLongClickListener(new View.OnLongClickListener(){
 			@Override
 			public boolean onLongClick(View v) {
-				ActionMode.Callback soundMenu = new SoundPlayMenu(noteActivity, entry);
+				ActionMode.Callback soundMenu = new SoundPlayMenu(noteActivity, audioBuilder, entry);
 				noteActivity.startActionMode(soundMenu);
 				return true;
 			}
@@ -148,9 +154,17 @@ public class AudioBuilder {
 	}
 
 	public void onDestroy() {
-		if (recorder != null){
-			recorder.release();
-			recorder = null;
+		try {
+			if (recorder != null){
+				recorder.release();
+				recorder = null;
+			}
+		} catch (Exception e) {
+			Log.e(LOG_TAG, "onDestroy of audiobuilder failed");
 		}
+	}
+	
+	protected int getID(){
+		return viewID;
 	}
 }

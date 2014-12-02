@@ -12,16 +12,16 @@ import android.widget.LinearLayout;
 
 import com.comp490.studybuddy.R;
 
-public class PictureMenu implements ActionMode.Callback {
-
-	// Picture Contextual Action Mode
+public class VideoMenu implements ActionMode.Callback {
 	private NoteActivity noteActivity;
-	private PictureBuilder picObject;
-	private static final String LOG_TAG = "Picture Action Menu Callback";
+	private VideoBuilder videoBuilder;
+	private static final String LOG_TAG = "Video Menu Callback";
 
-	public PictureMenu(NoteActivity noteActivity, PictureBuilder picObject) {
+	// Video Contextual Action Mode
+
+	public VideoMenu(NoteActivity noteActivity, VideoBuilder videoBuilder) {
 		this.noteActivity = noteActivity;
-		this.picObject = picObject;
+		this.videoBuilder = videoBuilder;
 	}
 
 	@Override
@@ -52,14 +52,14 @@ public class PictureMenu implements ActionMode.Callback {
 					new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface dialog, int id) {
 							try { // clicked yes
-								View viewToDelete = noteActivity.findViewById(picObject
-										.getID());
+								View viewToDelete = noteActivity
+										.findViewById(videoBuilder.getID());
 								((LinearLayout) viewToDelete.getParent())
 										.removeView(viewToDelete);
-								picObject.deleteObject();
-								picObject = null;
+								videoBuilder.deleteObject();
+								videoBuilder = null;
 							} catch (Exception e1) {
-								Log.e(LOG_TAG, "Delete of pic failed");
+								Log.e(LOG_TAG, "Delete of VideoView failed");
 							}
 						}
 					});
@@ -82,5 +82,6 @@ public class PictureMenu implements ActionMode.Callback {
 	@Override
 	public void onDestroyActionMode(ActionMode mode) {
 		// TODO Auto-generated method stub
+
 	}
 }

@@ -22,7 +22,7 @@ public class NoteEntryModel {
 	}
 	
 	public enum NoteType {
-		TEXT, AUDIO, PICTURE;
+		TEXT, AUDIO, PICTURE, VIDEO;
 	}
 
 	public void addFile(String file) {

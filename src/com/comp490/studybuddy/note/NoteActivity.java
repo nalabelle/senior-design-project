@@ -162,7 +162,8 @@ public class NoteActivity extends Activity {
 			public void onClick(View v) {
 				//add the audionote entry. Not created until record is clicked once
 				if (audio == null){
-					audio = new AudioBuilder(context, new NoteEntryModel(NoteType.AUDIO), noteActivity);					
+					NoteEntryModel noteEntry = note.add(NoteEntryModel.NoteType.AUDIO);
+					audio = new AudioBuilder(noteEntry, noteActivity);					
 				} 
 				if (!audio.getStatus().equals(AudioBuilder.Status.RECORDING)){ // already recording?
 					rec.setTextColor(Color.RED);
@@ -217,10 +218,16 @@ public class NoteActivity extends Activity {
 		super.onActivityResult(requestCode, resultCode, data);
 		
 		if (resultCode != Activity.RESULT_OK){
-			Log.e(LOG_TAG, "fail");
+			Log.e(LOG_TAG, "onActivityResult failed or was cancelled (back press)");
 		}
 		
 		if (requestCode == MEDIA_TYPE_VIDEO && resultCode == Activity.RESULT_OK) {	
+			NoteEntryModel noteEntry = this.note.add(NoteEntryModel.NoteType.VIDEO);
+			noteEntry.setFilePath(mediaFile.toString()); //not sure about this
+			VideoBuilder videoBuilder = new VideoBuilder(noteActivity, data.getData(), noteEntry);
+			
+			
+			/*
 			vid = new VideoView(this);
 			vid.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT));
 
@@ -234,6 +241,8 @@ public class NoteActivity extends Activity {
 			vid.setMediaController(media_Controller);
 			LinearLayout layout = (LinearLayout) findViewById(R.id.note_inner_layout);
 			layout.addView(vid);
+			
+			*/
 			// DisplayMetrics dm = new DisplayMetrics();
 			// this.getWindowManager().getDefaultDisplay().getMetrics(dm);
 			// int height = dm.heightPixels;
@@ -331,9 +340,13 @@ public class NoteActivity extends Activity {
  * destroyed we need to release all players/recorders. Since they aren't 
  * accessable within this activity,	we need a place to store them.
  */
+
 	@Override
 	protected void onDestroy() {
-		audio.onDestroy();
+
+		if (audio != null){
+			audio.stopRecording(); 
+		} 
 		for(MediaPlayer p : players) {
 			if (p != null){
 				try {
@@ -346,6 +359,7 @@ public class NoteActivity extends Activity {
 				} catch (Exception e) {
 					Log.e(LOG_TAG, "MediaPlayer array list did not release");
 				}
+				p = null;
 			}
 		}
 		
@@ -361,8 +375,9 @@ public class NoteActivity extends Activity {
 				} catch (Exception e) {
 					Log.e(LOG_TAG, "MediaRecorder array list did not release");
 				}
+				r = null;
 			}
-		}		
+		}	
 		super.onDestroy();
 	}
 	
@@ -392,3 +407,18 @@ public class NoteActivity extends Activity {
 		Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
 	}
 }
+
+/* Issues as of 12/1/2014 (Anthony)
+ * 
+ * 1. Video is not responding to onclick listener, therefore cannot be 
+ * manipulated. Probably because its a widget and not a view.
+ * 
+ * 2. ArrayLists of recorders and players aren't working. Which are used to 
+ * make sure all of them are released in the event of NoteActivity closure
+ * 
+ * 3. However, if we want to use the recorder or player within StudyBuddy,
+ * 	we need to use a service or something otherwise SB crashes
+ * 
+ * 4. Currently cannot stop a playback after exiting SoundMenu 
+ * 
+ */

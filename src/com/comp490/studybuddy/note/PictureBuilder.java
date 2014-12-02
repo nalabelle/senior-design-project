@@ -6,27 +6,23 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
-import android.widget.Toast;
 
 import com.comp490.studybuddy.R;
 import com.comp490.studybuddy.models.NoteEntryModel;
-import com.comp490.studybuddy.models.NoteModel;
 
 public class PictureBuilder {
 	protected ImageView pic;
 	private NoteActivity noteActivity; //essentially context of Note activity
 	private PictureBuilder picObject = this;
 	private Bitmap bitmap;
-	private NoteModel note;
-	private NoteEntryModel noteEntry;
+	private NoteEntryModel entry;
 	private int viewID;
 	
-	public PictureBuilder(NoteActivity noteContext, Bitmap bitmap, NoteEntryModel noteEntry){
-		this.noteEntry = noteEntry;
+	public PictureBuilder(NoteActivity noteContext, Bitmap bitmap, NoteEntryModel entry){
+		this.entry = entry;
 		this.noteActivity = noteContext;
 		this.bitmap = bitmap;
-		createPicView();
-		
+		createPicView();		
 	}	
 	
 	private void createPicView(){
@@ -36,7 +32,7 @@ public class PictureBuilder {
 		LinearLayout layout = (LinearLayout) noteActivity.findViewById(R.id.note_inner_layout);
 		viewID = noteActivity.generateViewID();
 		pic.setId(viewID); //required for deletion
-		noteEntry.setViewID(viewID);
+		entry.setViewID(viewID);
 		layout.addView(pic);
 
 		pic.setOnLongClickListener(new View.OnLongClickListener() {
@@ -59,6 +55,7 @@ public class PictureBuilder {
 	
 	// might be unnecessary
 	protected void deleteObject(){
+		noteActivity.getNoteModel().remove(entry);
 		pic = null;
 		picObject = null;
 	}

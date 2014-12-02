@@ -14,13 +14,13 @@ import com.comp490.studybuddy.R;
 
 //Text Contextual Action Mode
 public class TextMenu implements ActionMode.Callback {
-	private NoteActivity textNote;
-	private TextBuilder textObject;
+	private NoteActivity noteActivity;
+	private TextBuilder textBuilder;
 	private static final String LOG_TAG = "Text Action Menu Callback";
 	
-	public TextMenu(NoteActivity textNote, TextBuilder textObject) {
-		this.textNote = textNote;
-		this.textObject = textObject;
+	public TextMenu(NoteActivity noteActivity, TextBuilder textBuilder) {
+		this.noteActivity = noteActivity;
+		this.textBuilder = textBuilder;
 	}
 	
 	@Override
@@ -45,18 +45,19 @@ public class TextMenu implements ActionMode.Callback {
 			return true;
 		}
 		case R.id.menuDeleteView: {
-			AlertDialog.Builder builder = new AlertDialog.Builder(textNote);
+			AlertDialog.Builder builder = new AlertDialog.Builder(noteActivity);
 			builder.setMessage("Delete Item?");
 			builder.setPositiveButton("Yes",
 					new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface dialog, int id) {
 							try { // clicked yes
-								View viewToDelete = textNote.findViewById(textObject
+								// delete view, the entry and all corresponding objects/references
+								View viewToDelete = noteActivity.findViewById(textBuilder
 										.getID());
 								((LinearLayout) viewToDelete.getParent())
 										.removeView(viewToDelete);
-								textObject.deleteObject();
-								textObject = null;
+								textBuilder.deleteObject();
+								textBuilder = null;
 							} catch (Exception e1) {
 								Log.e(LOG_TAG, "Delete of EditText failed");
 							}							
@@ -80,8 +81,6 @@ public class TextMenu implements ActionMode.Callback {
 
 	@Override
 	public void onDestroyActionMode(ActionMode mode) {
-		// TODO Auto-generated method stub
-		
+		// TODO Auto-generated method stub		
 	}
-
 }

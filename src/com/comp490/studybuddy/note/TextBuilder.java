@@ -13,13 +13,13 @@ import com.comp490.studybuddy.models.NoteEntryModel;
 public class TextBuilder{
 	protected EditText textBox;
 	private NoteActivity noteActivity;
-	private TextBuilder textObject = this;
-	private NoteEntryModel entry;	
+	private TextBuilder textBuilder = this;
+	private NoteEntryModel entry;
+	private int viewID;
 	
-	
-	public TextBuilder(NoteActivity textNote, NoteEntryModel note){
-		this.noteActivity = textNote;
-		this.entry = note;
+	public TextBuilder(NoteActivity noteActivity, NoteEntryModel entry){
+		this.noteActivity = noteActivity;
+		this.entry = entry;
 		createTextView();
 	}
 	
@@ -28,7 +28,9 @@ public class TextBuilder{
 		textBox.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 		textBox.setHint("Enter Text");
 		textBox.requestFocus();
-		textBox.setId(noteActivity.generateViewID()); //required for deletion
+		viewID = (noteActivity.generateViewID());
+		textBox.setId(viewID); //required for deletion
+		entry.setViewID(viewID);
 		textBox.setRawInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
 		LinearLayout layout = (LinearLayout) noteActivity.findViewById(R.id.note_inner_layout);
 		layout.addView(textBox);
@@ -37,7 +39,7 @@ public class TextBuilder{
 			
 			@Override
 			public boolean onLongClick(View v) {
-				ActionMode.Callback textMenu = new TextMenu(noteActivity, textObject);
+				ActionMode.Callback textMenu = new TextMenu(noteActivity, textBuilder);
 				noteActivity.startActionMode(textMenu);
 				return true;
 			}
@@ -45,12 +47,13 @@ public class TextBuilder{
 	}
 	
 	public int getID(){
-		return textBox.getId();
+		return viewID;
 	}
 	
-	// might be unnecessary
+	// might be unnecessary, but probably beneficial for garbage collection
 	protected void deleteObject(){
+		noteActivity.getNoteModel().remove(entry);
 		textBox = null;
-		textObject = null;
+		textBuilder = null;
 	}
 }
