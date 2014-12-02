@@ -27,7 +27,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".textnote.TextNote"
+            android:name="com.comp490.studybuddy.note.NoteActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_text_note" >
             <meta-data

@@ -7,17 +7,17 @@
  */
 package com.comp490.studybuddy;
 
-import com.comp490.studybuddy.calendar.CalenActivity;
-import com.comp490.studybuddy.handwritingnote.HandwritingMain;
-import com.comp490.studybuddy.textnote.TextNote;
-import com.comp490.studybuddy.todolist.ToDoList;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+
+import com.comp490.studybuddy.calendar.CalenActivity;
+import com.comp490.studybuddy.handwritingnote.HandwritingMain;
+import com.comp490.studybuddy.note.NoteActivity;
+import com.comp490.studybuddy.todolist.ToDoList;
 
 public class MainActivity extends Activity {
 
@@ -57,7 +57,7 @@ public class MainActivity extends Activity {
 	}
 	
 	public boolean onTextNoteClick(View view) {
-		Intent noteLaunch = new Intent(this.getApplicationContext(), TextNote.class);
+		Intent noteLaunch = new Intent(this.getApplicationContext(), NoteActivity.class);
 		startActivity(noteLaunch);
 		return true;
 	}
