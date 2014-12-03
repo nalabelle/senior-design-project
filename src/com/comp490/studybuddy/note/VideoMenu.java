@@ -82,6 +82,5 @@ public class VideoMenu implements ActionMode.Callback {
 	@Override
 	public void onDestroyActionMode(ActionMode mode) {
 		// TODO Auto-generated method stub
-
 	}
 }

@@ -1,9 +1,10 @@
 package com.comp490.studybuddy.note;
 
 import android.net.Uri;
+import android.util.DisplayMetrics;
 import android.view.ActionMode;
+import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.MediaController;
@@ -36,28 +37,34 @@ public class VideoBuilder {
 		entry.setViewID(viewID);
 		
 		//Insert video
-		vid.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT));
 		vid.setVideoURI(data);
-		android.widget.FrameLayout.LayoutParams fl = new FrameLayout.LayoutParams(
-				300, 300); //Need to fix this to appropriate dimensions based on device
-		vid.setLayoutParams(fl);
-
-		vid.setOnLongClickListener(new View.OnLongClickListener() {			
-			@Override
-			public boolean onLongClick(View v) {
-				ActionMode.Callback textMenu = new VideoMenu(noteActivity, videoBuilder);
-				noteActivity.startActionMode(textMenu);
-				return true;
-			}
-		});
+		android.widget.FrameLayout.LayoutParams params;
 		
+		 DisplayMetrics metrics = new DisplayMetrics(); 
+		 noteActivity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
+		 params = new FrameLayout.LayoutParams((int)metrics.xdpi, (int) metrics.ydpi);
+       //params.width =  metrics.widthPixels;
+       //params.height = metrics.heightPixels;
+       //params.leftMargin = 0;
+       vid.setLayoutParams(params);
+
+ 		LinearLayout layout = (LinearLayout) noteActivity.findViewById(R.id.note_inner_layout);
+ 		layout.addView(vid);
+
+		vid.setOnTouchListener(new View.OnTouchListener()
+	    {
+	        @Override
+	        public boolean onTouch(View v, MotionEvent event) {
+	      	  ActionMode.Callback vidMenu = new VideoMenu(noteActivity, videoBuilder);
+					noteActivity.startActionMode(vidMenu);
+	            return false;
+	        }
+	    });	
+		
+		// Creates playback controls
 		MediaController media_Controller = new MediaController(noteActivity);
 		media_Controller.setAnchorView(vid);
 		vid.setMediaController(media_Controller);
-		LinearLayout layout = (LinearLayout) noteActivity.findViewById(R.id.note_inner_layout);
-		layout.addView(vid);
-		
-
 	}
 	
 	protected int getID(){

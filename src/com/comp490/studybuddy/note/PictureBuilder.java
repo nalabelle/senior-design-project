@@ -13,14 +13,14 @@ import com.comp490.studybuddy.models.NoteEntryModel;
 public class PictureBuilder {
 	protected ImageView pic;
 	private NoteActivity noteActivity; //essentially context of Note activity
-	private PictureBuilder picObject = this;
+	private PictureBuilder pictureBuilder = this;
 	private Bitmap bitmap;
 	private NoteEntryModel entry;
 	private int viewID;
 	
-	public PictureBuilder(NoteActivity noteContext, Bitmap bitmap, NoteEntryModel entry){
+	public PictureBuilder(NoteActivity noteActivity, Bitmap bitmap, NoteEntryModel entry){
 		this.entry = entry;
-		this.noteActivity = noteContext;
+		this.noteActivity = noteActivity;
 		this.bitmap = bitmap;
 		createPicView();		
 	}	
@@ -39,7 +39,7 @@ public class PictureBuilder {
 			
 			@Override
 			public boolean onLongClick(View v) {
-				ActionMode.Callback picMenu = new PictureMenu(noteActivity, picObject);
+				ActionMode.Callback picMenu = new PictureMenu(noteActivity, pictureBuilder);
 				noteActivity.startActionMode(picMenu);
 				return true;
 			}
@@ -57,7 +57,7 @@ public class PictureBuilder {
 	protected void deleteObject(){
 		noteActivity.getNoteModel().remove(entry);
 		pic = null;
-		picObject = null;
+		pictureBuilder = null;
 	}
 
 }
