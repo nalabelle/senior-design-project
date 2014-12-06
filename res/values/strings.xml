@@ -54,5 +54,6 @@
     <string name="title_activity_handwriting_main">HandwritingMain</string>
     <string name="date_time_format">MM/dd/yy - h:mm a</string>
     <string name="title_activity_to_do_main">ToDoMain</string>
+    <string name="title_activity_splash_screen">SplashScreen</string>
 
 </resources>
