@@ -6,12 +6,18 @@
     android:orientation="vertical" 
     tools:context="com.comp490.studybuddy.MainActivity" 
     android:layout_margin="3dp"
+    android:background="@drawable/background"
     >
-        
+
     <TableLayout
     android:id="@+id/tableLayout1"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:paddingLeft="30dp"
+    android:paddingRight="30dp"
+    android:paddingBottom="40dp"
+    android:paddingTop="30dp"
+    
      >
 
     <TableRow
@@ -28,7 +34,8 @@
             android:layout_weight="1"
             android:id="@+id/button1"
             android:background="@drawable/textnote"
-            android:onClick="onTextNoteClick" />
+            android:onClick="onTextNoteClick" 
+            android:alpha="0.9" />
         
         <Button
             android:layout_width="0dip"
@@ -37,7 +44,8 @@
             android:layout_margin="3dp"           
             android:id="@+id/button4"
             android:background="@drawable/handwriting"
-            android:onClick="onHandwritingClick" />
+            android:onClick="onHandwritingClick" 
+            android:alpha="0.9" />
 
      </TableRow>
 
@@ -54,7 +62,8 @@
             android:layout_margin="3dp"
             android:id="@+id/button3"
             android:background="@drawable/todo"
-            android:onClick="onTodoClick" />
+            android:onClick="onTodoClick" 
+            android:alpha="0.9" />
 
         <Button
             android:id="@+id/button2"
@@ -63,11 +72,42 @@
             android:layout_margin="3dp"
             android:layout_height="fill_parent"
             android:onClick="onCalClick"
-            android:background="@drawable/cal"/>
+            android:background="@drawable/cal"
+            android:alpha="0.9" />
 
 
     </TableRow>
+    
+    <TableRow
+        android:id="@+id/tableRow4"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+             >
+        
+        <Button
+            android:layout_width="0dip"
+            android:layout_height="fill_parent"
+            android:layout_weight="1" 
+            android:id="@+id/flashcard"             
+            android:layout_margin="3dp"
+            android:background="@drawable/flashcard"
+            android:onClick="onFlashcardClick"
+            android:alpha="0.9" />
 
+        <Button
+            android:layout_width="0dip"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:id="@+id/quiz"            
+            android:layout_margin="3dp"
+            android:background="@drawable/quiz"
+            android:onClick="onQuizClick" 
+            android:alpha="0.9" />
+
+    </TableRow>
+    
+    
     <TableRow
         android:id="@+id/tableRow3"
             android:layout_width="wrap_content"
@@ -81,7 +121,8 @@
             android:id="@+id/start_service"             
             android:layout_margin="3dp"
             android:background="@drawable/alarmon"
-            android:onClick="onClickStartService"/>
+            android:onClick="onClickStartService"
+            android:alpha="0.8" />
 
         <Button
             android:layout_width="0dip"
@@ -90,7 +131,8 @@
             android:id="@+id/stop_service"            
             android:layout_margin="3dp"
             android:background="@drawable/alarmoff"
-            android:onClick="onClickStopService" />
+            android:onClick="onClickStopService" 
+            android:alpha="0.8" />
 
     </TableRow>
 
