@@ -24,7 +24,7 @@
             android:theme="@android:style/Theme.Black.NoTitleBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
- 
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -93,6 +93,18 @@
         <activity
             android:name=".todolist.ToDoMain"
             android:label="@string/title_activity_to_do_main" >
+        </activity>
+        <activity
+            android:name=".todolist.DefaultActivity"
+            android:label="@string/title_activity_default" >
+        </activity>
+        <activity
+            android:name=".todolist.ModifyTask"
+            android:label="@string/title_activity_modify_task" >
+        </activity>
+        <activity
+            android:name="com.comp490.studybuddy.todolist.ViewTask"
+            android:label="@string/title_activity_view_task" >
         </activity>
     </application>
 

@@ -1,0 +1,118 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:scrollbarStyle="outsideOverlay" 
+    tools:context="com.comp490.studybuddy.todolist.ModifyTask" 
+    
+   >
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:stretchColumns="1" >
+
+        <TableRow>
+            <TextView
+                android:padding="2dp"                
+                android:layout_marginTop="5dp"
+                android:textColor="#838EDE"
+                android:text="@string/task_name_label"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+        </TableRow>
+      <TableRow>
+            <EditText
+                android:id="@+id/modify_edittext_task_name"
+                android:ems="10"
+                android:layout_marginBottom="5dp"
+                android:hint="@string/modify_edittext_hint"
+                android:padding="2dp" />
+        </TableRow>
+        
+              <View
+            android:layout_height="1dp"
+            android:background="#d3d3d3" />
+      
+        <TableRow>
+            <TextView
+                android:layout_marginTop="5dp"
+                android:textColor="#838EDE"
+                android:text="@string/task_date_label"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+        </TableRow>
+        <TableRow>
+            <DatePicker
+                android:id="@+id/modify_datepicker_date"
+                android:calendarViewShown="false" />
+        </TableRow>
+
+        <View
+            android:layout_height="1dp"
+            android:background="#d3d3d3" />
+        
+        <TableRow>
+            <TextView
+                android:textColor="#838EDE"
+                android:text="@string/task_time_label"
+                android:textAppearance="?android:attr/textAppearanceSmall" />        
+        </TableRow>
+        <TableRow>     
+            <TimePicker
+                android:id="@+id/modify_timepicker_time"/>   
+        </TableRow>
+
+                      <View
+            android:layout_height="1dp"
+            android:background="#d3d3d3" />
+        
+        <TableRow>
+            <TextView
+                android:padding="2dp"
+                android:textColor="#838EDE"
+                android:text="@string/task_priority_label"
+                android:textAppearance="?android:attr/textAppearanceSmall" />        
+      </TableRow>
+      <TableRow>
+            <Spinner
+                android:id="@+id/modify_spinner_priority"
+                android:layout_weight="1"
+                android:entries="@array/modify_priority"
+                android:padding="2dp"
+                android:layout_marginBottom="5dp"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </TableRow>
+        
+        
+              <View
+            android:layout_height="1dp"
+            android:background="#d3d3d3" />
+
+        <TableRow>
+            <TextView
+                android:layout_marginTop = "5dp"
+                android:id="@+id/modify_notification"
+                android:padding="2dp"
+                android:text="@string/task_notification_label"            
+                android:textColor="#838EDE"
+                android:textAppearance="?android:attr/textAppearanceSmall"/>
+        </TableRow>
+        <TableRow>
+
+            <Switch
+                android:id="@+id/modify_switch_notification"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:padding="2dp"
+                android:textOff="Off"
+                android:textOn="On"
+                android:layout_marginBottom = "5dp"
+                 />
+
+        </TableRow>
+
+    </TableLayout>
+
+</ScrollView>

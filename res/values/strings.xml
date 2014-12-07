@@ -3,8 +3,6 @@
 
     <string name="app_name">StudyBuddy</string>
     <string name="hello_world">!dlrow olleH</string>
-    <string name="welcome">Welcome to StudyBuddy</string>
-    <string name="gWiz">All bow to the Git Wizard Sniggles the Poo!</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_text_note">Note</string>
     <string name="title_activity_calen">CalenActivity</string>
@@ -13,11 +11,6 @@
     <string name="main_Cal_button">Calendar v 1.0</string>
     <string name="title_activity_picture">Picture</string>
     <string name="title_activity_to_do_list">To Do List</string>
-    <string name="main_to_do_btn">To Do List</string>
-    <string name="todo">My to do list</string>
-    <string name="enter_task">Enter a task</string>
-    <string name="add_button">Add</string>
-    <string name="del_button">Delete</string>
     <string name="title_activity_my_service">MyService</string>
     <string name="action_create_text">Enter Text</string>
     <string name="action_record_sound">Record Sound</string>
@@ -53,7 +46,35 @@
     <string name="title_activity_flash_main">FlashMain</string>
     <string name="title_activity_handwriting_main">HandwritingMain</string>
     <string name="date_time_format">MM/dd/yy - h:mm a</string>
-    <string name="title_activity_to_do_main">ToDoMain</string>
     <string name="title_activity_splash_screen">SplashScreen</string>
+    <string name="title_activity_to_do_main">To Do List</string>
+    <string name="title_activity_setting">SettingActivity</string>
+    <string name="activity_modify_task_title">Task</string>
+    <string name="activity_view_task_title">View task</string>
+    <string name="main_actionbar_add_title">Add</string>
+    <string name="modify_actionbar_save_title">Save</string>
+    <string name="modify_actionbar_cancel_title">Cancel</string>
+    <string name="view_actionbar_edit_title">Edit</string>
+    <string name="view_actionbar_delete_title">Delete</string>
+    <string name="task_name_label">Task</string>
+    <string name="task_date_label">Date</string>
+    <string name="task_time_label">Time</string>
+    <string name="task_priority_label">Priority</string>
+    <string name="task_notification_label">Notification</string>
+    <string name="modify_edittext_hint">Enter task</string>
+    <string name="modify_priority_yes">Yes</string>
+    <string name="modify_priority_no">No</string>
+    <string name="modify_cancel_posbutton">Yes</string>
+    <string name="modify_cancel_negbutton">No</string>
+    <string name="modify_cancel_textview">Are you sure you want to cancel?</string>
+
+    <string-array name="modify_priority">
+        <item>@string/modify_priority_no</item>
+        <item>@string/modify_priority_yes</item>
+    </string-array>
+
+    <string name="title_activity_default">DefaultActivity</string>
+    <string name="title_activity_modify_task">Edit Task</string>
+    <string name="title_activity_view_task">View Task</string>
 
 </resources>

@@ -1,0 +1,14 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item 
+        android:id="@+id/modify_actionbar_save"
+        android:showAsAction="always"
+        android:icon="@drawable/ic_action_save"
+        android:title="@string/modify_actionbar_save_title" />
+    
+    <item 
+        android:id="@+id/modify_actionbar_cancel"
+        android:showAsAction="always"
+        android:icon="@drawable/ic_action_cancel"
+        android:title="@string/modify_actionbar_cancel_title" />
+</menu>
