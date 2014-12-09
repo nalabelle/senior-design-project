@@ -32,10 +32,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.view.GestureDetectorCompat;
 import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.GestureDetector;
+import android.view.GestureDetector.OnGestureListener;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -76,10 +81,13 @@ public class CalenActivity extends Activity {
     private long testDTlong = testDT.getMillis();
     private CalendarEventModel testEvent = new CalendarEventModel("Test", testDTlong);
     
+    private GestureDetectorCompat swipeDetector;
+    
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_customcal_phone);
+		swipeDetector = new GestureDetectorCompat(this, new SwipeListener());
 		
 		//Make it fit, get width and height
         DisplayMetrics metrics = new DisplayMetrics();
@@ -110,6 +118,14 @@ public class CalenActivity extends Activity {
         db = new buddyDBOpenHelper(this);
         //db.addEvent(testEvent);
 	}
+	
+	@Override
+    public boolean onTouchEvent(MotionEvent event) {
+
+        swipeDetector.onTouchEvent(event);  
+        Log.d("TAG", "Touch");
+        return super.onTouchEvent(event);
+    }
 	
     private void changeCalendarDisplay()
     {
@@ -199,20 +215,20 @@ public class CalenActivity extends Activity {
 		    return map;
 		}
         
-        //print to cells
+        //print to cells: Monday to Sunday
         private void printMonth()
         {
         	//Set up dates with padding.
         	DateTime startDate = calendar.withDayOfMonth(calendar.dayOfMonth().getMinimumValue()).withDayOfWeek(calendar.dayOfWeek().getMinimumValue());
         	DateTime endDate = calendar.withDayOfMonth(calendar.dayOfMonth().getMaximumValue()).withDayOfWeek(calendar.dayOfWeek().getMaximumValue());
         	
-        	//Iterate over every date in the period.
+        	//Iterate over every date in the period (startDate --> endDate).
         	for (DateTime date = startDate; date.isBefore(endDate.plusDays(1)); date = date.plusDays(1)) {
         		//Check if we're in the right month.
         		if(!calendar.monthOfYear().equals(date.monthOfYear())) {
-        			if(date.isBefore(calendar.withDayOfMonth(calendar.dayOfMonth().getMinimumValue())))
+        			if(date.isBefore(calendar.withDayOfMonth(calendar.dayOfMonth().getMinimumValue())))  //Previous Month
         				list.add(date.getDayOfMonth() + "-GREY" + "-" + date.monthOfYear().getAsText() + "-" + date.year().getAsText());
-        			else if(date.isAfter(calendar.withDayOfMonth(calendar.dayOfMonth().getMaximumValue())))
+        			else if(date.isAfter(calendar.withDayOfMonth(calendar.dayOfMonth().getMaximumValue()))) //Future Month
         				list.add(date.getDayOfMonth() + "-GREY" + "-" + date.monthOfYear().getAsText() + "-" + date.year().getAsText());
         		} else { //we're in this month.
         			if(originalDate.withTimeAtStartOfDay().isEqual(date.withTimeAtStartOfDay())) //today
@@ -304,4 +320,30 @@ public class CalenActivity extends Activity {
         }
         
 	} //End GridCellAdapter
+
+	private class SwipeListener extends GestureDetector.SimpleOnGestureListener {
+		 private static final String DEBUG_TAG = "Gestures"; 
+	        
+	        @Override
+	        public boolean onDown(MotionEvent event) { 
+	            Log.d(DEBUG_TAG,"onDown: " + event.toString()); 
+	            return true;
+	        }
+
+	        @Override
+	        public boolean onFling(MotionEvent event1, MotionEvent event2, 
+	                float velocityX, float velocityY) {
+	            Log.d(DEBUG_TAG, "onFling: " + event1.toString() + "\n Event2:"
+	            		+event2.toString());
+	            //Threshold
+	            //if(velocityX < 100)
+	            	//return false;
+	            //findViewById(R.layout.activity_customcal_phone)
+	            if (velocityX < 0)
+	            	moveFuture(null);
+	            else if (velocityX > 0)
+	            	movePast(null);
+	            return true;
+	        }
+	}
 }// End CalenActivity

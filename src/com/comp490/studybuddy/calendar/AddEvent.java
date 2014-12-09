@@ -87,7 +87,8 @@ public class AddEvent extends Activity {
 					db = new buddyDBOpenHelper(this);
 					//db.addEvent(event);
 					//Return to Calendar
-					Intent back2Cal = new Intent(this, CalenActivity.class);       	
+					Intent back2Cal = new Intent(this, CalenActivity.class);
+					back2Cal.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
 		    		startActivity(back2Cal);
 				} catch (Exception e) {
 					Toast.makeText(getApplicationContext(), 

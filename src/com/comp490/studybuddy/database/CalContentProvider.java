@@ -10,6 +10,12 @@ import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.text.TextUtils;
 
+/**
+ * 
+ * Not working, will try later
+ * Content Providers are powerful
+ */
+
 public class CalContentProvider extends ContentProvider {
 	
 	public static final Uri CAL_URI = 

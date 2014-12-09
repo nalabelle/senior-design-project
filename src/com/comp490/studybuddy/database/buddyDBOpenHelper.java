@@ -11,7 +11,13 @@ import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-
+/**
+ * 
+ * For use with the ContentProvider
+ * ContentProvider not working
+ * Useless Class for now
+ *
+ */
 public class buddyDBOpenHelper extends SQLiteOpenHelper{
 	
 	protected static final String DATABASE_NAME = "buddyBase.db";

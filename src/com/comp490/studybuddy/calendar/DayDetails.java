@@ -53,7 +53,8 @@ public class DayDetails extends Activity {
 				return true;
 			case R.id.addEvent:
 				Intent intent = new Intent(getApplicationContext(), AddEvent.class);
-			    startActivity(intent);
+				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+				startActivity(intent);
 			    return true;
 			default:
 				return super.onOptionsItemSelected(item);
