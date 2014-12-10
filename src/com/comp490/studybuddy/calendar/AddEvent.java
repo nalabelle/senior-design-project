@@ -43,7 +43,7 @@ public class AddEvent extends Activity {
 	private int startDay;
 	private int startHour;
 	private int startMin;
-	private buddyDBOpenHelper db;
+	private CalDBAdapter db;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -70,7 +70,6 @@ public class AddEvent extends Activity {
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
 		
-		
 		int id = item.getItemId();
 		switch(id) {
 			case R.id.action_settings:
@@ -82,10 +81,11 @@ public class AddEvent extends Activity {
 					long startTime = startDateTime.getMillis();
 					EditText eventText = (EditText) findViewById(R.id.eventName);
 					String eventName = eventText.getText().toString(); 
-					event = new CalendarEventModel(eventName, startTime);
+					db = new CalDBAdapter(this);
+					db.open();
+					event = new CalendarEventModel(db.getNewEventId(), eventName, startTime);
 					// Save Event
-					db = new buddyDBOpenHelper(this);
-					//db.addEvent(event);
+					db.insertEvent(event);
 					//Return to Calendar
 					Intent back2Cal = new Intent(this, CalenActivity.class);
 					back2Cal.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);

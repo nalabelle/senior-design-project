@@ -1,6 +1,9 @@
 package com.comp490.studybuddy.calendar;
 
+import java.util.UUID;
+
 import com.comp490.studybuddy.models.CalendarEventModel;
+import com.comp490.studybuddy.todolist.Task;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -27,10 +30,10 @@ public class CalDBAdapter {
 		private static final String EVENT_END_DATE = "_endDate";
 
 		private static final String CREATE_EVENT_TABLE = 
-				"create table " + EVENT_TABLE + " ( " 
-				+ EVENT_ID + " integer primary key autoincrement, " +
-				EVENT_NAME + " text not null " + 
-				EVENT_START_DATE + " integer " +
+				"create table " + EVENT_TABLE + " ( " +
+				EVENT_ID + " text primary key, " +
+				EVENT_NAME + " text not null, " + 
+				EVENT_START_DATE + " integer, " +
 				EVENT_END_DATE + " integer " + " ); ";
 		
 		private static final String EVENT_TABLE_UPGRADE =
@@ -81,16 +84,52 @@ public class CalDBAdapter {
 		
 		public Cursor getAllEvents() {
 			return sqlDatabase.query(EVENT_TABLE, 
-					new String[] {EVENT_ID, EVENT_NAME}, 
+					new String[] {EVENT_ID, EVENT_NAME, EVENT_START_DATE, EVENT_END_DATE}, 
 					null, null, null, null, null);
 		}
 		
-		/*
-		public long insertEvent(CalendarEventModel event) {
+		public void insertEvent(CalendarEventModel event) {
 			ContentValues values = new ContentValues();
-			//values.put(EVENT_ID, null);
+			values.put(EVENT_ID, event.getId());
+			values.put(EVENT_NAME, event.getName());
+			values.put(EVENT_START_DATE, event.getStart());
+			values.put(EVENT_END_DATE, event.getEnd());
+		    sqlDatabase.insert(EVENT_TABLE, null, values); 
 		}
-		*/
 		
+		public Cursor getEventById(String eventId) {
+		   Log.d(TAG, "getTaskById " + eventId);
+		   return sqlDatabase.query(EVENT_TABLE,
+		         new String[] {EVENT_ID, EVENT_NAME, EVENT_START_DATE, EVENT_END_DATE},
+		         EVENT_ID + " = '" + eventId + "'", null, null, null, null);
+		   }
+		
+		public void editExistingTask(CalendarEventModel event) {
+			ContentValues values = new ContentValues();
+			values.put(EVENT_ID, event.getId());
+			values.put(EVENT_NAME, event.getName());
+			values.put(EVENT_START_DATE, event.getStart());
+			values.put(EVENT_END_DATE, event.getEnd());
+			sqlDatabase.update(EVENT_TABLE, values, EVENT_ID + " = '" + event.getId() + "'", null);
+			Log.d(TAG, "editExistingTask " + event.getName());
+		}
+		
+		//delete Task
+		public void deleteEvent(CalendarEventModel event) {
+			String eventId = event.getId();
+			sqlDatabase.delete(EVENT_TABLE, EVENT_ID + " = '" + eventId + "'", null); 
+			Log.d(TAG, "deleteEvent " + event.getName());
+		}
+		
+		public String getNewEventId() {
+		   Log.d(TAG, "getEventById ");
+		   String eventId = null;
+		   Cursor cursor = null;
+		   do {
+		      eventId = UUID.randomUUID().toString();
+		      cursor = getEventById(eventId);
+		   } while (cursor.getCount() > 0);
+		   return eventId;
+		}
 		
 }

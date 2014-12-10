@@ -7,13 +7,6 @@
  * Team members: Buddy Corp
  * Contribution: IP
  * 
- * Working Calendar... no functionality
- * TODO
- * Fix broken button/header text issues
- * Move New Event button out of header section.
- * Find a way to stretch calendar on large screens... new day_button xml? relative layout fill?
- * Sprint 2: add event tracking, add events,
- *  scrolling (back/forward in time), day detail pop up
  * 
  */
 
@@ -30,6 +23,7 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.view.GestureDetectorCompat;
@@ -76,12 +70,8 @@ public class CalenActivity extends Activity {
     
     private ActionBar actionBar;
     
-    private buddyDBOpenHelper db;
-    private DateTime testDT = new DateTime();
-    private long testDTlong = testDT.getMillis();
-    private CalendarEventModel testEvent = new CalendarEventModel("Test", testDTlong);
-    
     private GestureDetectorCompat swipeDetector;
+    private static ArrayList<CalendarEventModel> eventList;
     
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -114,9 +104,7 @@ public class CalenActivity extends Activity {
         adapter.notifyDataSetChanged();
         calendarGrid.setAdapter(adapter);
         
-        //Add some events
-        db = new buddyDBOpenHelper(this);
-        //db.addEvent(testEvent);
+        
 	}
 	
 	@Override
@@ -182,18 +170,23 @@ public class CalenActivity extends Activity {
         private final Context context;
 
         private final List<String> list;
+        private CalDBAdapter db;
+        private Cursor cursor;
         
         private Button gridcell;
         private TextView num_events_per_day;
-        private final HashMap<String, Integer> eventsPerMonthMap;
-        //better way? Locale based
-        //private final SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-MMM-yyyy");
+        private final HashMap<Integer, Integer> eventsPerMonthMap;
+        private ArrayList<CalendarEventModel> eventList;
 
         public GridCellAdapter(Context context, int cellID)
         {
                 super();
                 this.context = context;
                 this.list = new ArrayList<String>();
+                db = new CalDBAdapter(context);
+                db.open();
+                eventList = new ArrayList<CalendarEventModel>();
+                getEvents();
                 
                 // Print Month
                 printMonth();
@@ -202,16 +195,48 @@ public class CalenActivity extends Activity {
                 eventsPerMonthMap = findEventsMonth(calendar.getYear(), calendar.getMonthOfYear());
         }
         
+        public void getEvents() {
+    		cursor = db.getAllEvents();
+    		if (cursor.moveToFirst()){
+    			   while(!cursor.isAfterLast()){
+    				  String id = cursor.getString(cursor.getColumnIndex("_eventId"));
+    				  String name = cursor.getString(cursor.getColumnIndex("_eventName"));
+    			      long startDate = cursor.getLong(cursor.getColumnIndex("_startDate"));
+    			      long endDate = cursor.getLong(cursor.getColumnIndex("_endDate"));
+    			      CalendarEventModel event = new CalendarEventModel(id, name, startDate, endDate);
+    			      eventList.add(event);
+    			      cursor.moveToNext();
+    			   }
+    			}
+    	}
+        
         public String getItem(int position)
         {
             return list.get(position);
         }
         
-		//Where to store/ retrieve events?
-		//String == event desc.,  Integer is the day
-		private HashMap<String, Integer> findEventsMonth(int year, int month)
+        
+		private HashMap<Integer, Integer> findEventsMonth(int year, int month)
 		{
-		    HashMap<String, Integer> map = new HashMap<String, Integer>();
+		    HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
+		    for(int i = 0; i < eventList.size(); i++) {
+		    	CalendarEventModel event = eventList.get(i);
+		    	long startDate = event.getStart();
+		    	DateTime date = new DateTime(startDate);
+		    	int y = date.getYear();
+		    	int m = date.getMonthOfYear();
+		    	int d = date.getDayOfMonth();
+		    	
+		    	if (y == year && m == month) {
+		    		if (map.containsKey(d)) {
+			    	    map.put(d, map.get(d)+1);
+			    	} else { 
+			    	    map.put(d,1);
+			    	}
+		    	}
+		    	
+		    	
+		    }
 		    return map;
 		}
         
@@ -274,20 +299,32 @@ public class CalenActivity extends Activity {
                 String themonth = day_color[2];
                 String theyear = day_color[3];
                 
+                int day = Integer.parseInt(theday);
+                
+                num_events_per_day = (TextView) row.findViewById(R.id.num_events);
                 //Add number of events per day from HashMap.
                 if ((!eventsPerMonthMap.isEmpty()) && (eventsPerMonthMap != null))
                     {
-                        if (eventsPerMonthMap.containsKey(theday))
+                        if (eventsPerMonthMap.containsKey(day))
                             {
-                                num_events_per_day = (TextView) row.findViewById(R.id.num_events);
-                                Integer numEvents = (Integer) eventsPerMonthMap.get(theday);
+                                Integer numEvents = (Integer) eventsPerMonthMap.get(day);
                                 num_events_per_day.setText(numEvents.toString());
-                            }
+                                if (numEvents == 0) {
+                                	num_events_per_day.setVisibility(View.GONE);
+                                }
+                             }
+                        else {
+                        	num_events_per_day.setVisibility(View.GONE);
+                        }
+                                
                     }
+                else {
+                	num_events_per_day.setVisibility(View.GONE);
+                }
 
                 // Set the Day in each GridCell, date as tag
                 gridcell.setText(theday);
-                gridcell.setTag(theday + "-" + themonth + "-" + theyear);
+                gridcell.setTag(themonth + "-" + theday + "-" + theyear);
 
                 //Colorize days on calendar
                 //Sandwiching months days
@@ -315,7 +352,7 @@ public class CalenActivity extends Activity {
         	//Get info for day poked
         	String date_month_year = (String) view.getTag();
         	Intent dayLaunch = new Intent(CalenActivity.this, DayDetails.class);
-        	dayLaunch.putExtra("Day", date_month_year);        	
+        	dayLaunch.putExtra("Day", date_month_year);    
     		startActivity(dayLaunch);
         }
         
