@@ -1,4 +1,7 @@
 //Author: Tom, Xintong
+
+
+//This is for summer's account testing
 package com.comp490.studybuddy.handwritingnote;
 
 import android.app.ActionBar;
