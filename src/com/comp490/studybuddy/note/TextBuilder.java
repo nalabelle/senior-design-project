@@ -21,6 +21,7 @@ public class TextBuilder{
 		this.noteActivity = noteActivity;
 		this.entry = entry;
 		createTextView();
+		this.entry.setType(NoteEntryModel.NoteType.TEXT);
 	}
 	
 	private void createTextView(){

@@ -40,6 +40,7 @@ public class AudioBuilder {
 	public AudioBuilder(NoteEntryModel entry, NoteActivity noteContext) {
 		this.noteActivity = noteContext;
 		this.entry = entry;
+		this.entry.setType(NoteEntryModel.NoteType.AUDIO);
 	}
 	
 	public boolean startRecording() { // on actionView REC button press

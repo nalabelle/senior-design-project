@@ -25,7 +25,8 @@ public class VideoBuilder {
 		this.noteActivity = textNote;
 		this.entry = entry;
 		this.data = data;
-		createVideoView();		
+		createVideoView();
+		this.entry.setType(NoteEntryModel.NoteType.VIDEO);
 	}
 	
 	private void createVideoView(){

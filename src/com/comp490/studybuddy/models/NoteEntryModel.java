@@ -1,5 +1,7 @@
 package com.comp490.studybuddy.models;
 
+import com.comp490.studybuddy.models.NoteEntryModel.NoteType;
+
 import android.util.Log;
 
 /* NoteEntryModel stores all relevant data about the note objects we create.
@@ -74,5 +76,9 @@ public class NoteEntryModel {
 			Log.e("NoteEntryModel", "invalid model filepath or was not set");
 		}
 		return filePath;
+	}
+
+	public void setType(NoteType newType) {
+		this.type = newType;
 	}
 }

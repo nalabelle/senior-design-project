@@ -22,6 +22,7 @@ public class PictureBuilder {
 		this.entry = entry;
 		this.noteActivity = noteActivity;
 		this.bitmap = bitmap;
+		this.entry.setType(NoteEntryModel.NoteType.PICTURE);
 		createPicView();		
 	}	
 	
