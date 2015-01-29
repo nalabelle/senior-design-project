@@ -4,26 +4,26 @@ import android.util.Log;
 
 public class CalendarEventModel {
 	private String id;
-	private long eventStart;
-	private long eventEnd;
+	private String eventStart;
+	private String eventEnd;
 	private String eventName;
 	private final String TAG = "EventModel";
 	
 	public CalendarEventModel() {
 		id = null;
 		eventName = null;
-		eventStart = -1;
-		eventEnd = -1;
+		eventStart = null;
+		eventEnd = null;
 	}
 	
 	//require both a name and a start time, others are optional.
-	public CalendarEventModel(String id, String name, long start) {
+	public CalendarEventModel(String id, String name, String start) {
 		this.id = id;
 		this.eventStart = start;
 		this.eventName = name;
 	}
 	
-	public CalendarEventModel(String id, String name, long start, long end) {
+	public CalendarEventModel(String id, String name, String start, String end) {
 		this.id = id;
 		this.eventStart = start;
 		this.eventName = name;
@@ -60,11 +60,11 @@ public class CalendarEventModel {
 		}
 	}
 	
-	public long getStart() {
+	public String getStart() {
 		return eventStart;
 	}
 	
-	public boolean setStart(long start) {
+	public boolean setStart(String start) {
 		try {
 			eventStart = start;
 			return true;
@@ -75,11 +75,11 @@ public class CalendarEventModel {
 		}
 	}
 	
-	public long getEnd() {
+	public String getEnd() {
 		return eventEnd;
 	}
 	
-	public boolean setEnd(long end) {
+	public boolean setEnd(String end) {
 		try {
 			eventEnd = end;
 			return true;

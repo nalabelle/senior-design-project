@@ -7,7 +7,6 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import com.comp490.studybuddy.R;
-import com.comp490.studybuddy.database.buddyDBOpenHelper;
 import com.comp490.studybuddy.models.CalendarEventModel;
 
 import android.app.ActionBar;
@@ -19,6 +18,7 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -78,12 +78,11 @@ public class AddEvent extends Activity {
 				try {
 					startDateTime = new DateTime(startYear, startMonth, startDay, 
 							startHour, startMin);
-					long startTime = startDateTime.getMillis();
 					EditText eventText = (EditText) findViewById(R.id.eventName);
 					String eventName = eventText.getText().toString(); 
 					db = new CalDBAdapter(this);
 					db.open();
-					event = new CalendarEventModel(db.getNewEventId(), eventName, startTime);
+					event = new CalendarEventModel(db.getNewEventId(), eventName, startDateTime.toString());
 					// Save Event
 					db.insertEvent(event);
 					//Return to Calendar

@@ -45,7 +45,6 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.comp490.studybuddy.R;
-import com.comp490.studybuddy.database.buddyDBOpenHelper;
 import com.comp490.studybuddy.models.CalendarEventModel;
 
 public class CalenActivity extends Activity {
@@ -201,8 +200,8 @@ public class CalenActivity extends Activity {
     			   while(!cursor.isAfterLast()){
     				  String id = cursor.getString(cursor.getColumnIndex("_eventId"));
     				  String name = cursor.getString(cursor.getColumnIndex("_eventName"));
-    			      long startDate = cursor.getLong(cursor.getColumnIndex("_startDate"));
-    			      long endDate = cursor.getLong(cursor.getColumnIndex("_endDate"));
+    			      String startDate = cursor.getString(cursor.getColumnIndex("_startDate"));
+    			      String endDate = cursor.getString(cursor.getColumnIndex("_endDate"));
     			      CalendarEventModel event = new CalendarEventModel(id, name, startDate, endDate);
     			      eventList.add(event);
     			      cursor.moveToNext();
@@ -221,8 +220,9 @@ public class CalenActivity extends Activity {
 		    HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
 		    for(int i = 0; i < eventList.size(); i++) {
 		    	CalendarEventModel event = eventList.get(i);
-		    	long startDate = event.getStart();
-		    	DateTime date = new DateTime(startDate);
+		    	String startDate = event.getStart();
+		    	Log.d("DateString", startDate);
+		    	DateTime date = DateTime.parse(startDate);
 		    	int y = date.getYear();
 		    	int m = date.getMonthOfYear();
 		    	int d = date.getDayOfMonth();

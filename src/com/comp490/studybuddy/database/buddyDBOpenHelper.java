@@ -99,6 +99,7 @@ public class buddyDBOpenHelper extends SQLiteOpenHelper{
 		}		
 	}
 	
+	/*
 	//TODO
 	public CalendarEventModel findEvent(String eventName) {
 		String[] projection = {EVENT_ID, EVENT_NAME, EVENT_START_DATE,
@@ -122,6 +123,7 @@ public class buddyDBOpenHelper extends SQLiteOpenHelper{
 			}
 			return event;
 	}
+	*/
 }
 //butt
 //-gladreal

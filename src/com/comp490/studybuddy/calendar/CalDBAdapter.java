@@ -33,8 +33,8 @@ public class CalDBAdapter {
 				"create table " + EVENT_TABLE + " ( " +
 				EVENT_ID + " text primary key, " +
 				EVENT_NAME + " text not null, " + 
-				EVENT_START_DATE + " integer, " +
-				EVENT_END_DATE + " integer " + " ); ";
+				EVENT_START_DATE + " text not null, " +
+				EVENT_END_DATE + " text " + " ); ";
 		
 		private static final String EVENT_TABLE_UPGRADE =
 		         "Drop table if exists " + CalDBAdapter.EVENT_TABLE;
@@ -102,7 +102,13 @@ public class CalDBAdapter {
 		   return sqlDatabase.query(EVENT_TABLE,
 		         new String[] {EVENT_ID, EVENT_NAME, EVENT_START_DATE, EVENT_END_DATE},
 		         EVENT_ID + " = '" + eventId + "'", null, null, null, null);
-		   }
+		}
+		
+		//TODO
+		//public Cursor getEventById(String yearMonth) {
+			//Log.d(TAG, "getTaskById" +yearMonth);
+			//return sqlDatabase.query();
+        //}
 		
 		public void editExistingTask(CalendarEventModel event) {
 			ContentValues values = new ContentValues();
