@@ -82,6 +82,10 @@ public class CalDBAdapter {
 			}
 		}
 		
+		/*
+		 * Prepared Statements!?!?!
+		 */
+		
 		public Cursor getAllEvents() {
 			return sqlDatabase.query(EVENT_TABLE, 
 					new String[] {EVENT_ID, EVENT_NAME, EVENT_START_DATE, EVENT_END_DATE}, 
@@ -105,10 +109,14 @@ public class CalDBAdapter {
 		}
 		
 		//TODO
-		//public Cursor getEventByYear(String yearMonth) {
-			//Log.d(TAG, "getTaskById" +yearMonth);
-			//return sqlDatabase.query();
-        //}
+		public Cursor getEventByYear(String prevMonth, String curr, String nextMonth) {
+			Log.d(TAG, "getEventByTime:" +prevMonth+ " " +curr + " " +nextMonth);
+			return sqlDatabase.query(EVENT_TABLE,
+        		new String[] {EVENT_ID, EVENT_NAME, EVENT_START_DATE, EVENT_END_DATE},
+        		EVENT_START_DATE + " LIKE " + "'" + prevMonth + "%'" + " OR " +
+		   		EVENT_START_DATE + " LIKE " + "'" + curr + "%'" + " OR " +
+		   		EVENT_START_DATE + " LIKE " + "'" + nextMonth + "%'", null, null, null, null);
+		}
 		
 		public void editExistingTask(CalendarEventModel event) {
 			ContentValues values = new ContentValues();

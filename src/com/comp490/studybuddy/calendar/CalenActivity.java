@@ -196,7 +196,23 @@ public class CalenActivity extends Activity {
         }
         
         public void getEvents() {
-    		cursor = db.getAllEvents();
+        	//calendar is the current view of the calendar as a dateTime
+        	//Get the previous month and next month
+        	DateTime prevDT = new DateTime(calendar);
+        	prevDT = prevDT.minusMonths(1);
+        	DateTime nextDT = new DateTime(calendar);
+        	nextDT = nextDT.plusMonths(1);
+        	//Turn to Strings
+        	String prev = prevDT.toString();
+        	String curr = calendar.toString();
+        	String next = nextDT.toString();
+        	//Get relevant part Year and Month
+        	prev = prev.substring(0,7);
+        	curr = curr.substring(0,7);
+        	next = next.substring(0,7);
+        	
+        	cursor = db.getEventByYear(prev, curr, next);
+    		//cursor = db.getAllEvents();
     		if (cursor.moveToFirst()){
     			   while(!cursor.isAfterLast()){
     				  String id = cursor.getString(cursor.getColumnIndex("_eventId"));
