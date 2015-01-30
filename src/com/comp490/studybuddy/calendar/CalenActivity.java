@@ -73,10 +73,6 @@ public class CalenActivity extends Activity {
     private GestureDetectorCompat swipeDetector;
     private static ArrayList<CalendarEventModel> eventList;
     
-    public boolean newCal = true;
-    
-    private SharedPreferences mPrefs;
-    
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -90,16 +86,8 @@ public class CalenActivity extends Activity {
         width = metrics.widthPixels;
         height = metrics.heightPixels;
         
-        SharedPreferences mPrefs = this.getSharedPreferences("mPrefs", MODE_PRIVATE);
-        String dTString = mPrefs.getString("activeMonth", "");
-        if(dTString.equals("")) {
-        	this.calendar = new DateTime();
-            this.originalDate = new DateTime();
-        }
-        else {
-        	this.calendar = DateTime.parse(dTString);
-            this.originalDate = DateTime.parse(dTString);
-        }
+        this.calendar = new DateTime();
+        this.originalDate = new DateTime();
         
         currentMonth = (TextView) this.findViewById(R.id.curr_month);
         currentMonth.setText(calendar.toString(dateFormatter));
@@ -118,14 +106,6 @@ public class CalenActivity extends Activity {
         adapter.notifyDataSetChanged();
         calendarGrid.setAdapter(adapter); 
 	}
-	
-	protected void onPause() {
-        super.onPause();
-        SharedPreferences mPrefs = this.getSharedPreferences("mPrefs", MODE_PRIVATE);
-        SharedPreferences.Editor ed = mPrefs.edit();
-        ed.putString("activeMonth", calendar.toString());
-        ed.commit();
-    }
 	
 	@Override
     public boolean onTouchEvent(MotionEvent event) {
