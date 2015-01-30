@@ -105,7 +105,7 @@ public class CalDBAdapter {
 		}
 		
 		//TODO
-		//public Cursor getEventById(String yearMonth) {
+		//public Cursor getEventByYear(String yearMonth) {
 			//Log.d(TAG, "getTaskById" +yearMonth);
 			//return sqlDatabase.query();
         //}

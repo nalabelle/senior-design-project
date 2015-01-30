@@ -23,6 +23,7 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -72,10 +73,15 @@ public class CalenActivity extends Activity {
     private GestureDetectorCompat swipeDetector;
     private static ArrayList<CalendarEventModel> eventList;
     
+    public boolean newCal = true;
+    
+    private SharedPreferences mPrefs;
+    
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_customcal_phone);
+		
 		swipeDetector = new GestureDetectorCompat(this, new SwipeListener());
 		
 		//Make it fit, get width and height
@@ -83,9 +89,18 @@ public class CalenActivity extends Activity {
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
         width = metrics.widthPixels;
         height = metrics.heightPixels;
-
-        this.calendar = new DateTime();
-        this.originalDate = new DateTime();
+        
+        SharedPreferences mPrefs = this.getSharedPreferences("mPrefs", MODE_PRIVATE);
+        String dTString = mPrefs.getString("activeMonth", "");
+        if(dTString.equals("")) {
+        	this.calendar = new DateTime();
+            this.originalDate = new DateTime();
+        }
+        else {
+        	this.calendar = DateTime.parse(dTString);
+            this.originalDate = DateTime.parse(dTString);
+        }
+        
         currentMonth = (TextView) this.findViewById(R.id.curr_month);
         currentMonth.setText(calendar.toString(dateFormatter));
         
@@ -101,10 +116,16 @@ public class CalenActivity extends Activity {
         // Grid --> Calendar
         adapter = new GridCellAdapter(getApplicationContext(), R.id.grid_day);
         adapter.notifyDataSetChanged();
-        calendarGrid.setAdapter(adapter);
-        
-        
+        calendarGrid.setAdapter(adapter); 
 	}
+	
+	protected void onPause() {
+        super.onPause();
+        SharedPreferences mPrefs = this.getSharedPreferences("mPrefs", MODE_PRIVATE);
+        SharedPreferences.Editor ed = mPrefs.edit();
+        ed.putString("activeMonth", calendar.toString());
+        ed.commit();
+    }
 	
 	@Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -214,14 +235,14 @@ public class CalenActivity extends Activity {
             return list.get(position);
         }
         
-        
+        //Show number of events per days as red text in upper left
+        // Buggy Shows red one on Jan 30 and Dec 30...
 		private HashMap<Integer, Integer> findEventsMonth(int year, int month)
 		{
 		    HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
 		    for(int i = 0; i < eventList.size(); i++) {
 		    	CalendarEventModel event = eventList.get(i);
 		    	String startDate = event.getStart();
-		    	Log.d("DateString", startDate);
 		    	DateTime date = DateTime.parse(startDate);
 		    	int y = date.getYear();
 		    	int m = date.getMonthOfYear();
