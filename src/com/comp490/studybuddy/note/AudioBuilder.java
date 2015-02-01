@@ -23,9 +23,8 @@ public class AudioBuilder {
 	 //essentially another context of Note activity, but required for getting views
 	// temp fix for now
 	private NoteActivity noteActivity;
-	private AudioBuilder audioBuilder = this;
 	private NoteEntryModel entry;
-	private MediaRecorder recorder = null;
+	//private MediaRecorder recorder = null;
 	private Status status = Status.PAUSED;
 	private static final String LOG_TAG = "Sound Record";
 	private String tempStorage = "/Temp/Notes/Audio/";  //move to Notes/Audio after save
@@ -44,9 +43,8 @@ public class AudioBuilder {
 	}
 	
 	public boolean startRecording() { // on actionView REC button press
-		if (recorder == null) {
-			recorder = new MediaRecorder();
-			noteActivity.getRecorders().add(recorder);
+		if (noteActivity.recorder == null) {
+			noteActivity.recorder = new MediaRecorder();
 		}
 		
 		if(status.equals(Status.RECORDING)) {
@@ -55,17 +53,17 @@ public class AudioBuilder {
 		}
 
 		try {
-			recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-			recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+			noteActivity.recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+			noteActivity.recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
 			//soundFilePath = context.getExternalFilesDir(null) + tempStorage +
 			//		new SimpleDateFormat("MM-dd-yyyy_KK-mm-ss-a", Locale.getDefault()).format(new Date()) + ".3gp";
 			soundFilePath = Environment.getExternalStorageDirectory()
 					.getAbsolutePath() + "/SB_Audio_" + new SimpleDateFormat("MM-dd-yyyy_KK-mm-ss-a", Locale.getDefault()).format(new Date())
 					+ ".3gp";
-			recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
-			recorder.setOutputFile(soundFilePath);
-			recorder.prepare();
-			recorder.start();
+			noteActivity.recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+			noteActivity.recorder.setOutputFile(soundFilePath);
+			noteActivity.recorder.prepare();
+			noteActivity.recorder.start();
 			status = Status.RECORDING;
 			entry.setFilePath(soundFilePath);
 			return true;
@@ -82,17 +80,16 @@ public class AudioBuilder {
 	public boolean stopRecording() {
 		if (status.equals(Status.RECORDING)) {
 			Toast.makeText(noteActivity, "Stopped Recording", Toast.LENGTH_SHORT).show();
-			if (recorder != null) {
+			if (noteActivity.recorder != null) {
 				try {
-					recorder.stop();
+					noteActivity.recorder.stop();
 				} catch (IllegalStateException e) {
 					Log.e(LOG_TAG, "Failed to stop recorder");
 					e.printStackTrace();
 				}
-				noteActivity.getRecorders().remove(recorder);
-				recorder.release();
+				noteActivity.recorder.release();
 			}
-			recorder = null;
+			noteActivity.recorder = null;
 			status = Status.PAUSED;
 			this.entry.addFile(this.soundFilePath); //Add the file to the entry so it can be saved later.
 			
@@ -139,7 +136,7 @@ public class AudioBuilder {
 		soundButton.setOnLongClickListener(new View.OnLongClickListener(){
 			@Override
 			public boolean onLongClick(View v) {
-				ActionMode.Callback soundMenu = new SoundPlayMenu(noteActivity, audioBuilder, entry);
+				ActionMode.Callback soundMenu = new SoundPlayMenu(noteActivity, entry);
 				noteActivity.startActionMode(soundMenu);
 				return true;
 			}
@@ -152,17 +149,6 @@ public class AudioBuilder {
 	
 	public enum Status {
 		RECORDING, PLAYING, PAUSED;
-	}
-
-	public void onDestroy() {
-		try {
-			if (recorder != null){
-				recorder.release();
-				recorder = null;
-			}
-		} catch (Exception e) {
-			Log.e(LOG_TAG, "onDestroy of audiobuilder failed");
-		}
 	}
 	
 	protected int getID(){

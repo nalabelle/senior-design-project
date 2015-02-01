@@ -65,6 +65,10 @@ public class NoteActivity extends Activity {
 	final Context context = this;
 	NoteActivity noteActivity = this;
 	AudioBuilder audio = null; 
+	
+	//Players
+	protected MediaPlayer player = null;
+	protected MediaRecorder recorder = null;
 
 	// Photo and Video related variables
 	public static final int MEDIA_TYPE_IMAGE = 1;
@@ -79,12 +83,6 @@ public class NoteActivity extends Activity {
 	
 	//let's make us one Note for now, can add more later!
 	private NoteModel note = new NoteModel();
-	
-	
-	// **********************not sure if needed ******************/
-	//Storage so we can kill all recorders and players.
-	protected ArrayList<MediaPlayer> players = new ArrayList<MediaPlayer>();
-	protected ArrayList<MediaRecorder> recorders = new ArrayList<MediaRecorder>();
 		
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -307,58 +305,48 @@ public class NoteActivity extends Activity {
 		return pm.hasSystemFeature(PackageManager.FEATURE_MICROPHONE);
 	}
 
-/* Basically following what Nik was doing. In the event this activity is 
- * destroyed we need to release all players/recorders. Since they aren't 
- * accessible within this activity,	we need a place to store them.
+/* Releasing recorder/player on exit of Note. Perhaps future updates
+ * could allow the recorder/player to spawn a service and allow
+ * playback/recording while using other parts of the app. 
  */
 
 	@Override
 	protected void onDestroy() {
 
-		if (audio != null){
-			audio.stopRecording(); 
-		} 
-		for(MediaPlayer p : players) {
-			if (p != null){
-				try {
-					p.stop(); //might be already be stopped
-				} catch (IllegalStateException e) {
-					e.printStackTrace();
-				}
-				try {
-					p.release();
-				} catch (Exception e) {
-					Log.e(LOG_TAG, "MediaPlayer array list did not release");
-				}
-				p = null;
-			}
+		if (audio != null) {
+			audio.stopRecording();
 		}
-		
-		for(MediaRecorder r : recorders) {
-			if (r != null){
-				try {
-					r.stop(); //might be already be stopped
-				} catch (IllegalStateException e) {
-					Log.e(LOG_TAG, "MediaRecorder array list did not stop");
-				}
-				try {
-					r.release();
-				} catch (Exception e) {
-					Log.e(LOG_TAG, "MediaRecorder array list did not release");
-				}
-				r = null;
+
+		//try catch blocks may be unnecessary, being safe for now
+		if (player != null) { 
+			try {
+				player.stop(); // might be already be stopped
+			} catch (IllegalStateException e) {
+				Log.e(LOG_TAG, "Player did not stop on destroy");
 			}
-		}	
+			try {
+				player.release();
+			} catch (Exception e) {
+				Log.e(LOG_TAG, "Player did not release on destroy");
+			}
+			player = null;
+		}
+
+		if (recorder != null) {
+			try {
+				recorder.stop(); // might be already be stopped
+			} catch (IllegalStateException e) {
+				Log.e(LOG_TAG, "Recorder did not stop on destroy");
+			}
+			try {
+				recorder.release();
+			} catch (Exception e) {
+				Log.e(LOG_TAG, "Recorder did not release on destroy");
+			}
+			recorder = null;
+		}
 		super.onDestroy();
 	}
-	
-	public ArrayList<MediaPlayer> getPlayers(){
-		return players; //so we can add and remove players
-	}
-	
-	public ArrayList<MediaRecorder> getRecorders(){
-		return recorders; //so we can add and remove recorders
-	}	
 	
 	protected NoteModel getNoteModel(){ //used for NoteModel entry deletions
 		return note;
@@ -379,24 +367,7 @@ public class NoteActivity extends Activity {
 	}
 }
 
-/* Issues as of 12/1/2014 (Anthony)
+/* 2/1/2015 Issues (Anthony)
  * 
- * 1. Video is not responding to onclick listener, therefore cannot be 
- * manipulated. Probably because its a widget and not a view.
- * 
- * 2. ArrayLists of recorders and players aren't working. Which are used to 
- * make sure all of them are released in the event of NoteActivity closure
- * 
- * 3. However, if we want to use the recorder or player within StudyBuddy,
- * 	we need to use a service or something otherwise SB crashes
- * 
- * 4. Currently cannot stop a playback after exiting SoundMenu. 
- * 
- * 
- * 1/31/2015 Issues (Anthony)
- * 
- *  5. Cannot stop a sound playback if you back out of the SoundPlayMenu
- *  	 (by clicking checkmark), it keeps playing until complete. Need to
- *  	link the player object to something so we can access it again.
- * 
+ * 1. Cannot create a second video view within a note (BUG).
  */

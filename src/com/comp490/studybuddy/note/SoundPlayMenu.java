@@ -26,14 +26,12 @@ import com.comp490.studybuddy.models.NoteEntryModel;
  */
 public class SoundPlayMenu implements ActionMode.Callback {
 	private NoteActivity noteActivity;
-	private AudioBuilder audioBuilder;
-	MediaPlayer player = null;
 	NoteEntryModel entry;
 	private Status status = Status.PAUSED;
 	private static final String LOG_TAG = "Sound Action Menu Callback";
 	final String path;
 	
-	public SoundPlayMenu(NoteActivity noteActivity, AudioBuilder audioBuilder, NoteEntryModel entry) {
+	public SoundPlayMenu(NoteActivity noteActivity, NoteEntryModel entry) {
 		this.noteActivity = noteActivity;
 		this.entry = entry;		
 		path = entry.getFilePath();
@@ -83,7 +81,7 @@ public class SoundPlayMenu implements ActionMode.Callback {
 		}
 		case R.id.menuSoundDelete: {
 			//this.audioState(Status.PAUSED);
-			if (player != null){
+			if (noteActivity.player != null){
 				stopPlayback(); //if ran to completion, would have already stopped
 			}
 			if (!deleteAudio()){
@@ -135,16 +133,7 @@ public class SoundPlayMenu implements ActionMode.Callback {
 	}
 
 	public boolean deleteAudio() {
-//		String audioName = ((TextView) findViewById(currentSoundTitleID)).getText().toString();
-//		AudioNote audioNote = null;
-//		for(AudioNote note : this.audioNotes) {
-//			if(note.getName().equals(audioName))
-//				audioNote = note;
-//		}
-//		if(audioNote == null)
-//			return false;
 
-		
 		// Popup Confirmation dialogbox for deletion
 		
 		AlertDialog.Builder builder = new AlertDialog.Builder(noteActivity);
@@ -185,18 +174,24 @@ public class SoundPlayMenu implements ActionMode.Callback {
 	
 	
 	public void playSound() {
-		try {
-			if (player != null && status.equals(Status.PAUSED)) {
+		try {			
+			if (noteActivity.player != null && status.equals(Status.PAUSED) && noteActivity.player.isPlaying()){
+				// special case of loading a soundplaymenu (clicking on a sound 
+				// icon), while playing something already. So we kill the player,
+				// and start fresh.
+				stopPlayback();
+			}
+			
+			if (noteActivity.player != null && status.equals(Status.PAUSED)) { //resumes from pause
 				Toast.makeText(noteActivity, "Playing Sound", Toast.LENGTH_SHORT).show();
-				player.start();
-				status = Status.PLAYING;
-			} else if (!status.equals(Status.PLAYING)) {
-				player = new MediaPlayer();
-				player.setDataSource(path);
-				noteActivity.getPlayers().add(player);
-				player.prepare();
-				player.start();
-				player.setOnCompletionListener(new OnCompletionListener() {
+				noteActivity.player.start();
+				status = Status.PLAYING;				
+			} else if (!status.equals(Status.PLAYING)) { 
+				noteActivity.player = new MediaPlayer();
+				noteActivity.player.setDataSource(path);
+				noteActivity.player.prepare();
+				noteActivity.player.start();
+				noteActivity.player.setOnCompletionListener(new OnCompletionListener() {
 					@Override
 					public void onCompletion(MediaPlayer mp) {
 						stopPlayback();
@@ -211,45 +206,21 @@ public class SoundPlayMenu implements ActionMode.Callback {
 
 	public void pauseSound() {
 		if (status.equals(Status.PLAYING)) {
-			player.pause();
+			noteActivity.player.pause();
 			status = Status.PAUSED;
 		}
 	}
 
 	private void stopPlayback() {
-		if (player != null && (status.equals(Status.PLAYING) || status.equals(Status.PAUSED))) {
+		if (noteActivity.player != null && (status.equals(Status.PLAYING) || status.equals(Status.PAUSED))) {
 			Toast.makeText(noteActivity, "Stopped Playback", Toast.LENGTH_SHORT).show();
 			status = Status.PAUSED; //do we really need a full stop?
-			noteActivity.getPlayers().remove(player);
-			player.stop();
-			player.release();
-			player = null;
+			noteActivity.player.stop();
+			noteActivity.player.release();
+			noteActivity.player = null;
 		}
 	}
 	
-//	public void audioState(Status change) {
-////		String audioName = ((TextView) findViewById(currentSoundTitleID)).getText().toString();
-////		AudioNote audioNote = null;
-////		for(AudioNote note : this.audioNotes) {
-////			if(note.getName().equals(audioName))
-////				audioNote = note;
-////		}
-////		if(audioNote == null)
-////			return;
-//		switch(change) {
-//		case PLAYING:
-//			//audioNote.playSound();
-//			playSound();
-//			break;
-//		case PAUSED:
-//			//audioNote.pauseSound();
-//			pauseSound();
-//			break;
-//		default:
-//			break;
-//		}	
-//	}
-//	
 	public Status getStatus() {
 		return status;
 	}
