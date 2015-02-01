@@ -217,7 +217,7 @@ public class SoundPlayMenu implements ActionMode.Callback {
 	}
 
 	private void stopPlayback() {
-		if (status.equals(Status.PLAYING) || status.equals(Status.PAUSED)) {
+		if (player != null && (status.equals(Status.PLAYING) || status.equals(Status.PAUSED))) {
 			Toast.makeText(noteActivity, "Stopped Playback", Toast.LENGTH_SHORT).show();
 			status = Status.PAUSED; //do we really need a full stop?
 			noteActivity.getPlayers().remove(player);
@@ -261,5 +261,5 @@ public class SoundPlayMenu implements ActionMode.Callback {
 	// Called when the user exits the action mode (check mark)
 	@Override
 	public void onDestroyActionMode(ActionMode mode) {}
-
+	// Note: Intentionally not stopping playback (you can listen to a recording and do other SB stuff)
 }

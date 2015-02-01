@@ -222,45 +222,18 @@ public class NoteActivity extends Activity {
 		}
 		
 		if (requestCode == MEDIA_TYPE_VIDEO && resultCode == Activity.RESULT_OK) {	
+		   // ********** creates VIDEO **************************
 			NoteEntryModel noteEntry = this.note.add(NoteEntryModel.NoteType.VIDEO);
 			noteEntry.setFilePath(mediaFile.toString()); //not sure about this
-			VideoBuilder videoBuilder = new VideoBuilder(noteActivity, data.getData(), noteEntry);
-			
-			
-			/*
-			vid = new VideoView(this);
-			vid.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT));
-
-			vid.setVideoURI(data.getData());
-			android.widget.FrameLayout.LayoutParams fl = new FrameLayout.LayoutParams(
-					300, 300); //Need to fix this to appropriate dimensions based on device
-			vid.setLayoutParams(fl);
-
-			MediaController media_Controller = new MediaController(this);
-			media_Controller.setAnchorView(vid);
-			vid.setMediaController(media_Controller);
-			LinearLayout layout = (LinearLayout) findViewById(R.id.note_inner_layout);
-			layout.addView(vid);
-			
-			*/
-			// DisplayMetrics dm = new DisplayMetrics();
-			// this.getWindowManager().getDefaultDisplay().getMetrics(dm);
-			// int height = dm.heightPixels;
-			// int width = dm.widthPixels;
-			// vid.setMinimumWidth(width);
-			// vid.setMinimumHeight(height);
-			// vid.setMediaController(media_Controller);	        
+			VideoBuilder videoBuilder = new VideoBuilder(noteActivity, data.getData(), noteEntry);			        
 	    }
 		
 		else if ( requestCode == MEDIA_TYPE_IMAGE && resultCode == Activity.RESULT_OK) {
-
+		   // ********** creates PICTURE **************************
 			Bundle extras = data.getExtras();
-			Bitmap btm = (Bitmap) extras.get("data");
+			Bitmap btm = (Bitmap) extras.get("data"); //thumbnail of photo
 			FileOutputStream fs;
-			
-			/* *********************************************
-			* BUG!!! MEDIAFILE not working all the time
-			***********************************************/
+
 			try {
 				clickie(mediaFile.toString());
 			} catch (Exception e1) {
@@ -269,19 +242,17 @@ public class NoteActivity extends Activity {
 			}
 
 			try {
-				fs = new FileOutputStream(mediaFile); // Throws b/c mediafile 
+				fs = new FileOutputStream(mediaFile); 
 				btm.compress(Bitmap.CompressFormat.JPEG, 100, fs);
 			} catch (Exception e) {
 				Log.e(LOG_TAG, "Picture FileOutStream or compress exception");
 				e.printStackTrace();
 			}
-			// End of bug!
 
-			// Creates picture object and view
+			// Creates picture object and view of (thumbnail)
 			NoteEntryModel noteEntry = this.note.add(NoteEntryModel.NoteType.PICTURE);
 			noteEntry.setFilePath(mediaFile.toString());
 			PictureBuilder picObject = new PictureBuilder(noteActivity, btm, noteEntry);
-
 		}	
 		
 		else
@@ -338,7 +309,7 @@ public class NoteActivity extends Activity {
 
 /* Basically following what Nik was doing. In the event this activity is 
  * destroyed we need to release all players/recorders. Since they aren't 
- * accessable within this activity,	we need a place to store them.
+ * accessible within this activity,	we need a place to store them.
  */
 
 	@Override
@@ -419,6 +390,13 @@ public class NoteActivity extends Activity {
  * 3. However, if we want to use the recorder or player within StudyBuddy,
  * 	we need to use a service or something otherwise SB crashes
  * 
- * 4. Currently cannot stop a playback after exiting SoundMenu 
+ * 4. Currently cannot stop a playback after exiting SoundMenu. 
+ * 
+ * 
+ * 1/31/2015 Issues (Anthony)
+ * 
+ *  5. Cannot stop a sound playback if you back out of the SoundPlayMenu
+ *  	 (by clicking checkmark), it keeps playing until complete. Need to
+ *  	link the player object to something so we can access it again.
  * 
  */
