@@ -366,8 +366,9 @@ public class CalenActivity extends Activity {
         @Override
         public void onClick(View view)
         {
-        	//Get info for day poked
+        	//Get the tag of the day touched. Eg. February-2-2015 
         	String date_month_year = (String) view.getTag();
+        	//Pack information into event
         	Intent dayLaunch = new Intent(CalenActivity.this, DayDetails.class);
         	dayLaunch.putExtra("Day", date_month_year);    
     		startActivity(dayLaunch);

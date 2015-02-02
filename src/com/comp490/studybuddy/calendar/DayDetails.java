@@ -6,6 +6,7 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -25,10 +26,34 @@ public class DayDetails extends Activity {
 	    
 	    prevIntent = getIntent();
 	    day_mon_yr = prevIntent.getStringExtra("Day");
-	    
 	    dayDetailText = (TextView) this.findViewById(R.id.textView1);
-	    
 	    dayDetailText.setText(day_mon_yr);
+	    //Create a string to search for events on this day
+	    String[] date = day_mon_yr.split("-");
+	    String thisDay = "" + date[2] + "-" + monthStringToInt(date[0]) + "-" + date[1];
+	    Log.d("TAG", thisDay);
+	    //Get Events For the Day
+	    
+	    //Display the events
+	}
+	
+	public int monthStringToInt(String month) {
+		int monthInt = -1;
+		switch(month) {
+			case "January": monthInt = 1; break;
+			case "February": monthInt = 2; break;
+			case "March": monthInt = 3; break;
+			case "April": monthInt = 4; break;
+			case "May": monthInt = 5; break;
+			case "June": monthInt = 6;  break;
+			case "July": monthInt = 7; break;
+			case "August": monthInt = 8; break;
+			case "September": monthInt = 9; break;
+			case "October": monthInt = 10; break;
+			case "November": monthInt = 11; break;
+			case "December": monthInt = 12; break;
+		}
+		return monthInt;
 	}
 	
 	@Override
