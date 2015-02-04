@@ -5,6 +5,7 @@ import com.comp490.studybuddy.R;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -16,6 +17,8 @@ public class DayDetails extends Activity {
 	private TextView dayDetailText;
 	private Intent prevIntent;
 	private String day_mon_yr;
+	private CalDBAdapter db;
+    private Cursor cursor;
 	
 	private ActionBar actionBar;
 	
@@ -33,7 +36,8 @@ public class DayDetails extends Activity {
 	    String thisDay = "" + date[2] + "-" + monthStringToInt(date[0]) + "-" + date[1];
 	    Log.d("TAG", thisDay);
 	    //Get Events For the Day
-	    
+	    db.open();
+	    cursor = db.getEventByDay(thisDay);
 	    //Display the events
 	}
 	
