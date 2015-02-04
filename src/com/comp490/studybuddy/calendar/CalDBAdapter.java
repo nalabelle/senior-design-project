@@ -108,9 +108,19 @@ public class CalDBAdapter {
 		         EVENT_ID + " = '" + eventId + "'", null, null, null, null);
 		}
 		
-		//TODO
+		// For Day Details grabs events for a current day 
+		public Cursor getEventByDay(String curr) {
+			Log.d(TAG, "getEventsByDay: " +curr);
+			return sqlDatabase.query(EVENT_TABLE,
+        		new String[] {EVENT_ID, EVENT_NAME, EVENT_START_DATE, EVENT_END_DATE},
+		   		EVENT_START_DATE + " LIKE " + "'" + curr + "%'" + " OR ",
+		   		null, null, null, null);
+		}
+		
+		// For the main Calendar View grabs events for the current month
+		// As well as the previous month and next month
 		public Cursor getEventByYear(String prevMonth, String curr, String nextMonth) {
-			Log.d(TAG, "getEventByTime:" +prevMonth+ " " +curr + " " +nextMonth);
+			Log.d(TAG, "getEventsByTime:" +prevMonth+ " " +curr + " " +nextMonth);
 			return sqlDatabase.query(EVENT_TABLE,
         		new String[] {EVENT_ID, EVENT_NAME, EVENT_START_DATE, EVENT_END_DATE},
         		EVENT_START_DATE + " LIKE " + "'" + prevMonth + "%'" + " OR " +
