@@ -2,6 +2,7 @@ package com.comp490.studybuddy.note;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.util.Log;
 import android.view.ActionMode;
 import android.view.Menu;
@@ -27,7 +28,7 @@ public class VideoMenu implements ActionMode.Callback {
 	@Override
 	public boolean onCreateActionMode(ActionMode mode, Menu menu) {
 		MenuInflater inflater = mode.getMenuInflater();
-		inflater.inflate(R.menu.note_edittext_pics, menu);
+		inflater.inflate(R.menu.note_video, menu);
 		return true;
 	}
 
@@ -41,10 +42,19 @@ public class VideoMenu implements ActionMode.Callback {
 	public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
 		// TODO Auto-generated method stub
 		switch (item.getItemId()) {
-
-		case R.id.menuUnlockView: {
+		
+		case R.id.menuSoundPlay: {
+			//launch VideoActivity to play fullscreen video
+			Intent launchVideo = new Intent(noteActivity.getApplicationContext(), VideoActivity.class);
+			launchVideo.putExtra("videoUri", videoBuilder.data.toString());
+			noteActivity.startActivity(launchVideo);
 			return true;
 		}
+
+		case R.id.menuUnlockView: { 
+			return true;
+		}
+		
 		case R.id.menuDeleteView: {
 			AlertDialog.Builder builder = new AlertDialog.Builder(noteActivity);
 			builder.setMessage("Delete Item?");

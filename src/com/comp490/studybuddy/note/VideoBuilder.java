@@ -5,7 +5,9 @@ import android.util.DisplayMetrics;
 import android.view.ActionMode;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.MediaController;
 import android.widget.VideoView;
@@ -13,69 +15,63 @@ import android.widget.VideoView;
 import com.comp490.studybuddy.R;
 import com.comp490.studybuddy.models.NoteEntryModel;
 
+/* This class creates an button for a recorded video. It updates the model 
+ *  entry with the button's ID and the video Uri (stored as a string in 
+ *  filepath field). The button when clicked spawns a menu to allow playback.
+ */
 public class VideoBuilder {
 	private NoteActivity noteActivity;
 	private VideoBuilder videoBuilder = this;
 	private NoteEntryModel entry;
-	private VideoView vid;
 	private int viewID;
-	Uri data;	
-	
-	public VideoBuilder(NoteActivity textNote, Uri data, NoteEntryModel entry){
-		this.noteActivity = textNote;
+	private ImageButton videoButton;
+	Uri data;
+
+	public VideoBuilder(NoteActivity noteActivity, Uri data, NoteEntryModel entry) {
+		this.noteActivity = noteActivity;
 		this.entry = entry;
 		this.data = data;
-		createVideoView();
+		createVideoButton();
 		this.entry.setType(NoteEntryModel.NoteType.VIDEO);
 	}
-	
-	private void createVideoView(){
-		vid = new VideoView(noteActivity);
-		
-		//set IDs for deletions
+
+	private void createVideoButton() {
+		videoButton = new ImageButton(noteActivity);
+		videoButton.setImageResource(R.drawable.ic_action_video_dark);
+		LayoutParams llParams = new LayoutParams(LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+		videoButton.setLayoutParams(llParams);	
+
+		// Save relevant info in data structure
 		viewID = noteActivity.generateViewID();
-		vid.setId(viewID);
+		videoButton.setId(viewID);
 		entry.setViewID(viewID);
-		
-		//Insert video
-		vid.setVideoURI(data);
-		android.widget.FrameLayout.LayoutParams params;
-		
-		 DisplayMetrics metrics = new DisplayMetrics(); 
-		 noteActivity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
-		 params = new FrameLayout.LayoutParams((int)metrics.xdpi, (int) metrics.ydpi);
-       //params.width =  metrics.widthPixels;
-       //params.height = metrics.heightPixels;
-       //params.leftMargin = 0;
-       vid.setLayoutParams(params);
+		entry.setFilePath(data.toString()); // When loading, need to parse back
+														// into an Uri with Uri.parse(
 
- 		LinearLayout layout = (LinearLayout) noteActivity.findViewById(R.id.note_inner_layout);
- 		layout.addView(vid);
+		LinearLayout layout = (LinearLayout) noteActivity
+				.findViewById(R.id.note_inner_layout);
+		layout.addView(videoButton);
 
-		vid.setOnTouchListener(new View.OnTouchListener()
-	    {
-	        @Override
-	        public boolean onTouch(View v, MotionEvent event) {
-	      	  ActionMode.Callback vidMenu = new VideoMenu(noteActivity, videoBuilder);
-					noteActivity.startActionMode(vidMenu);
-	            return false;
-	        }
-	    });	
-		
-		// Creates playback controls
-		MediaController media_Controller = new MediaController(noteActivity);
-		media_Controller.setAnchorView(vid);
-		vid.setMediaController(media_Controller);
+		videoButton.setOnLongClickListener(new View.OnLongClickListener() {
+			@Override
+			public boolean onLongClick(View v) {
+				// videoBuilder has Uri data
+				ActionMode.Callback vidMenu = new VideoMenu(noteActivity,
+						videoBuilder);
+				noteActivity.startActionMode(vidMenu);
+				return true;
+			}
+		});
 	}
-	
-	protected int getID(){
+
+	protected int getID() {
 		return viewID;
 	}
-	
+
 	// might be unnecessary
-	protected void deleteObject(){
+	protected void deleteObject() {
 		noteActivity.getNoteModel().remove(entry);
-		vid = null;
+		videoButton = null;
 		videoBuilder = null;
 	}
 }

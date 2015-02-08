@@ -10,7 +10,7 @@
 
     <uses-sdk
         android:minSdkVersion="14"
-        android:targetSdkVersion="19" />
+        android:targetSdkVersion="21" />
 
     <application
         android:allowBackup="true"
@@ -104,8 +104,17 @@
             android:label="@string/title_activity_modify_task" >
         </activity>
         <activity
-            android:name="com.comp490.studybuddy.todolist.ViewTask"
+            android:name=".todolist.ViewTask"
             android:label="@string/title_activity_view_task" >
+        </activity>
+        <activity
+            android:name="com.comp490.studybuddy.note.VideoActivity"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            android:label="@string/title_activity_video"
+            android:configChanges="orientation|screenSize" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.comp490.studybuddy.note.NoteActivity" />
         </activity>
     </application>
 

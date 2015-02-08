@@ -76,5 +76,6 @@
     <string name="title_activity_default">DefaultActivity</string>
     <string name="title_activity_modify_task">Edit Task</string>
     <string name="title_activity_view_task">View Task</string>
+    <string name="title_activity_video">PlayVideo</string>
 
 </resources>
