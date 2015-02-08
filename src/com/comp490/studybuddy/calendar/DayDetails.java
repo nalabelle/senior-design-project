@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v4.widget.SimpleCursorAdapter;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,7 +20,7 @@ public class DayDetails extends Activity {
 	private String day_mon_yr;
 	private CalDBAdapter db;
     private Cursor cursor;
-	
+	private SimpleCursorAdapter listAdapter;
 	private ActionBar actionBar;
 	
 	@Override
@@ -39,6 +40,10 @@ public class DayDetails extends Activity {
 	    db.open();
 	    cursor = db.getEventByDay(thisDay);
 	    //Display the events
+	    
+	    //
+	    
+	    
 	}
 	
 	public int monthStringToInt(String month) {

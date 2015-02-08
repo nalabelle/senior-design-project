@@ -97,7 +97,7 @@ public class CalenActivity extends Activity {
         
         //How to align to columns? Option for Su->Sa || M -> Su TODO
         calHeader = (TextView) this.findViewById(R.id.cal_header);
-       // calHeader.setText("New Event"); //Esthetic bug fix for now
+        // calHeader.setText("New Event"); //Esthetic bug fix for now
 
         calendarGrid = (GridView) this.findViewById(R.id.gridView1);
         
