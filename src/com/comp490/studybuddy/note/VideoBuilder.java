@@ -1,17 +1,11 @@
 package com.comp490.studybuddy.note;
 
 import android.net.Uri;
-import android.util.DisplayMetrics;
 import android.view.ActionMode;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.MediaController;
-import android.widget.VideoView;
-
 import com.comp490.studybuddy.R;
 import com.comp490.studybuddy.models.NoteEntryModel;
 
@@ -38,7 +32,7 @@ public class VideoBuilder {
 	private void createVideoButton() {
 		videoButton = new ImageButton(noteActivity);
 		videoButton.setImageResource(R.drawable.ic_action_video_dark);
-		LayoutParams llParams = new LayoutParams(LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+		LayoutParams llParams = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 		videoButton.setLayoutParams(llParams);	
 
 		// Save relevant info in data structure

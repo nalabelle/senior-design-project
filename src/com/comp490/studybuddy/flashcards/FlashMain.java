@@ -1,10 +1,6 @@
 package com.comp490.studybuddy.flashcards;
 
 import com.comp490.studybuddy.R;
-import com.comp490.studybuddy.R.id;
-import com.comp490.studybuddy.R.layout;
-import com.comp490.studybuddy.R.menu;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;

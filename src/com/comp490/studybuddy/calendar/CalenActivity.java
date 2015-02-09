@@ -23,7 +23,6 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -31,7 +30,6 @@ import android.support.v4.view.GestureDetectorCompat;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.GestureDetector;
-import android.view.GestureDetector.OnGestureListener;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -226,7 +224,8 @@ public class CalenActivity extends Activity {
     			}
     	}
         
-        public String getItem(int position)
+        @Override
+		public String getItem(int position)
         {
             return list.get(position);
         }
@@ -324,7 +323,7 @@ public class CalenActivity extends Activity {
                     {
                         if (eventsPerMonthMap.containsKey(day))
                             {
-                                Integer numEvents = (Integer) eventsPerMonthMap.get(day);
+                                Integer numEvents = eventsPerMonthMap.get(day);
                                 num_events_per_day.setText(numEvents.toString());
                                 if (numEvents == 0) {
                                 	num_events_per_day.setVisibility(View.GONE);

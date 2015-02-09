@@ -3,9 +3,6 @@ package com.comp490.studybuddy.calendar;
 import java.util.UUID;
 
 import com.comp490.studybuddy.models.CalendarEventModel;
-import com.comp490.studybuddy.todolist.Task;
-
-import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -66,7 +63,7 @@ public class CalDBAdapter {
 		}
 		
 		public CalDBAdapter open() {
-			dbHelper = new CalDBHelper(context, this.DATABASE_NAME, null, this.DATABASE_VERSION);
+			dbHelper = new CalDBHelper(context, CalDBAdapter.DATABASE_NAME, null, CalDBAdapter.DATABASE_VERSION);
 		    sqlDatabase = dbHelper.getWritableDatabase();
 		    return this;
 		}

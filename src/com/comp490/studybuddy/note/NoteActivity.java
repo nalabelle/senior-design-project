@@ -13,7 +13,6 @@ package com.comp490.studybuddy.note;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Random;
@@ -32,22 +31,18 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.provider.MediaStore.MediaColumns;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
-import android.widget.MediaController;
 import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.comp490.studybuddy.R;
 import com.comp490.studybuddy.models.NoteEntryModel;
-import com.comp490.studybuddy.models.NoteEntryModel.NoteType;
 import com.comp490.studybuddy.models.NoteModel;
 
 /* General Information: 
@@ -151,7 +146,7 @@ public class NoteActivity extends Activity {
 		actionBar.setDisplayShowHomeEnabled(false); //hide actionbar icon
 		getMenuInflater().inflate(R.menu.note_main_menu, menu);
 
-		View v = (View) menu.findItem(R.id.action_record_sound).getActionView();
+		View v = menu.findItem(R.id.action_record_sound).getActionView();
 		
 		//listeners for Record actionView menu and appropriate response
 		final Button rec = (Button) v.findViewById(R.id.bActionSoundRecord);
@@ -170,6 +165,7 @@ public class NoteActivity extends Activity {
 			}
 		});
 		v.findViewById(R.id.ibActionSoundStop).setOnClickListener(new View.OnClickListener(){
+			@Override
 			public void onClick(View v1) {
 				if (audio != null){
 					if (audio.getStatus().equals(AudioBuilder.Status.RECORDING)){
@@ -260,9 +256,9 @@ public class NoteActivity extends Activity {
 	public String getRealPathFromURI(Context context, Uri contentUri) {
 		  Cursor cursor = null;
 		  try { 
-		    String[] proj = { MediaStore.Images.Media.DATA };
+		    String[] proj = { MediaColumns.DATA };
 		    cursor = context.getContentResolver().query(contentUri,  proj, null, null, null);
-		    int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+		    int column_index = cursor.getColumnIndexOrThrow(MediaColumns.DATA);
 		    cursor.moveToFirst();
 		    return cursor.getString(column_index);
 		  } finally {

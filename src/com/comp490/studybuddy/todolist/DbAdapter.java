@@ -83,7 +83,7 @@ public class DbAdapter {
    
    //open db connection
    public DbAdapter open() {
-      dbHelper = new DbHelper(context, this.DATABASE_NAME, null, this.DATABASE_VERSION);
+      dbHelper = new DbHelper(context, DbAdapter.DATABASE_NAME, null, DbAdapter.DATABASE_VERSION);
       sqlDatabase = dbHelper.getWritableDatabase();
       return this;
    }

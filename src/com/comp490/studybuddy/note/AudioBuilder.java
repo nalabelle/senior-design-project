@@ -103,7 +103,7 @@ public class AudioBuilder {
 	protected void createSoundButton(){
 		// Creating dynamic container (linearlayout) to hold imagebutton and title
 		soundButtonAndTitle = new LinearLayout(noteActivity);
-		LayoutParams llParams = new LayoutParams(LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+		LayoutParams llParams = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 		soundButtonAndTitle.setLayoutParams(llParams);		
 		soundButton = new ImageButton(noteActivity);
 		soundButton.setImageResource(R.drawable.ic_action_volume_on);

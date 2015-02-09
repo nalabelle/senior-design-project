@@ -1,7 +1,5 @@
 package com.comp490.studybuddy.calendar;
 
-import java.util.Calendar;
-
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -18,7 +16,6 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.format.DateFormat;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -115,6 +112,7 @@ public class AddEvent extends Activity {
 		}
 
 		// Do something with user selected time
+		@Override
 		public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
 			final DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("h:mm a");
 			DateTime time = new DateTime(1, 1, 1, hourOfDay, minute);
@@ -157,6 +155,7 @@ public class AddEvent extends Activity {
 		}
 
 		// Do something with user selected date
+		@Override
 		public void onDateSet(DatePicker view, int year, int month, int day) {
 			final DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("MMMM dd, yyyy");
 			

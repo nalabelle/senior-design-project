@@ -5,9 +5,7 @@ import com.comp490.studybuddy.models.CalendarEventModel;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
@@ -53,12 +51,14 @@ public class buddyDBOpenHelper extends SQLiteOpenHelper{
 	}
 	
 	//Create the Database
+	@Override
 	public void onCreate(SQLiteDatabase db) {
 		db.execSQL(CREATE_TODO_TABLE);
 		db.execSQL(CREATE_EVENT_TABLE);
 	}
 	
 	//Called when version mismatch, db on disk old
+	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		Log.d(TAG, "onUpgrade from" +oldVersion+ " to " +newVersion);
 		db.execSQL("DROP TABLE IF EXISTS " +EVENT_TABLE);

@@ -29,7 +29,7 @@ public class PictureBuilder {
 	private void createPicView(){
 
 		pic = new ImageView(noteActivity);
-		pic.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+		pic.setLayoutParams(new LinearLayout.LayoutParams(android.view.ViewGroup.LayoutParams.MATCH_PARENT, android.view.ViewGroup.LayoutParams.MATCH_PARENT));
 		LinearLayout layout = (LinearLayout) noteActivity.findViewById(R.id.note_inner_layout);
 		viewID = noteActivity.generateViewID();
 		pic.setId(viewID); //required for deletion

@@ -96,7 +96,7 @@ public class SoundPlayMenu implements ActionMode.Callback {
 			final TextView soundTitle;
 			soundTitle = (TextView) noteActivity.findViewById(entry.getSecondaryViewID());
 			try {
-				editName.setText(((TextView) soundTitle).getText());
+				editName.setText(soundTitle.getText());
 				editName.selectAll();
 			} catch (Exception e) {
 				Log.e(LOG_TAG, "Sound title textview failed to open");
@@ -107,6 +107,7 @@ public class SoundPlayMenu implements ActionMode.Callback {
 					.setView(editName)
 					.setPositiveButton("Rename",
 							new DialogInterface.OnClickListener() {
+								@Override
 								public void onClick(DialogInterface dialog,
 										int whichButton) {
 									try {
@@ -121,6 +122,7 @@ public class SoundPlayMenu implements ActionMode.Callback {
 							})
 					.setNegativeButton("Cancel",
 							new DialogInterface.OnClickListener() {
+								@Override
 								public void onClick(DialogInterface dialog,
 										int whichButton) {
 								}
@@ -140,6 +142,7 @@ public class SoundPlayMenu implements ActionMode.Callback {
 		builder.setMessage("Delete Sound?");
 		builder.setPositiveButton("Yes",
 				new DialogInterface.OnClickListener() {
+					@Override
 					public void onClick(DialogInterface dialog, int id) {
 						try { // clicked yes
 							View viewToDelete = noteActivity.findViewById(entry.getViewID());
@@ -163,6 +166,7 @@ public class SoundPlayMenu implements ActionMode.Callback {
 				});
 		builder.setNegativeButton("Cancel",
 				new DialogInterface.OnClickListener() {
+					@Override
 					public void onClick(DialogInterface dialog, int id) {
 						dialog.cancel();
 					}

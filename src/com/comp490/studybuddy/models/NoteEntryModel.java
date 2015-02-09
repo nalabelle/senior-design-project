@@ -1,7 +1,5 @@
 package com.comp490.studybuddy.models;
 
-import com.comp490.studybuddy.models.NoteEntryModel.NoteType;
-
 import android.util.Log;
 
 /* NoteEntryModel stores all relevant data about the note objects we create.

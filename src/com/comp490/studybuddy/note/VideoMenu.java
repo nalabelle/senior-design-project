@@ -60,6 +60,7 @@ public class VideoMenu implements ActionMode.Callback {
 			builder.setMessage("Delete Item?");
 			builder.setPositiveButton("Yes",
 					new DialogInterface.OnClickListener() {
+						@Override
 						public void onClick(DialogInterface dialog, int id) {
 							try { // clicked yes
 								View viewToDelete = noteActivity
@@ -75,6 +76,7 @@ public class VideoMenu implements ActionMode.Callback {
 					});
 			builder.setNegativeButton("Cancel",
 					new DialogInterface.OnClickListener() {
+						@Override
 						public void onClick(DialogInterface dialog, int id) {
 							dialog.cancel();
 						}
