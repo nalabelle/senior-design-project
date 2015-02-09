@@ -57,6 +57,33 @@ public class HandwritingMain extends Activity {
 	        case R.id.action_save:
 	            save();
 	            return true;
+	        case R.id.action_penWidthThick:
+	        	penWidth(10);
+	        	return true;
+	        case R.id.action_penWidthThin:
+	        	penWidth(5);
+	        	return true;
+	        case R.id.action_penColorBlack:
+	        	penColor(1);
+	        	return true;
+	        case R.id.action_penColorBlue:
+	        	penColor(2);
+	        	return true;
+	        case R.id.action_penColorCyan:
+	        	penColor(3);
+	        	return true;
+	        case R.id.action_penColorGreen:
+	        	penColor(4);
+	        	return true;
+	        case R.id.action_penColorRed:
+	        	penColor(5);
+	        	return true;
+	        case R.id.action_penColorYellow:
+	        	penColor(6);
+	        	return true;
+	        case R.id.action_penColorWhite:
+	        	penColor(7);
+	        	return true;
 	        default:
 	            return super.onOptionsItemSelected(item);
 	    }
@@ -66,6 +93,13 @@ public class HandwritingMain extends Activity {
 		hNote = new HandwritingNote(HandwritingMain.this, flNote.getWidth(), flNote.getHeight());
 		flNote.removeAllViews();
 		flNote.addView(hNote);
+	}
+	
+	public void undo() {
+		if (hNote == null)
+			return;
+
+		hNote.undo();
 	}
 
 	public void clearAll() {
@@ -80,18 +114,19 @@ public class HandwritingMain extends Activity {
 
 		hNote.saveFile();
 	}
-
-	public void undo() {
-		if (hNote == null)
-			return;
-
-		hNote.undo();
+	
+	public void penWidth(int w){
+		hNote.setPenWidth(w);
 	}
 	
-	public void redo() {
+	public void penColor(int c){
+		hNote.setPenColor(c);
+	}
+	
+/*	public void redo() {
 		if (hNote == null)
 			return;
 
 		hNote.redo();
-	}
+	}*/
 }

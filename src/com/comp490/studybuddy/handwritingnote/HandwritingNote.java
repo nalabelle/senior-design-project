@@ -51,7 +51,7 @@ public class HandwritingNote extends View {
 		paint = new Paint();
 		paint.setAntiAlias(true);
 		paint.setStyle(Paint.Style.STROKE);
-		paint.setColor(Color.rgb(0xff, 0x58, 0x09));
+		paint.setColor(Color.BLACK);
 		paint.setStrokeJoin(Paint.Join.ROUND);
 		paint.setStrokeCap(Paint.Cap.ROUND);
 		paint.setStrokeWidth(5);
@@ -140,7 +140,34 @@ public class HandwritingNote extends View {
 		}
 		return true;
 	}
-
+	
+	public void setPenWidth(int w) {
+		paint.setStrokeWidth(w);
+	}
+	
+	public void setPenColor(int c){
+		if(c == 1){
+			paint.setColor(Color.BLACK);
+		}
+		else if(c == 2){
+			paint.setColor(Color.BLUE);
+		}
+		else if(c == 3){
+			paint.setColor(Color.CYAN);
+		}
+		else if(c == 4){
+			paint.setColor(Color.GREEN);
+		}
+		else if(c == 5){
+			paint.setColor(Color.RED);
+		}
+		else if(c == 6){
+			paint.setColor(Color.YELLOW);
+		}
+		else
+			paint.setColor(Color.WHITE);
+	}
+	
 	public void saveFile() {
 		String fileUrl = Environment.getExternalStorageDirectory().toString()
 				+ "/handwriting.png";
@@ -155,6 +182,5 @@ public class HandwritingNote extends View {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
 	}
 }

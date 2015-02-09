@@ -5,27 +5,67 @@
     <item android:id="@+id/action_startDraw"
           android:icon="@drawable/ic_action_edit"
           android:title="@string/action_startDraw"
-          android:showAsAction="ifRoom" />
+          android:showAsAction="always" >
+    </item>
     
     <item android:id="@+id/action_undo"
           android:icon="@drawable/ic_action_undo"
           android:title="@string/action_undoDraw" 
-          android:showAsAction="ifRoom" />
+          android:showAsAction="always"> 
+    </item>
+    
+    <item android:id="@+id/action_penWidth"
+          android:icon="@drawable/ic_action_edit"
+          android:title="@string/action_changePenWidth" 
+          android:showAsAction="always"> 
+		<menu>
+		    <item android:id= "@+id/action_penWidthThick"
+			      android:title= "@string/action_penWidthThick"/>
+		    <item android:id= "@+id/action_penWidthThin"
+			      android:title= "@string/action_penWidthThin"/>
+		</menu>
+    </item>
+    
+    <item android:id="@+id/action_penColor"
+          android:icon="@drawable/ic_action_edit"
+          android:title="@string/action_changePenColor" 
+          android:showAsAction="always"> 
+		<menu>
+			<item android:id= "@+id/action_penColorBlack"
+			      android:title= "@string/action_penColorBlack"/>
+			<item android:id= "@+id/action_penColorBlue"
+			      android:title= "@string/action_penColorBlue"/>
+			<item android:id= "@+id/action_penColorCyan"
+			      android:title= "@string/action_penColorCyan"/>
+			<item android:id= "@+id/action_penColorGreen"
+			      android:title= "@string/action_penColorGreen"/>
+			<item android:id= "@+id/action_penColorRed"
+			      android:title= "@string/action_penColorRed"/>
+			<item android:id= "@+id/action_penColorYellow"
+			      android:title= "@string/action_penColorYellow"/>
+			<item android:id= "@+id/action_penColorWhite"
+			      android:title= "@string/action_penColorWhite"/>
+	    </menu>
+		    
+    </item>
     
     <item android:id="@+id/action_clearAll"
           android:icon="@drawable/ic_action_discard"
           android:title="@string/action_clearAllDraw" 
-          android:showAsAction="ifRoom" />
+          android:showAsAction="always"> 
+    </item>
     
     <item android:id="@+id/action_save"
           android:icon="@drawable/ic_action_save"
           android:title="@string/action_saveDraw" 
-          android:showAsAction="ifRoom" />
+          android:showAsAction="always"> 
+    </item>
     
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
         android:showAsAction="never"
-        android:title="@string/action_settings"/>
+        android:title="@string/action_settings">
+    </item>
 
 </menu>
