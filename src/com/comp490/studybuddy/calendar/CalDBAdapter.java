@@ -113,7 +113,7 @@ public class CalDBAdapter {
 			Log.d(TAG, "getEventsByDay: " +curr);
 			return sqlDatabase.query(EVENT_TABLE,
         		new String[] {EVENT_ID, EVENT_NAME, EVENT_START_DATE, EVENT_END_DATE},
-		   		EVENT_START_DATE + " LIKE " + "'" + curr + "%'" + " OR ",
+		   		EVENT_START_DATE + " LIKE " + "'" + curr + "%'",
 		   		null, null, null, null);
 		}
 		

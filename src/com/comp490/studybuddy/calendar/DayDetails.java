@@ -1,16 +1,26 @@
 package com.comp490.studybuddy.calendar;
 
+import java.util.ArrayList;
+
 import com.comp490.studybuddy.R;
+import com.comp490.studybuddy.models.CalendarEventModel;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 public class DayDetails extends Activity {
@@ -20,13 +30,17 @@ public class DayDetails extends Activity {
 	private String day_mon_yr;
 	private CalDBAdapter db;
     private Cursor cursor;
-	private SimpleCursorAdapter listAdapter;
+    private ListView listView;
 	private ActionBar actionBar;
+	private ArrayList<CalendarEventModel> eventList;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 	    setContentView(R.layout.activity_day_detail);
+	    //Grab the list view, create an Array to hold events
+	    listView = (ListView) findViewById(R.id.listView1);
+	    eventList = new ArrayList<CalendarEventModel>();
 	    
 	    prevIntent = getIntent();
 	    day_mon_yr = prevIntent.getStringExtra("Day");
@@ -34,16 +48,65 @@ public class DayDetails extends Activity {
 	    dayDetailText.setText(day_mon_yr);
 	    //Create a string to search for events on this day
 	    String[] date = day_mon_yr.split("-");
-	    String thisDay = "" + date[2] + "-" + monthStringToInt(date[0]) + "-" + date[1];
+	    String thisDay = "" + date[2] + "-0" + monthStringToInt(date[0]) + "-0" + date[1];
 	    Log.d("TAG", thisDay);
 	    //Get Events For the Day
+	    db = new CalDBAdapter(this);
 	    db.open();
 	    cursor = db.getEventByDay(thisDay);
-	    //Display the events
-	    
-	    //
-	    
-	    
+	    //db.close();
+	    //Get events from cursors, add to arrayList  
+	    if (cursor.moveToFirst()){
+			   while(!cursor.isAfterLast()){
+				  String id = cursor.getString(cursor.getColumnIndex("_eventId"));
+				  String name = cursor.getString(cursor.getColumnIndex("_eventName"));
+			      String startDate = cursor.getString(cursor.getColumnIndex("_startDate"));
+			      String endDate = cursor.getString(cursor.getColumnIndex("_endDate"));
+			      CalendarEventModel event = new CalendarEventModel(id, name, startDate, endDate);
+			      eventList.add(event);
+			      cursor.moveToNext();
+			   }
+			}
+	    if (eventList.isEmpty()) {Log.d("DAYDETAIL", "NULL");}
+	    //Create an adapter to transfer the the events to the list of textViews
+	    CustomListAdapter adapter = new CustomListAdapter(this, 
+	    		R.layout.day_detail_list_item, eventList);
+	    listView.setAdapter(adapter);
+	}
+	
+	private class CustomListAdapter extends ArrayAdapter<CalendarEventModel> {
+		private Context mContext;
+		private int id;
+		private ArrayList<CalendarEventModel> events;
+		
+		public CustomListAdapter(Context context, int textViewId, 
+				ArrayList<CalendarEventModel> eventList) {
+			super(context, textViewId, eventList);
+			mContext = context;
+			id = textViewId;
+			events = eventList;
+			
+		}
+		
+		@Override
+		public View getView(int position, View v, ViewGroup parent) {
+			View mView = v;
+			if(mView == null) {
+				LayoutInflater vi = (LayoutInflater)mContext.getSystemService
+						(Context.LAYOUT_INFLATER_SERVICE);
+				mView = vi.inflate(R.layout.day_detail_list_item, null);
+				
+			}
+			TextView text = (TextView) mView.findViewById(R.id.textViewItem);
+			if(events.get(position) != null) {
+				text.setTextColor(Color.WHITE);
+				text.setText(events.get(position).getName());
+				Log.d("DAYDETAIL", "events.get(position).getName()");
+				text.setBackgroundColor(Color.BLUE);
+			}
+			return mView;
+		}
+		
 	}
 	
 	public int monthStringToInt(String month) {
