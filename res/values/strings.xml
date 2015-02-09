@@ -36,6 +36,17 @@
     <string name="action_undoDraw">Undo Handwriting</string>
     <string name="action_clearAllDraw">Clear All Handwriting</string>
     <string name="action_saveDraw">Save Handwriting</string>
+    <string name="action_changePenWidth">Change Pen Width</string>
+    <string name="action_penWidthThick">Change Pen Width to Thick</string>
+    <string name="action_penWidthThin">Change Pen Width to Thin</string>
+    <string name="action_changePenColor">Change Pen Color</string>
+    <string name="action_penColorBlack">Change Pen Color to Black</string>
+    <string name="action_penColorBlue">Change Pen Color to Blue</string>
+    <string name="action_penColorCyan">Change Pen Color to Cyan</string>
+    <string name="action_penColorGreen">Change Pen Color to Green</string>
+    <string name="action_penColorRed">Change Pen Color to Red</string>
+    <string name="action_penColorYellow">Change Pen Color to Yellow</string>
+    <string name="action_penColorWhite">Change Pen Color to White</string>
     <string name="title_activity_settings">SettingsActivity</string>
     <string name="title_activity_settings_fragment">SettingsFragment</string>
     <string name="title_activity_help">Help</string>
