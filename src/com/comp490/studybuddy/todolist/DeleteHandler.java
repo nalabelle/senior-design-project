@@ -50,7 +50,7 @@ public class DeleteHandler {
       public void onClick(DialogInterface dialog, int val) {
          dbAdapter.deleteTask(task);
          Toast.makeText(activity.getBaseContext(), "Task deleted: " + task.getName(), Toast.LENGTH_LONG).show();
-         //return to the last activity
+         //return to last activity
          activity.finish();
       }
    }
@@ -59,7 +59,7 @@ public class DeleteHandler {
    private static class NegativeButtonListener implements OnClickListener {
       @Override
       public void onClick(DialogInterface dialog, int val) {
-         //close this dialog
+         //close dialog
          dialog.dismiss();
       }
    }

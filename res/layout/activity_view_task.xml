@@ -11,6 +11,26 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:stretchColumns="1" >
+                <TableRow>
+            <TextView
+                android:layout_marginTop="5dp"
+                android:id="@+id/view_priority"
+                android:padding="2dp"
+                android:text=" "            
+                android:textColor="#838EDE"
+                android:textAppearance="?android:attr/textAppearanceSmall"/>
+        </TableRow>
+        <TableRow>     
+            <TextView
+                android:layout_marginBottom="5dp"
+                android:id="@+id/view_textview_priority"
+                android:padding="2dp"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </TableRow>
+        
+              <View
+            android:layout_height="1dp"
+            android:background="#d3d3d3" />
 
         <TableRow>
             <TextView
@@ -75,26 +95,6 @@
             android:layout_height="1dp"
             android:background="#d3d3d3" />
 
-        <TableRow>
-            <TextView
-                android:layout_marginTop="5dp"
-                android:id="@+id/view_priority"
-                android:padding="2dp"
-                android:text="@string/task_priority_label"            
-                android:textColor="#838EDE"
-                android:textAppearance="?android:attr/textAppearanceSmall"/>
-        </TableRow>
-        <TableRow>     
-            <TextView
-                android:layout_marginBottom="5dp"
-                android:id="@+id/view_textview_priority"
-                android:padding="2dp"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-        </TableRow>
-        
-              <View
-            android:layout_height="1dp"
-            android:background="#d3d3d3" />
 
         <TableRow>
             <TextView

@@ -36,7 +36,7 @@ public class CancelHandler {
    //event handler for Yes button 
    private static class PositiveButtonListener implements OnClickListener {
       private Activity activity;
-      public PositiveButtonListener(Activity activity){
+      public PositiveButtonListener(Activity activity) {
          this.activity = activity;
       }
       @Override

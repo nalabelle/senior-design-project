@@ -13,6 +13,30 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:stretchColumns="1" >
+        
+                              
+        <TableRow>
+            <TextView
+                android:padding="2dp"
+                android:textColor="#838EDE"
+                android:text=" "
+                android:textAppearance="?android:attr/textAppearanceSmall" />        
+      </TableRow>
+      <TableRow>
+            <Spinner
+                android:id="@+id/modify_spinner_priority"
+                android:layout_weight="1"
+                android:entries="@array/modify_priority"
+                android:padding="2dp"
+                android:layout_marginBottom="5dp"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </TableRow>
+        
+        
+              <View
+            android:layout_height="1dp"
+            android:background="#d3d3d3" />
+      
 
         <TableRow>
             <TextView
@@ -34,7 +58,7 @@
               <View
             android:layout_height="1dp"
             android:background="#d3d3d3" />
-      
+
         <TableRow>
             <TextView
                 android:layout_marginTop="5dp"
@@ -66,28 +90,7 @@
                       <View
             android:layout_height="1dp"
             android:background="#d3d3d3" />
-        
-        <TableRow>
-            <TextView
-                android:padding="2dp"
-                android:textColor="#838EDE"
-                android:text="@string/task_priority_label"
-                android:textAppearance="?android:attr/textAppearanceSmall" />        
-      </TableRow>
-      <TableRow>
-            <Spinner
-                android:id="@+id/modify_spinner_priority"
-                android:layout_weight="1"
-                android:entries="@array/modify_priority"
-                android:padding="2dp"
-                android:layout_marginBottom="5dp"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-        </TableRow>
-        
-        
-              <View
-            android:layout_height="1dp"
-            android:background="#d3d3d3" />
+
 
         <TableRow>
             <TextView

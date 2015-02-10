@@ -24,7 +24,7 @@ import android.os.Bundle;
 public class NavigationHandler {
 
    //go to MainActivity to see list of all tasks
-   public static void viewAllTasks(Activity activity){
+   public static void viewAllTasks(Activity activity) {
       Intent viewAllTasksIntent = new Intent(activity, ToDoMain.class);
       activity.startActivity(viewAllTasksIntent);
    }
@@ -37,7 +37,7 @@ public class NavigationHandler {
    }
      
    //go to ViewTask to view task details
-   public static void viewTask(Activity activity, Task task){
+   public static void viewTask(Activity activity, Task task) {
       Intent viewTaskIntent = new Intent(activity, ViewTask.class);
       //put the Task object into bundle
       Bundle viewTaskBundle = new Bundle();
@@ -48,7 +48,7 @@ public class NavigationHandler {
    }
    
    //go to ModifyTask to edit an existing Task
-   public static void editTask(Activity activity, Task task){
+   public static void editTask(Activity activity, Task task) {
       Intent editTaskIntent = new Intent(activity, ModifyTask.class);
       //put task to edit into bundle
       Bundle editTaskBundle = new Bundle();

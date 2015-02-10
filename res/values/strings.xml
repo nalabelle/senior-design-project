@@ -73,8 +73,8 @@
     <string name="task_priority_label">Priority</string>
     <string name="task_notification_label">Notification</string>
     <string name="modify_edittext_hint">Enter task</string>
-    <string name="modify_priority_yes">Yes</string>
-    <string name="modify_priority_no">No</string>
+    <string name="modify_priority_yes">Urgent</string>
+    <string name="modify_priority_no">Not urgent</string>
     <string name="modify_cancel_posbutton">Yes</string>
     <string name="modify_cancel_negbutton">No</string>
     <string name="modify_cancel_textview">Are you sure you want to cancel?</string>
