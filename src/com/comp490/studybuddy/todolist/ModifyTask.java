@@ -154,7 +154,6 @@ public class ModifyTask extends DefaultActivity {
       
       //set due date
       DatePicker datePicker = (DatePicker) findViewById(R.id.modify_datepicker_date);
-      // Get the date from our datepicker
       int day = datePicker.getDayOfMonth();
       int month = datePicker.getMonth();
       int year = datePicker.getYear();
@@ -177,10 +176,13 @@ public class ModifyTask extends DefaultActivity {
       cal.set(Calendar.SECOND, 0);
       
       //service sets alarm through NotificationReceiver that talks to service
+      
+      /**
       notificationReceiver.setAlarmForNotification(cal);
       Toast.makeText(this, "Notification set for: "+ (month+1) +"/"+ day +"/"+ 
             year + " " + hour + ":" + minute, Toast.LENGTH_SHORT).show();
-
+       */
+      
       //set notification 
       CompoundButton notificationSwitch = (Switch)findViewById(R.id.modify_switch_notification);
       if(notificationSwitch.isChecked()){this.task.setNotification(1);}
@@ -196,7 +198,6 @@ public class ModifyTask extends DefaultActivity {
                }    
          }
       });
-      
    }
 
    
@@ -213,15 +214,11 @@ public class ModifyTask extends DefaultActivity {
    private void addNewTask() {
       //load data from form to this.task object
       updateTask();
-      //get a new task id and set it
-      String taskId = dbAdapter.getNewTaskId();
-      this.task.setId(taskId);
       //call the dbAdapter to add new task
       this.dbAdapter.insertTask(this.task);
-      
       Toast.makeText(getBaseContext(), "Task added: " + this.task.getName(), Toast.LENGTH_LONG).show();
    }
-
+   
    
    //edit task load data from this.task object and put to form 
    private void viewTaskForm() {
@@ -255,7 +252,6 @@ public class ModifyTask extends DefaultActivity {
          }  
       }
    }
-
 
 }
 

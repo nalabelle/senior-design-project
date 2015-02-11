@@ -11,6 +11,7 @@ package com.comp490.studybuddy.todolist;
 
 import java.util.Calendar;
 import java.util.Locale;
+
 import com.comp490.studybuddy.R;
 import com.comp490.studybuddy.todolist.NavigationHandler;
 import com.comp490.studybuddy.todolist.DeleteHandler;
@@ -68,19 +69,19 @@ public class ViewTask extends DefaultActivity {
          int dayOfWeek = taskDueDate.get(Calendar.DAY_OF_WEEK);
          String nameOfDay = "";
          switch(dayOfWeek) {
-           case 1: nameOfDay = "Sun";
+           case 1: nameOfDay = "Sun.";
            break;
-           case 2: nameOfDay = "Mon";
+           case 2: nameOfDay = "Mon.";
            break;
-           case 3: nameOfDay = "Tues";
+           case 3: nameOfDay = "Tues.";
            break;
-           case 4: nameOfDay = "Wed";
+           case 4: nameOfDay = "Wed.";
            break;
-           case 5: nameOfDay = "Thurs";
+           case 5: nameOfDay = "Thurs.";
            break;
-           case 6: nameOfDay = "Fri";
+           case 6: nameOfDay = "Fri.";
            break;
-           case 7: nameOfDay = "Sat";
+           case 7: nameOfDay = "Sat.";
            break;
            }
          String dueDateString = nameOfDay + " " + taskDueDate.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.US) + " "
@@ -88,7 +89,7 @@ public class ViewTask extends DefaultActivity {
                + taskDueDate.get(Calendar.YEAR);
          taskDateTextView.setText(dueDateString);
          
-         // set time
+         //set time
          TextView taskTimeTextView = (TextView) findViewById(R.id.view_textview_time);
          Calendar taskDueTime = this.task.getTime();
          String am_pm = "";
@@ -101,7 +102,7 @@ public class ViewTask extends DefaultActivity {
          String dueTimeString = hour + ":" + minute + " " + am_pm;
          taskTimeTextView.setText(dueTimeString);
          
-         // set the priority level
+         //set the priority level
          TextView priorityTextView = (TextView) findViewById(R.id.view_textview_priority);
          String priorityString;
          switch (this.task.getPriority()) {

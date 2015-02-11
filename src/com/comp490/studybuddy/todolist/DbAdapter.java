@@ -10,7 +10,6 @@
 
 package com.comp490.studybuddy.todolist;
 
-import java.util.UUID;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -23,17 +22,13 @@ import android.util.Log;
 public class DbAdapter {
 
    public static final String TAG = "todolist";
-   
    private DbHelper dbHelper;
    private SQLiteDatabase sqlDatabase;
-   
    //current activity
    private final Context context;
    
    public static final String DATABASE_NAME = "to_do_list.db";
-   
    public static final int DATABASE_VERSION = 1;
-   
    public static final String TASK_TABLE_NAME = "_task";
    public static final String TASK_COLUMN_ID = "_id";
    public static final String TASK_COLUMN_NAME = "_title";
@@ -57,7 +52,7 @@ public class DbAdapter {
          String query 
          = "Create table " + TASK_TABLE_NAME
          + " ( "
-         + TASK_COLUMN_ID + " text primary key, "
+         + TASK_COLUMN_ID + " integer primary key autoincrement, " 
          + TASK_COLUMN_NAME + " text not null, "
          + TASK_COLUMN_DATE + " integer not null, "
          + TASK_COLUMN_TIME + " integer not null, "
@@ -96,7 +91,6 @@ public class DbAdapter {
    //insert new task into Task table
    public void insertTask(Task task) {
       ContentValues initialValues = new ContentValues();
-      initialValues.put(TASK_COLUMN_ID, task.getId());
       initialValues.put(TASK_COLUMN_NAME, task.getName());
       initialValues.put(TASK_COLUMN_DATE, task.getDate().getTimeInMillis());
       initialValues.put(TASK_COLUMN_TIME, task.getTime().getTimeInMillis());
@@ -117,7 +111,7 @@ public class DbAdapter {
    }
    
    //get task by id
-   public Cursor getTaskById(String taskId) {
+   public Cursor getTaskById(int taskId) {
       Log.d(TAG, "getTaskById " + taskId);
       return sqlDatabase.query(TASK_TABLE_NAME,
             new String[] {TASK_COLUMN_ID, TASK_COLUMN_NAME, 
@@ -147,21 +141,9 @@ public class DbAdapter {
    }
    
    //delete Task
-   public void deleteTask(String taskId) {
+   public void deleteTask(int taskId) {
       sqlDatabase.delete(TASK_TABLE_NAME, TASK_COLUMN_ID + " = '" + taskId + "'", null);        
       Log.d(TAG, "deleteTask " + taskId);
-   }
-
-   //get new randomly generated task id for when adding a new task
-   public String getNewTaskId() {
-      Log.d(TAG, "getNewTaskId");
-      String uuid = null;
-      Cursor cursor = null;
-      do {
-         uuid = UUID.randomUUID().toString();
-         cursor = getTaskById(uuid);
-      } while (cursor.getCount() > 0);
-      return uuid;
    }
 
 }

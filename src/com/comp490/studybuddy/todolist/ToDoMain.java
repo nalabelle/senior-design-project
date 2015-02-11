@@ -81,7 +81,7 @@ public class ToDoMain extends DefaultActivity {
 		cursor.moveToFirst();
 		cursor.move(itemId);
 		//sets data for task item selected
-		taskItem.setId(cursor.getString(cursor.getColumnIndex(DbAdapter.TASK_COLUMN_ID)));
+	   taskItem.setId(cursor.getInt(cursor.getColumnIndex(DbAdapter.TASK_COLUMN_ID)));
 		taskItem.setName(cursor.getString(cursor.getColumnIndex(DbAdapter.TASK_COLUMN_NAME)));
 		taskItem.getDate().setTimeInMillis(cursor.getLong(cursor.getColumnIndex(DbAdapter.TASK_COLUMN_DATE)));
 		taskItem.getTime().setTimeInMillis(cursor.getLong(cursor.getColumnIndex(DbAdapter.TASK_COLUMN_TIME)));
@@ -102,7 +102,7 @@ public class ToDoMain extends DefaultActivity {
 			return super.onOptionsItemSelected(item);
 		}
 	}
-
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present

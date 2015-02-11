@@ -10,7 +10,7 @@
     <string name="title_activity_event">AddEvent</string>
     <string name="main_Cal_button">Calendar v 1.0</string>
     <string name="title_activity_picture">Picture</string>
-    <string name="title_activity_to_do_list">To Do List</string>
+    <string name="title_activity_to_do_list">Reminders</string>
     <string name="title_activity_my_service">MyService</string>
     <string name="action_create_text">Enter Text</string>
     <string name="action_record_sound">Record Sound</string>

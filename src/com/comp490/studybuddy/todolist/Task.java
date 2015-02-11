@@ -17,7 +17,7 @@ import java.util.Calendar;
 @SuppressWarnings("serial")
 public class Task implements Serializable {
 
-   private String id;
+   private int id;
    private String name;
    private Calendar dueDate, dueTime;
    private int priorityLevel;
@@ -29,7 +29,7 @@ public class Task implements Serializable {
    public static final String TASK_BUNDLE = "task_bundle";  
 
    public Task() {
-      this.id = "";
+      this.id = 0;
       this.name = "";
       this.dueDate = Calendar.getInstance();
       this.dueTime = Calendar.getInstance();
@@ -37,7 +37,7 @@ public class Task implements Serializable {
       this.notification = NOTIFICATION_UNCHECKED;
    }
    
-   public Task(String id, String title, Calendar date, Calendar time, int priorityLevel, int notify) {
+   public Task(int id, String title, Calendar date, Calendar time, int priorityLevel, int notify) {
       super();
       this.id = id;
       this.name = title;
@@ -47,11 +47,11 @@ public class Task implements Serializable {
       this.notification = notify;
    }
 
-   public String getId() {
+   public int getId() {
       return id;
    }
 
-   public void setId(String id) {
+   public void setId(int id) {
       this.id = id;
    }
 
