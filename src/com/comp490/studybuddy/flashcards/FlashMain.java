@@ -1,3 +1,20 @@
+/**
+ * Author: Wesley Liang
+ * Date started: 
+ * Date Completed: IP
+ * Peer Review:  
+ * Team members: Buddy Corp
+ * Contribution: Uyen Nguyen && Wesley Liang
+ */
+
+/*
+ * Code is largely adapted from the google developer training tutorial found at:
+ * http://developer.android.com/training/animation/index.html
+ * This project is open source, developed in adherence to the guideline found here:
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ */
+
 package com.comp490.studybuddy.flashcards;
 
 import com.comp490.studybuddy.R;
