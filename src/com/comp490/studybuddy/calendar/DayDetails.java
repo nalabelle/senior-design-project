@@ -48,13 +48,13 @@ public class DayDetails extends Activity {
 	    dayDetailText.setText(day_mon_yr);
 	    //Create a string to search for events on this day
 	    String[] date = day_mon_yr.split("-");
+	    //PROBLEM HERE padding single digit dates, doesnt work for double digit
 	    String thisDay = "" + date[2] + "-0" + monthStringToInt(date[0]) + "-0" + date[1];
 	    Log.d("TAG", thisDay);
 	    //Get Events For the Day
 	    db = new CalDBAdapter(this);
 	    db.open();
 	    cursor = db.getEventByDay(thisDay);
-	    //db.close();
 	    //Get events from cursors, add to arrayList  
 	    if (cursor.moveToFirst()){
 			   while(!cursor.isAfterLast()){
@@ -67,6 +67,7 @@ public class DayDetails extends Activity {
 			      cursor.moveToNext();
 			   }
 			}
+	    db.close();
 	    if (eventList.isEmpty()) {Log.d("DAYDETAIL", "NULL");}
 	    //Create an adapter to transfer the the events to the list of textViews
 	    CustomListAdapter adapter = new CustomListAdapter(this, 

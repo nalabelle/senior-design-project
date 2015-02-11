@@ -185,7 +185,7 @@ public class CalenActivity extends Activity {
                 db.open();
                 eventList = new ArrayList<CalendarEventModel>();
                 getEvents();
-                
+                db.close();
                 // Print Month
                 printMonth();
 
