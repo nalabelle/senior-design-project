@@ -67,9 +67,9 @@ public class ModifyTask extends DefaultActivity {
          this.taskJob = this.ADD_TASK;
       }
       
-//      notificationReceiver = new NotificationReceiver(this);
-//      //bind activity to service
-//      notificationReceiver.doBindService();      
+      notificationReceiver = new NotificationReceiver(this);
+      //bind activity to service
+      notificationReceiver.doBindService();      
    }
    
    
@@ -204,8 +204,8 @@ public class ModifyTask extends DefaultActivity {
    @Override
    protected void onStop() {
        //stop connection to service when activity is stopped
-//       if(notificationReceiver != null)
-//          notificationReceiver.doUnbindService();
+       if(notificationReceiver != null)
+          notificationReceiver.doUnbindService();
        super.onStop();
    }
   
