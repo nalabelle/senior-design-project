@@ -44,6 +44,9 @@
             android:name=".calendar.CalenActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_calen" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.app.MainActivity" />
         </activity>
         <activity
             android:name=".calendar.DayDetails"
@@ -84,7 +87,8 @@
         </activity>
         <activity
             android:name=".calendar.AddEvent"
-            android:label="@string/title_activity_event" >
+            android:label="@string/title_activity_event" 
+            android:configChanges="orientation|screenSize">
         </activity>
 
         <provider
