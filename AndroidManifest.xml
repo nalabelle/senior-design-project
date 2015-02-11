@@ -46,11 +46,14 @@
             android:label="@string/title_activity_calen" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.app.MainActivity" />
+                android:value="com.comp490.studybuddy.MainActivity" />
         </activity>
         <activity
             android:name=".calendar.DayDetails"
             android:label="@string/title_activity_day" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.comp490.studybuddy.calendar.CalenActivity" />
         </activity>
         <activity
             android:name=".MyService"
@@ -89,6 +92,9 @@
             android:name=".calendar.AddEvent"
             android:label="@string/title_activity_event" 
             android:configChanges="orientation|screenSize">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.comp490.studybuddy.calendar.CalenActivity" />
         </activity>
 
         <provider
