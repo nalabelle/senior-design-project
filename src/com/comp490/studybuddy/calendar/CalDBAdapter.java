@@ -89,7 +89,8 @@ public class CalDBAdapter {
 		
 		public Cursor getAllEvents() {
 			return sqlDatabase.query(EVENT_TABLE, 
-					new String[] {EVENT_ID, EVENT_NAME, EVENT_START_DATE, EVENT_END_DATE}, 
+					new String[] {EVENT_ID, EVENT_NAME, EVENT_START_DATE, 
+						EVENT_END_DATE, EVENT_DESCRIPTION, EVENT_COLOR}, 
 					null, null, null, null, null);
 		}
 		
@@ -99,13 +100,16 @@ public class CalDBAdapter {
 			values.put(EVENT_NAME, event.getName());
 			values.put(EVENT_START_DATE, event.getStart());
 			values.put(EVENT_END_DATE, event.getEnd());
+			values.put(EVENT_DESCRIPTION, event.getDesc());
+			values.put(EVENT_COLOR, event.getColor());
 		    sqlDatabase.insert(EVENT_TABLE, null, values); 
 		}
 		
 		public Cursor getEventById(String eventId) {
 		   Log.d(TAG, "getTaskById " + eventId);
 		   return sqlDatabase.query(EVENT_TABLE,
-		         new String[] {EVENT_ID, EVENT_NAME, EVENT_START_DATE, EVENT_END_DATE},
+		         new String[] {EVENT_ID, EVENT_NAME, EVENT_START_DATE, 
+				   EVENT_END_DATE, EVENT_DESCRIPTION, EVENT_COLOR},
 		         EVENT_ID + " = '" + eventId + "'", null, null, null, null);
 		}
 		
@@ -113,7 +117,8 @@ public class CalDBAdapter {
 		public Cursor getEventByDay(String curr) {
 			Log.d(TAG, "getEventsByDay: " +curr);
 			return sqlDatabase.query(EVENT_TABLE,
-        		new String[] {EVENT_ID, EVENT_NAME, EVENT_START_DATE, EVENT_END_DATE},
+        		new String[] {EVENT_ID, EVENT_NAME, EVENT_START_DATE, 
+					EVENT_END_DATE, EVENT_DESCRIPTION, EVENT_COLOR},
 		   		EVENT_START_DATE + " LIKE " + "'" + curr + "%'",
 		   		null, null, null, null);
 		}
@@ -123,7 +128,8 @@ public class CalDBAdapter {
 		public Cursor getEventByYear(String prevMonth, String curr, String nextMonth) {
 			Log.d(TAG, "getEventsByTime:" +prevMonth+ " " +curr + " " +nextMonth);
 			return sqlDatabase.query(EVENT_TABLE,
-        		new String[] {EVENT_ID, EVENT_NAME, EVENT_START_DATE, EVENT_END_DATE},
+        		new String[] {EVENT_ID, EVENT_NAME, EVENT_START_DATE, 
+					EVENT_END_DATE, EVENT_DESCRIPTION, EVENT_COLOR},
         		EVENT_START_DATE + " LIKE " + "'" + prevMonth + "%'" + " OR " +
 		   		EVENT_START_DATE + " LIKE " + "'" + curr + "%'" + " OR " +
 		   		EVENT_START_DATE + " LIKE " + "'" + nextMonth + "%'", null, null, null, null);
@@ -135,7 +141,10 @@ public class CalDBAdapter {
 			values.put(EVENT_NAME, event.getName());
 			values.put(EVENT_START_DATE, event.getStart());
 			values.put(EVENT_END_DATE, event.getEnd());
-			sqlDatabase.update(EVENT_TABLE, values, EVENT_ID + " = '" + event.getId() + "'", null);
+			values.put(EVENT_DESCRIPTION, event.getDesc());
+			values.put(EVENT_COLOR, event.getColor());
+			sqlDatabase.update(EVENT_TABLE, values, EVENT_ID + " = '" + 
+					event.getId() + "'", null);
 			Log.d(TAG, "editExistingTask " + event.getName());
 		}
 		
