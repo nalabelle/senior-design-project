@@ -217,7 +217,10 @@ public class CalenActivity extends Activity {
     				  String name = cursor.getString(cursor.getColumnIndex("_eventName"));
     			      String startDate = cursor.getString(cursor.getColumnIndex("_startDate"));
     			      String endDate = cursor.getString(cursor.getColumnIndex("_endDate"));
-    			      CalendarEventModel event = new CalendarEventModel(id, name, startDate, endDate);
+    			      String description = cursor.getString(cursor.getColumnIndex("_description"));
+    			      String color = cursor.getString(cursor.getColumnIndex("_color"));
+    			      CalendarEventModel event = new CalendarEventModel(id, 
+    			    		  name, startDate, endDate, description, color);
     			      eventList.add(event);
     			      cursor.moveToNext();
     			   }
@@ -367,9 +370,13 @@ public class CalenActivity extends Activity {
         {
         	//Get the tag of the day touched. Eg. February-2-2015 
         	String date_month_year = (String) view.getTag();
+        	//Turn into Date Time object
+        	DateTimeFormatter format = DateTimeFormat.forPattern("MMMM-dd-yyyy");
+        	DateTime monthDayYear = format.parseDateTime(date_month_year);
         	//Pack information into event
         	Intent dayLaunch = new Intent(CalenActivity.this, DayDetails.class);
         	dayLaunch.putExtra("Day", date_month_year);    
+        	dayLaunch.putExtra("DT", monthDayYear.toString());
     		startActivity(dayLaunch);
         }
         

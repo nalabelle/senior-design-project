@@ -28,6 +28,7 @@ public class DayDetails extends Activity {
 	private TextView dayDetailText;
 	private Intent prevIntent;
 	private String day_mon_yr;
+	private String dateTimeToday;
 	private CalDBAdapter db;
     private Cursor cursor;
     private ListView listView;
@@ -44,17 +45,16 @@ public class DayDetails extends Activity {
 	    
 	    prevIntent = getIntent();
 	    day_mon_yr = prevIntent.getStringExtra("Day");
+	    dateTimeToday = prevIntent.getStringExtra("DT");
 	    dayDetailText = (TextView) this.findViewById(R.id.textView1);
 	    dayDetailText.setText(day_mon_yr);
-	    //Create a string to search for events on this day
-	    String[] date = day_mon_yr.split("-");
-	    //PROBLEM HERE padding single digit dates, doesnt work for double digit
-	    String thisDay = "" + date[2] + "-0" + monthStringToInt(date[0]) + "-0" + date[1];
-	    Log.d("TAG", thisDay);
+	    //Time DateTime String to relevant info for Query
+	    dateTimeToday = dateTimeToday.substring(0,10);
+	    Log.d("DayDetail", "Searching for: " +dateTimeToday);
 	    //Get Events For the Day
 	    db = new CalDBAdapter(this);
 	    db.open();
-	    cursor = db.getEventByDay(thisDay);
+	    cursor = db.getEventByDay(dateTimeToday);
 	    //Get events from cursors, add to arrayList  
 	    if (cursor.moveToFirst()){
 			   while(!cursor.isAfterLast()){
@@ -99,10 +99,11 @@ public class DayDetails extends Activity {
 				
 			}
 			TextView text = (TextView) mView.findViewById(R.id.textViewItem);
+			//This logic is run many times ~3x  Why?
 			if(events.get(position) != null) {
 				text.setTextColor(Color.WHITE);
 				text.setText(events.get(position).getName());
-				Log.d("DAYDETAIL", "events.get(position).getName()");
+				Log.d("DAYDETAIL", ""+events.get(position).getName());
 				text.setBackgroundColor(Color.BLUE);
 			}
 			return mView;
