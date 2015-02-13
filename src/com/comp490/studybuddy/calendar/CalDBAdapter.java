@@ -25,13 +25,17 @@ public class CalDBAdapter {
 		private static final String EVENT_NAME = "_eventName";
 		private static final String EVENT_START_DATE = "_startDate";
 		private static final String EVENT_END_DATE = "_endDate";
+		private static final String EVENT_DESCRIPTION = "_description";
+		private static final String EVENT_COLOR = "_color";
 
 		private static final String CREATE_EVENT_TABLE = 
 				"create table " + EVENT_TABLE + " ( " +
 				EVENT_ID + " text primary key, " +
 				EVENT_NAME + " text not null, " + 
 				EVENT_START_DATE + " text not null, " +
-				EVENT_END_DATE + " text " + " ); ";
+				EVENT_END_DATE + " text," +
+				EVENT_DESCRIPTION + " text, " + 
+				EVENT_COLOR + " text " + " ); ";
 		
 		private static final String EVENT_TABLE_UPGRADE =
 		         "Drop table if exists " + CalDBAdapter.EVENT_TABLE;
