@@ -10,16 +10,18 @@
 
 package com.comp490.studybuddy.todolist;
 
+import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.net.Uri;
 import android.util.Log;
 
 //controls db
-public class DbAdapter {
+public class DbAdapter  {
 
    public static final String TAG = "todolist";
    private DbHelper dbHelper;

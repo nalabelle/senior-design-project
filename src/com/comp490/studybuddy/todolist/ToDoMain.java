@@ -7,22 +7,23 @@
  * Contribution: Uyen Nguyen
  */
 
+
 package com.comp490.studybuddy.todolist;
 
-import com.comp490.studybuddy.R;
-import com.comp490.studybuddy.todolist.NavigationHandler;
-import com.comp490.studybuddy.todolist.DbAdapter;
-import com.comp490.studybuddy.todolist.Task;
-
+import android.app.Activity;
+import android.content.Intent;
+import android.database.Cursor;
+import android.os.Bundle;
+import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.os.Bundle;
-import android.database.Cursor;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.SimpleCursorAdapter;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
+
+import com.comp490.studybuddy.R;
 
 public class ToDoMain extends DefaultActivity {
 
@@ -32,7 +33,7 @@ public class ToDoMain extends DefaultActivity {
    //adapter to display the list's data
 	private SimpleCursorAdapter listViewAdapter;
 	public static final int ADD_NEW_TASK = 1;
-
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -48,6 +49,15 @@ public class ToDoMain extends DefaultActivity {
          }
       });
 		
+		//long click to delete task
+      listView.setOnItemLongClickListener(new OnItemLongClickListener() {
+          public boolean onItemLongClick(AdapterView<?> arg0, View arg1, final int arg2, 
+                long arg3) {
+             listViewItemLongClickHandler(arg0, arg1, arg2);
+            return true;
+          }
+      }); 
+		
 		dbAdapter = new DbAdapter(this);
 		dbAdapter.open();		
 		initTasksListView();
@@ -58,22 +68,18 @@ public class ToDoMain extends DefaultActivity {
    public void initTasksListView() {
 			cursor = dbAdapter.getAllTasks();
 			startManagingCursor(cursor);
-			
 	      //specify which columns go into which views for the cursor adapter
 			String[] fromColumns = new String[]{DbAdapter.TASK_COLUMN_NAME};
 			//load data into layout components
-			int[] toViews = new int[]{R.id.view_listview};
-			
+			int[] toViews = new int[]{R.id.view_listview};		
 		   //create an adapter to display the loaded data
 			listViewAdapter = new SimpleCursorAdapter(this,
-					R.layout.activity_view_listview, cursor, fromColumns, toViews);
-			
+					R.layout.activity_view_listview, cursor, fromColumns, toViews, 1);
 			//set adapter for the list view
 			this.listView.setAdapter(listViewAdapter);
 	}
-	
 
-	//event handler for item clicked from listView
+	//event handler for item shortn clicked from listView
 	private void listViewItemClickHandler(AdapterView<?> adapterView, View listView, int itemId) {
 		//new task object with data to be passed to next activity to show detail
 		Task taskItem = new Task();
@@ -91,6 +97,20 @@ public class ToDoMain extends DefaultActivity {
 		NavigationHandler.viewTask(this, taskItem);
 	}
 	
+	//event handler for item long clicked from listView
+   @SuppressWarnings("deprecation")
+   private void listViewItemLongClickHandler(AdapterView<?> adapterView, View listView, int itemId) {
+      Task taskItem = new Task();
+      //move cursor to right position
+      cursor.moveToFirst();
+      cursor.move(itemId);
+      //sets data for task item selected
+      taskItem.setId(cursor.getInt(cursor.getColumnIndex(DbAdapter.TASK_COLUMN_ID)));
+      taskItem.setName(cursor.getString(cursor.getColumnIndex(DbAdapter.TASK_COLUMN_NAME)));
+      DeleteHandler.deleteDialog(this, taskItem, this.dbAdapter);
+      cursor.requery();    
+      listViewAdapter.notifyDataSetChanged();
+   }
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -111,3 +131,4 @@ public class ToDoMain extends DefaultActivity {
 	}
 
 }
+

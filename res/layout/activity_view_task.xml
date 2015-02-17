@@ -5,7 +5,8 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin" 
         tools:context="com.comp490.studybuddy.todolist.ViewTask" 
-    >
+        android:background="@drawable/gridbackground" >
+
 
     <TableLayout
         android:layout_width="match_parent"
@@ -17,7 +18,7 @@
                 android:id="@+id/view_priority"
                 android:padding="2dp"
                 android:text=" "            
-                android:textColor="#838EDE"
+                android:textColor="#8968CD"
                 android:textAppearance="?android:attr/textAppearanceSmall"/>
         </TableRow>
         <TableRow>     
@@ -38,7 +39,7 @@
                 android:id="@+id/view_name"
                 android:padding="2dp"
                 android:text="@string/task_name_label"
-                android:textColor="#838EDE"
+                android:textColor="#8968CD"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
       </TableRow>
       <TableRow>           
@@ -59,7 +60,7 @@
                 android:id="@+id/view_date"
                 android:padding="2dp"
                 android:text="@string/task_date_label"
-                android:textColor="#838EDE"
+                android:textColor="#8968CD"
                 android:textAppearance="?android:attr/textAppearanceSmall"/>        
       </TableRow> 
       <TableRow>
@@ -80,7 +81,7 @@
                 android:id="@+id/view_time"
                 android:padding="2dp"
                 android:text="@string/task_time_label"            
-                android:textColor="#838EDE"
+                android:textColor="#8968CD"
                 android:textAppearance="?android:attr/textAppearanceSmall"/>
         </TableRow>
         <TableRow>     
@@ -102,7 +103,7 @@
                 android:id="@+id/view_notification"
                 android:padding="2dp"
                 android:text="@string/task_notification_label"            
-                android:textColor="#838EDE"
+                android:textColor="#8968CD"
                 android:textAppearance="?android:attr/textAppearanceSmall"/>
         </TableRow>
         <TableRow>

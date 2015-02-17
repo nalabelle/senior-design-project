@@ -20,6 +20,8 @@ import com.comp490.studybuddy.todolist.Task;
 
 import android.os.Bundle;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -62,7 +64,7 @@ public class ViewTask extends DefaultActivity {
          // set task data 
          TextView taskNameTextView = (TextView) findViewById(R.id.view_textview_name);
          taskNameTextView.setText(this.task.getName());
-         
+
          // set date
          TextView taskDateTextView = (TextView) findViewById(R.id.view_textview_date);
          Calendar taskDueDate = this.task.getDate();
@@ -108,6 +110,7 @@ public class ViewTask extends DefaultActivity {
          switch (this.task.getPriority()) {
          case Task.YES_PRIORITY:
             priorityString = this.getString(R.string.modify_priority_yes);
+            priorityTextView.setTypeface(null, Typeface.BOLD);
             break;
          default:
             priorityString = this.getString(R.string.modify_priority_no);
@@ -151,8 +154,6 @@ public class ViewTask extends DefaultActivity {
       case R.id.view_actionbar_edit:
          NavigationHandler.editTask(this, this.task);
          return true;
-      case R.id.view_actionbar_delete:
-         DeleteHandler.deleteDialog(this, this.task, this.dbAdapter);
       default:
          return super.onOptionsItemSelected(item);
       }

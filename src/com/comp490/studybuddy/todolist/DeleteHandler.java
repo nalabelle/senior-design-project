@@ -15,7 +15,9 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
+import android.content.Intent;
 import android.widget.Toast;
+
 import com.comp490.studybuddy.todolist.DbAdapter;
 import com.comp490.studybuddy.todolist.Task;
 
@@ -51,7 +53,8 @@ public class DeleteHandler {
          dbAdapter.deleteTask(task);
          Toast.makeText(activity.getBaseContext(), "Task deleted: " + task.getName(), Toast.LENGTH_LONG).show();
          //return to last activity
-         activity.finish();
+         //activity.finish();
+         activity.recreate();
       }
    }
 
