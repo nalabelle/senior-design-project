@@ -61,7 +61,8 @@ public class CalenActivity extends Activity {
     private GridView calendarGrid;
     private GridCellAdapter adapter;
     
-    private final DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("MMMM yyyy");
+    private final DateTimeFormatter dateFormatter = 
+    		DateTimeFormat.forPattern("MMMM yyyy");
 
     private int width;
     private static int height;
