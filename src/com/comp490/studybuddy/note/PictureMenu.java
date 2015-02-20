@@ -2,6 +2,7 @@ package com.comp490.studybuddy.note;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.util.Log;
 import android.view.ActionMode;
 import android.view.Menu;
@@ -43,6 +44,10 @@ public class PictureMenu implements ActionMode.Callback {
 		switch (item.getItemId()) {
 
 		case R.id.menuUnlockView: {
+			//temp until create devoted menu option. Also need to add protection if path is incorrect.
+			Intent intent = new Intent(noteActivity.getApplicationContext(), PhotoViewerActivity.class);
+			intent.putExtra("path", picObject.getFilePath());
+			noteActivity.startActivity(intent);
 			return true;
 		}
 		case R.id.menuDeleteView: {
