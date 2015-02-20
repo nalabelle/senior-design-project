@@ -206,6 +206,7 @@ public class NoteActivity extends Activity {
 		fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE);
 		if (fileUri != null){
 			intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+      intent.putExtra(MediaStore.EXTRA_SCREEN_ORIENTATION, 0);
 			startActivityForResult(intent, MEDIA_TYPE_IMAGE);
 		}
 		else {
