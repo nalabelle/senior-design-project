@@ -38,7 +38,7 @@
             android:label="@string/title_activity_text_note" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.app.MainActivity" />
+                android:value="com.comp490.studybuddy.MainActivity" />
         </activity>
         <activity
             android:name=".calendar.CalenActivity"
@@ -123,9 +123,18 @@
         
         <activity
             android:name="com.comp490.studybuddy.note.VideoActivity"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_video"
-            android:configChanges="orientation|screenSize" >
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.comp490.studybuddy.note.NoteActivity" />
+        </activity>
+        <activity
+            android:name="com.comp490.studybuddy.note.PhotoViewerActivity"
+            android:configChanges="orientation|screenSize" 
+            android:label="@string/title_activity_photo"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.comp490.studybuddy.note.NoteActivity" />

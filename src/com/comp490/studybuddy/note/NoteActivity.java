@@ -11,7 +11,6 @@ Contributing team members: Anthony Summer Nik
 package com.comp490.studybuddy.note;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -24,9 +23,11 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
+import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -203,8 +204,14 @@ public class NoteActivity extends Activity {
 	public void takePhoto() {
 		Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 		fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE);
-		//intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
-		startActivityForResult(intent, MEDIA_TYPE_IMAGE);
+		if (fileUri != null){
+			intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+      intent.putExtra(MediaStore.EXTRA_SCREEN_ORIENTATION, 0);
+			startActivityForResult(intent, MEDIA_TYPE_IMAGE);
+		}
+		else {
+			clickie("File failed to create");
+		}
 	}
 	
 	@Override
@@ -224,9 +231,12 @@ public class NoteActivity extends Activity {
 		
 		else if ( requestCode == MEDIA_TYPE_IMAGE && resultCode == Activity.RESULT_OK) {
 		   // ********** creates PICTURE **************************
-			Bundle extras = data.getExtras();
-			Bitmap btm = (Bitmap) extras.get("data"); //thumbnail of photo
-			FileOutputStream fs;
+			
+			
+			//Bundle extras = data.getExtras();
+			//Bitmap btm = (Bitmap) extras.get("output"); //thumbnail of photo
+			//Bitmap btm = (Bitmap) extras.get("data");
+			//FileOutputStream fs;
 
 			try {
 				clickie(mediaFile.toString());
@@ -236,23 +246,25 @@ public class NoteActivity extends Activity {
 			}
 
 			try {
-				fs = new FileOutputStream(mediaFile); 
-				btm.compress(Bitmap.CompressFormat.JPEG, 100, fs);
+				//fs = new FileOutputStream(mediaFile); 
+				//btm.compress(Bitmap.CompressFormat.JPEG, 100, fs);
 			} catch (Exception e) {
 				Log.e(LOG_TAG, "Picture FileOutStream or compress exception");
 				e.printStackTrace();
 			}
+			//Bitmap btm = BitmapFactory.decodeFile(path);
 
 			// Creates picture object and view of (thumbnail)
 			NoteEntryModel noteEntry = this.note.add(NoteEntryModel.NoteType.PICTURE);
-			noteEntry.setFilePath(mediaFile.toString());
-			PictureBuilder picObject = new PictureBuilder(noteActivity, btm, noteEntry);
+			noteEntry.setFilePath(path); // photofilepath
+			PictureBuilder picObject = new PictureBuilder(noteActivity, noteEntry);
 		}	
 		
 		else
 			;//error
 	}
 	
+	//legacy, not used, not sure purpose 2/18/2015 -Anthony
 	public String getRealPathFromURI(Context context, Uri contentUri) {
 		  Cursor cursor = null;
 		  try { 
@@ -269,20 +281,30 @@ public class NoteActivity extends Activity {
 	}
 	
 	private static Uri getOutputMediaFileUri(int type) {
-		return Uri.fromFile(getOutputMediaFile(type));
+		
+		File temp = null;
+		try {
+			temp = getOutputMediaFile(type);
+		} catch (Exception e) {
+			Log.d("Note", "failed to create mediafile");
+			e.printStackTrace();
+			return null;
+		}
+		return Uri.fromFile(temp);
 	}
 
 	private static File getOutputMediaFile(int type) {
 		File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),"MyCameraApp");
 		if (!mediaStorageDir.exists()) {
 			if (!mediaStorageDir.mkdirs()) {
-				Log.d("TextNote", "failed to create directory");
+				Log.d("Note", "failed to create directory");
 				return null;
 			}
 		}
 		String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
 		if (type == MEDIA_TYPE_IMAGE) {
 			mediaFile = new File(mediaStorageDir.getPath() + File.separator + "IMG_" + timeStamp + ".jpg");
+			path = mediaFile.getAbsolutePath();
 		} 
 		else if (type == MEDIA_TYPE_VIDEO) {
 			mediaFile = new File(mediaStorageDir.getPath() + File.separator + "VID_" + timeStamp + ".mp4");
