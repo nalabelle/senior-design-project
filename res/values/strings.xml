@@ -3,7 +3,11 @@
 
     <string name="app_name">StudyBuddy</string>
     <string name="splash_text">Study Buddy</string>
-    <string name="hello_world">!dlrow olleH</string>
+    <string name="hello_world">Hello World!</string>
+    <string name="cal_prev_month">Previous Month</string>
+    <string name="cal_next_month">Previous Month</string>
+    <string name="cal_placeholder">PlaceHolder 0000</string>
+    <string name="cal_current_month">Previous Month</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_text_note">Note</string>
     <string name="title_activity_calen">CalenActivity</string>

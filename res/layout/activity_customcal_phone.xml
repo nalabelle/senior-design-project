@@ -14,28 +14,27 @@
             android:id="@+id/prevMonth"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="#ffffff"
+            android:contentDescription="@string/cal_prev_month"
             android:onClick="movePast"
-            android:src="@drawable/left"
-            android:text="Back" />
+            android:src="@drawable/ic_action_previous_item" />
 
         <TextView
             android:id="@+id/curr_month"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:contentDescription="@string/cal_current_month"
             android:paddingLeft="50dp"
             android:paddingRight="50dp"
-            android:text="PlaceHolder 0000"
+            android:text="@string/cal_placeholder"
             android:textSize="20sp" />
 
         <ImageButton
             android:id="@+id/nextMonth"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="#ffffff"
+            android:contentDescription="@string/cal_next_month"
             android:onClick="moveFuture"
-            android:src="@drawable/right"
-            android:text="Forw" />
+            android:src="@drawable/ic_action_next_item" />
     </LinearLayout>
 
 	<TextView
