@@ -4,10 +4,11 @@ import java.io.File;
 
 import uk.co.senab.photoview.PhotoViewAttacher;
 import android.app.Activity;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.graphics.drawable.Drawable;
+import android.media.ExifInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -15,53 +16,58 @@ import android.view.MenuItem;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.comp490.studybuddy.R;
+
+/* This activity launches a PhotoViewer library created by Chris Banes which
+ * can be found at https://github.com/chrisbanes/PhotoView (Apache License2).
+ * The viewer allows pinch/zoom/swipe/double tap features.
+ */
 
 public class PhotoViewerActivity extends Activity {
 	PhotoViewAttacher mAttacher;
 	ImageView imageView;
-	
-	
+	Bitmap bitmap;
+	File imgFile = null;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		System.gc(); //try run garbage collector before viewing
+		System.gc(); // try run garbage collector before viewing
 		Bundle extras = getIntent().getExtras();
+		
+		//View to hold our photo
 		imageView = new ImageView(getApplicationContext());
-		
-		
-		File imgFile = null;
+
+		//Make sure the file still exists
 		try {
 			imgFile = new File(extras.getString("path"));
 		} catch (Exception e) {
 			Log.e("Note Photo", "Photo file not created");
 			e.printStackTrace();
 		}
-		if(imgFile != null){
-		    Bitmap bitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-		    imageView.setImageBitmap(bitmap);
-		    // or imageView.setImageDrawable(bitmap);?
+		if (imgFile != null) {
+			bitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+			
+			//some devices save photos rotated
+			rotateBitmap();
+			imageView.setImageBitmap(bitmap);
 
-		} else { 
-			Drawable bitmap = getResources().getDrawable(R.drawable.file_not_found);
+		} else { //display error image if necessary
+			Drawable bitmap = getResources()
+					.getDrawable(R.drawable.file_not_found);
 			imageView.setImageDrawable(bitmap);
 		}
-		
-		//Drawable bitmap = getResources().
-	    //imageView.setImageDrawable(bitmap);
 
-	    // Attach a PhotoViewAttacher, which takes care of all of the zooming functionality.
-	    mAttacher = new PhotoViewAttacher(imageView);
-	    Toast.makeText(this, extras.getString("path"), Toast.LENGTH_LONG).show();
-		
-      requestWindowFeature(Window.FEATURE_NO_TITLE);
-      getWindow().setFlags(
-          WindowManager.LayoutParams.FLAG_FULLSCREEN,  
-           WindowManager.LayoutParams.FLAG_FULLSCREEN);
-      setContentView(imageView);
-      
+		// Attach a PhotoViewAttacher, which takes care of all of the zooming
+		// functionality.
+		mAttacher = new PhotoViewAttacher(imageView);
+
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+				WindowManager.LayoutParams.FLAG_FULLSCREEN);
+		setContentView(imageView);
+
 	}
 
 	@Override
@@ -82,27 +88,33 @@ public class PhotoViewerActivity extends Activity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
+
+	//Rotates the image if necessary (some devices save images rotated)
+	public void rotateBitmap() {
+		int rotate = 0;
+		try {
+			File imageFile = new File(imgFile.getAbsolutePath());
+			ExifInterface exif = new ExifInterface(imageFile.getAbsolutePath());
+			int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION,
+					ExifInterface.ORIENTATION_NORMAL);
+
+			switch (orientation) {
+			case ExifInterface.ORIENTATION_ROTATE_270:
+				rotate = 270;
+				break;
+			case ExifInterface.ORIENTATION_ROTATE_180:
+				rotate = 180;
+				break;
+			case ExifInterface.ORIENTATION_ROTATE_90:
+				rotate = 90;
+				break;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		Matrix matrix = new Matrix();
+		matrix.postRotate(rotate);
+		bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(),
+				bitmap.getHeight(), matrix, true);
+	}
 }
-
-/* ImageView mImageView;
-PhotoViewAttacher mAttacher;
-
-@Override
-public void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_main);
-
-    // Any implementation of ImageView can be used!
-    mImageView = (ImageView) findViewById(R.id.iv_photo);
-
-    // Set the Drawable displayed
-    Drawable bitmap = getResources().getDrawable(R.drawable.wallpaper);
-    mImageView.setImageDrawable(bitmap);
-
-    // Attach a PhotoViewAttacher, which takes care of all of the zooming functionality.
-    mAttacher = new PhotoViewAttacher(mImageView);
-}
-
-
-// If you later call mImageView.setImageDrawable/setImageBitmap/setImageResource/etc then you just need to call
-attacher.update(); */

@@ -16,6 +16,7 @@
     <string name="action_record_sound">Record Sound</string>
     <string name="action_take_photo">Take Picture</string>
     <string name="action_take_video">Take Video</string>
+    <string name="action_photo_view">Inspect Photo</string>
     <string name="action_button_record">Rec</string>
     <string name="action_play_sound">Play Sound</string>
     <string name="action_pause_sound">Pause Sound</string>

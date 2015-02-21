@@ -26,7 +26,7 @@ public class TextMenu implements ActionMode.Callback {
 	@Override
 	public boolean onCreateActionMode(ActionMode mode, Menu menu) {
 		MenuInflater inflater = mode.getMenuInflater();
-		inflater.inflate(R.menu.note_edittext_pics, menu);
+		inflater.inflate(R.menu.note_text, menu);
 		return true;
 	}
 

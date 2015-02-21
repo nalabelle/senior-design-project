@@ -3,7 +3,7 @@ package com.comp490.studybuddy.models;
 import android.util.Log;
 
 /* NoteEntryModel stores all relevant data about the note objects we create.
- * Includes absolute file paths to media files, ViewIds of correspondings
+ * Includes absolute file paths to media files, ViewIds of corresponding
  * buttons, media type, etc. Eventually will probably store data about
  * x/y positions. 
  */
@@ -12,7 +12,7 @@ public class NoteEntryModel {
 	//I store NoteEntries!
 	private NoteType type;
 	private String name;
-	private String description;
+	//private String description;
 	private String filePath = null; //May not have one, who knows?
 	private int viewID = -1;
 	private int secondaryViewID = -1;
@@ -23,10 +23,6 @@ public class NoteEntryModel {
 	
 	public enum NoteType {
 		TEXT, AUDIO, PICTURE, VIDEO;
-	}
-
-	public void addFile(String file) {
-		this.filePath = file;
 	}
 
 	public void setName(String text) {

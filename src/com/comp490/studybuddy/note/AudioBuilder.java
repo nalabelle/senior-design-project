@@ -27,7 +27,7 @@ public class AudioBuilder {
 	//private MediaRecorder recorder = null;
 	private Status status = Status.PAUSED;
 	private static final String LOG_TAG = "Sound Record";
-	private String tempStorage = "/Temp/Notes/Audio/";  //move to Notes/Audio after save
+	//private String tempStorage = "/Temp/Notes/Audio/";  //move to Notes/Audio after save
 	private String soundFilePath;
 	private int viewID;
 	
@@ -91,7 +91,7 @@ public class AudioBuilder {
 			}
 			noteActivity.recorder = null;
 			status = Status.PAUSED;
-			this.entry.addFile(this.soundFilePath); //Add the file to the entry so it can be saved later.
+			this.entry.setFilePath(this.soundFilePath); //Add the file to the entry so it can be saved later.
 			
 			createSoundButton();
 			

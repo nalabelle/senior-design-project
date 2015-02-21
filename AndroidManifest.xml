@@ -122,7 +122,7 @@
         <service android:name=".todolist.AlarmService" />
         
         <activity
-            android:name="com.comp490.studybuddy.note.VideoActivity"
+            android:name="com.comp490.studybuddy.note.VideoViewerActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_video"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >

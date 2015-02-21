@@ -21,18 +21,13 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
-import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.provider.MediaStore.MediaColumns;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -40,7 +35,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
-import android.widget.VideoView;
 
 import com.comp490.studybuddy.R;
 import com.comp490.studybuddy.models.NoteEntryModel;
@@ -69,11 +63,9 @@ public class NoteActivity extends Activity {
 	// Photo and Video related variables
 	public static final int MEDIA_TYPE_IMAGE = 1;
 	public static final int MEDIA_TYPE_VIDEO = 2;	
-	private VideoView vid = null;
 	private Uri fileUri;
 	private static File mediaFile;
-	static String path;
-	
+	static String path;	
 	
 	private static final String LOG_TAG = "Notes";
 	
@@ -113,7 +105,7 @@ public class NoteActivity extends Activity {
 			//onClick of keyboard icon
 
 			NoteEntryModel noteEntry = this.note.add(NoteEntryModel.NoteType.TEXT);
-			TextBuilder text = new TextBuilder(this, noteEntry);
+			new TextBuilder(this, noteEntry); //TextBuilder text = 
 			return true;
 		}
 		case R.id.action_launch_handwritting:{
@@ -196,25 +188,26 @@ public class NoteActivity extends Activity {
 	
 	public void takeVideo() {
 		Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
-		fileUri = getOutputMediaFileUri(MEDIA_TYPE_VIDEO);
-		//intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+		fileUri = getUri(MEDIA_TYPE_VIDEO);
+		//Do not remove below comment, NEEDS INVESTIGATING -> i.e. determine where video file is stored -Ant
+		//intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri); 
 		startActivityForResult(intent, MEDIA_TYPE_VIDEO);
 	}
 	
 	public void takePhoto() {
 		Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-		fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE);
+		fileUri = getUri(MEDIA_TYPE_IMAGE);
 		if (fileUri != null){
 			intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
       intent.putExtra(MediaStore.EXTRA_SCREEN_ORIENTATION, 0);
 			startActivityForResult(intent, MEDIA_TYPE_IMAGE);
 		}
 		else {
-			clickie("File failed to create");
+			clickie("Photo File failed to create");
 		}
 	}
 	
-	@Override
+	@Override //Runs after device takes pic or video
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		
@@ -226,75 +219,37 @@ public class NoteActivity extends Activity {
 		   // ********** creates VIDEO **************************
 			NoteEntryModel noteEntry = this.note.add(NoteEntryModel.NoteType.VIDEO);
 			noteEntry.setFilePath(mediaFile.toString()); //not sure about this
-			VideoBuilder videoBuilder = new VideoBuilder(noteActivity, data.getData(), noteEntry);			        
+			new VideoBuilder(noteActivity, data.getData(), noteEntry);	//VideoBuilder videoBuilder = 		        
 	    }
 		
 		else if ( requestCode == MEDIA_TYPE_IMAGE && resultCode == Activity.RESULT_OK) {
 		   // ********** creates PICTURE **************************
-			
-			
-			//Bundle extras = data.getExtras();
-			//Bitmap btm = (Bitmap) extras.get("output"); //thumbnail of photo
-			//Bitmap btm = (Bitmap) extras.get("data");
-			//FileOutputStream fs;
-
-			try {
-				clickie(mediaFile.toString());
-			} catch (Exception e1) {
-				e1.printStackTrace();
-				Log.e(LOG_TAG, "Picture mediaFile not working");
-			}
-
-			try {
-				//fs = new FileOutputStream(mediaFile); 
-				//btm.compress(Bitmap.CompressFormat.JPEG, 100, fs);
-			} catch (Exception e) {
-				Log.e(LOG_TAG, "Picture FileOutStream or compress exception");
-				e.printStackTrace();
-			}
-			//Bitmap btm = BitmapFactory.decodeFile(path);
-
-			// Creates picture object and view of (thumbnail)
 			NoteEntryModel noteEntry = this.note.add(NoteEntryModel.NoteType.PICTURE);
 			noteEntry.setFilePath(path); // photofilepath
-			PictureBuilder picObject = new PictureBuilder(noteActivity, noteEntry);
+			new PictureBuilder(noteActivity, noteEntry); //PictureBuilder picObject = 
 		}	
 		
-		else
-			;//error
+		else //error
+			Log.e(LOG_TAG, "onActivityResult failed to create media");
 	}
 	
-	//legacy, not used, not sure purpose 2/18/2015 -Anthony
-	public String getRealPathFromURI(Context context, Uri contentUri) {
-		  Cursor cursor = null;
-		  try { 
-		    String[] proj = { MediaColumns.DATA };
-		    cursor = context.getContentResolver().query(contentUri,  proj, null, null, null);
-		    int column_index = cursor.getColumnIndexOrThrow(MediaColumns.DATA);
-		    cursor.moveToFirst();
-		    return cursor.getString(column_index);
-		  } finally {
-		    if (cursor != null) {
-		      cursor.close();
-		    }
-		  }
-	}
-	
-	private static Uri getOutputMediaFileUri(int type) {
+	/*
+	private static Uri getUri(int type) {
 		
 		File temp = null;
 		try {
-			temp = getOutputMediaFile(type);
+			temp = getMediaFile(type);
 		} catch (Exception e) {
 			Log.d("Note", "failed to create mediafile");
 			e.printStackTrace();
 			return null;
 		}
 		return Uri.fromFile(temp);
-	}
+	}*/
 
-	private static File getOutputMediaFile(int type) {
-		File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),"MyCameraApp");
+	//Generate file and to store Photo or Video 
+	private static Uri getUri(int type) {
+		File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),"StudyBuddy_Files");
 		if (!mediaStorageDir.exists()) {
 			if (!mediaStorageDir.mkdirs()) {
 				Log.d("Note", "failed to create directory");
@@ -313,7 +268,7 @@ public class NoteActivity extends Activity {
 		else {
 			return null;
 		}
-		return mediaFile;
+		return Uri.fromFile(mediaFile);
 	}
 	
 	
@@ -384,8 +339,3 @@ public class NoteActivity extends Activity {
 		Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
 	}
 }
-
-/* 2/1/2015 Issues (Anthony)
- * 
- * 1. Cannot create a second video view within a note (BUG).
- */

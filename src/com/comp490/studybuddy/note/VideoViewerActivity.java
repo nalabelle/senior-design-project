@@ -19,7 +19,7 @@ import com.comp490.studybuddy.R;
  * 	Exception handling in case file Uri is no longer valid
  *    onPause()/ onStart() resource management
  * */
-public class VideoActivity extends Activity {
+public class VideoViewerActivity extends Activity {
 	private Uri videoUri;	
 
 	@Override

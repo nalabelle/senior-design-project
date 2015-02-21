@@ -1,0 +1,22 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.studybuddy.TextNote" >
+    
+    
+        <item android:id="@+id/menuInspectPhoto"
+          android:icon="@drawable/ic_action_search"
+          android:title="@string/action_photo_view"
+          android:showAsAction="ifRoom"/>
+        
+    <item android:id="@+id/menuUnlockView"
+          android:icon="@drawable/ic_action_not_secure"
+          android:title="@string/action_unlock_view"
+          android:showAsAction="ifRoom"/>
+    
+    <item android:id="@+id/menuDeleteView"
+          android:icon="@drawable/ic_action_discard"
+          android:title="@string/action_delete_view"
+          android:showAsAction="ifRoom"/>    
+
+    
+</menu>

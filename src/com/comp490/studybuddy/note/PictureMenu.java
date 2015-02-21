@@ -13,6 +13,10 @@ import android.widget.LinearLayout;
 
 import com.comp490.studybuddy.R;
 
+/* Submenu created onLongClick of a photothumbnail. As of now, options include
+ * deleting the thumbnail or inspecting the photo with PhotoViewerActivity.  
+ */
+
 public class PictureMenu implements ActionMode.Callback {
 
 	// Picture Contextual Action Mode
@@ -28,7 +32,7 @@ public class PictureMenu implements ActionMode.Callback {
 	@Override
 	public boolean onCreateActionMode(ActionMode mode, Menu menu) {
 		MenuInflater inflater = mode.getMenuInflater();
-		inflater.inflate(R.menu.note_edittext_pics, menu);
+		inflater.inflate(R.menu.note_picture, menu);
 		return true;
 	}
 
@@ -42,12 +46,13 @@ public class PictureMenu implements ActionMode.Callback {
 	public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
 		// TODO Auto-generated method stub
 		switch (item.getItemId()) {
-
-		case R.id.menuUnlockView: {
-			//temp until create devoted menu option. Also need to add protection if path is incorrect.
+		
+		case R.id.menuInspectPhoto: {
 			Intent intent = new Intent(noteActivity.getApplicationContext(), PhotoViewerActivity.class);
 			intent.putExtra("path", picObject.getFilePath());
 			noteActivity.startActivity(intent);
+		}
+		case R.id.menuUnlockView: {
 			return true;
 		}
 		case R.id.menuDeleteView: {
