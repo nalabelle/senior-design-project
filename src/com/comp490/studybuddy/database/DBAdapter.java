@@ -89,8 +89,8 @@ public class DBAdapter {
 	
 	private static final String CREATE_NOTE_TABLE =
 			String.format("create table %s" +
-					"(%s text primary key, %s text not null, %s text not null, %s text" +
-					"%s text, %s text",
+					"(%s integer primary key, %s text not null, %s text not null, %s text" +
+					"%s integer, %s integer",
 					NOTE_TABLE_NAME, 
 					NOTE_COLUMN_ID, NOTE_COLUMN_NAME, NOTE_COLUMN_TYPE, NOTE_COLUMN_PATH,
 					NOTE_COLUMN_VIEWID, NOTE_COLUMN_SECONDARY_VIEWID);
@@ -303,6 +303,19 @@ public class DBAdapter {
 				NOTE_COLUMN_PATH, NOTE_COLUMN_VIEWID,
 				NOTE_COLUMN_SECONDARY_VIEWID },
 				null, null, null, null, null);
+	}
+	
+	public boolean insertNote(int id, String name, String type, String path, int vId, int vId2) {
+		ContentValues initval = new ContentValues();
+		initval.put(NOTE_COLUMN_ID, id);
+		initval.put(NOTE_COLUMN_NAME, name);
+		initval.put(NOTE_COLUMN_TYPE, type);
+		initval.put(NOTE_COLUMN_PATH, path);
+		initval.put(NOTE_COLUMN_VIEWID, vId);
+		initval.put(NOTE_COLUMN_SECONDARY_VIEWID, vId2);
+		Log.d(TAG, String.format("insertNote %s", name));
+		return (sqlDatabase.insert(NOTE_TABLE_NAME, null, initval) > -1);
+
 	}
 
 }

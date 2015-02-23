@@ -64,6 +64,17 @@ public class NoteModel {
 		dbAdapter.close();
 	}
 	
+	public boolean saveNote(NoteEntryModel note, Context context) {
+		DBAdapter dbAdapter = new DBAdapter(context);
+		dbAdapter.open();
+		
+		boolean res = dbAdapter.insertNote(note.getID(), note.getName(),
+				note.getType().toString(), note.getFilePath(),
+				note.getViewID(), note.getSecondaryViewID());
+		dbAdapter.close();
+		return res;
+	}
+	
 	public void saveEntriesToDatabase(Context context) {
 		DBAdapter dbAdapter = new DBAdapter(context);
 		dbAdapter.open();
