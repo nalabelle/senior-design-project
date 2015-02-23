@@ -5,137 +5,72 @@
     android:gravity="center"
     android:orientation="vertical" 
     tools:context="com.comp490.studybuddy.MainActivity" 
-    android:layout_margin="3dp"
+    android:layout_margin="0dp"
     android:background="@drawable/background"
     >
-
-    <TableLayout
-    android:id="@+id/tableLayout1"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:paddingLeft="30dp"
-    android:paddingRight="30dp"
-    android:paddingBottom="45dp"
-    android:paddingTop="40dp"
-     >
-
-    <TableRow
-            android:id="@+id/tableRow1"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_weight="1">
-
-
+    <View
+             android:layout_width="fill_parent"
+             android:layout_height="1dp"
+             android:background="#c0c0c0"/>
+   
         <Button
-            android:layout_width="0dip"
-            android:layout_margin="3dp"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:id="@+id/button1"
-            android:background="@drawable/textnote"
-            android:onClick="onTextNoteClick" 
-            android:alpha="0.9" />
-        
-        <Button
-            android:layout_width="0dip"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"            
-            android:layout_margin="3dp"           
             android:id="@+id/button4"
-            android:background="@drawable/handwriting"
-            android:onClick="onHandwritingClick" 
-            android:alpha="0.9" />
-
-     </TableRow>
-
-     <TableRow
-            android:id="@+id/tableRow2"
-            android:layout_width="wrap_content" 
-            android:layout_height="0dp"
-            android:layout_weight="1">
-
-        <Button
-            android:layout_width="0dip"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"             
-            android:layout_margin="3dp"
-            android:id="@+id/button3"
-            android:background="@drawable/todo"
-            android:onClick="onTodoClick" 
-            android:alpha="0.9" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignTop="@+id/button3"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/cal"
+            android:onClick="onCalClick" />
 
         <Button
             android:id="@+id/button2"
-            android:layout_width="0dip"
-            android:layout_weight="1" 
-            android:layout_margin="3dp"
-            android:layout_height="fill_parent"
-            android:onClick="onCalClick"
-            android:background="@drawable/cal"
-            android:alpha="0.9" />
-
-
-    </TableRow>
-    
-    <TableRow
-        android:id="@+id/tableRow4"
             android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-             >
-        
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="21dp"
+            android:layout_marginRight="47dp"
+            android:background="@drawable/todo"
+            android:minHeight="70dip"
+            android:minWidth="76dip"
+            android:onClick="onTodoClick" />
+
         <Button
-            android:layout_width="0dip"
-            android:layout_height="fill_parent"
-            android:layout_weight="1" 
-            android:id="@+id/flashcard"             
-            android:layout_margin="3dp"
+            android:id="@+id/button1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/textnote"
+            android:duplicateParentState="true"
+            android:minHeight="138dip"
+            android:minWidth="154dip"
+            android:onClick="onTextNoteClick" />
+
+        <Button
+            android:id="@+id/button3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/button1"
+            android:layout_alignRight="@+id/button2"
+            android:layout_marginBottom="39dp"
+            android:background="@drawable/handwriting"
+            android:minHeight="68dip"
+            android:onClick="onHandwritingClick />" />
+
+        <Button
+            android:id="@+id/button5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/button4"
+            android:layout_below="@+id/button1"
+            android:layout_marginLeft="28dp"
+            android:layout_marginTop="31dp"
             android:background="@drawable/flashcard"
-            android:onClick="onFlashcardClick"
-            android:alpha="0.9" />
+            android:onClick="onFlashcardClick" />
 
-        <Button
-            android:layout_width="0dip"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:id="@+id/quiz"            
-            android:layout_margin="3dp"
-            android:background="@drawable/quiz"
-            android:onClick="onQuizClick" 
-            android:alpha="0.9" />
-
-    </TableRow>
-    
-    
-    <TableRow
-        android:id="@+id/tableRow3"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_weight="1" >
-        
-        <Button
-            android:layout_width="0dip"
-            android:layout_height="fill_parent"
-            android:layout_weight="1" 
-            android:id="@+id/start_service"             
-            android:layout_margin="3dp"
-            android:background="@drawable/alarmon"
-            android:onClick="onClickStartService"
-            android:alpha="0.8" />
-
-        <Button
-            android:layout_width="0dip"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:id="@+id/stop_service"            
-            android:layout_margin="3dp"
-            android:background="@drawable/alarmoff"
-            android:onClick="onClickStopService" 
-            android:alpha="0.8" />
-
-    </TableRow>
-
-   </TableLayout>
-
-          
 </RelativeLayout>
+
+       
