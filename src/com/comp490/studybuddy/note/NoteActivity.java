@@ -28,6 +28,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.widget.SimpleCursorAdapter;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -37,6 +38,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.comp490.studybuddy.R;
+import com.comp490.studybuddy.database.DBAdapter;
 import com.comp490.studybuddy.models.NoteEntryModel;
 import com.comp490.studybuddy.models.NoteModel;
 
@@ -48,8 +50,7 @@ import com.comp490.studybuddy.models.NoteModel;
  * "<insert media type>Menu" = loads a submenu of options to use on entries (delete, rename,etc) 
  */
 
-public class NoteActivity extends Activity {
-	
+public class NoteActivity extends Activity {	
 	// Sound related variables
 	ActionBar actionBar;
 	final Context context = this;
@@ -75,8 +76,11 @@ public class NoteActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		note.getEntriesFromDatabase(context);
 		setContentView(R.layout.activity_note);
 	}
+	
+
 	
 	// ********** MENU INTERFACES *********************
 	

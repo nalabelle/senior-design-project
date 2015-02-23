@@ -16,6 +16,7 @@ public class NoteEntryModel {
 	private String filePath = null; //May not have one, who knows?
 	private int viewID = -1;
 	private int secondaryViewID = -1;
+	private int id; //do something with this?
 	
 	public NoteEntryModel(NoteType type) {
 		this.type = type;
@@ -74,5 +75,9 @@ public class NoteEntryModel {
 
 	public void setType(NoteType newType) {
 		this.type = newType;
+	}
+
+	public void setID(int id) {
+		this.id = id;
 	}
 }

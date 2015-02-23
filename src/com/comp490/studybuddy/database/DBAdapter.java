@@ -77,6 +77,26 @@ public class DBAdapter {
 	
 	private static final String CAL_EVENT_TABLE_UPGRADE =
 	         "Drop table if exists " + CAL_EVENT_TABLE;
+
+	
+	public static final String NOTE_TABLE_NAME 					= "notes";
+	public static final String NOTE_COLUMN_ID 					= "_id";
+	public static final String NOTE_COLUMN_NAME					= "_name";
+	public static final String NOTE_COLUMN_TYPE 				= "_type";
+	public static final String NOTE_COLUMN_PATH 				= "_path";
+	public static final String NOTE_COLUMN_VIEWID 				= "_viewid";
+	public static final String NOTE_COLUMN_SECONDARY_VIEWID 	= "_viewid2";
+	
+	private static final String CREATE_NOTE_TABLE =
+			String.format("create table %s" +
+					"(%s text primary key, %s text not null, %s text not null, %s text" +
+					"%s text, %s text",
+					NOTE_TABLE_NAME, 
+					NOTE_COLUMN_ID, NOTE_COLUMN_NAME, NOTE_COLUMN_TYPE, NOTE_COLUMN_PATH,
+					NOTE_COLUMN_VIEWID, NOTE_COLUMN_SECONDARY_VIEWID);
+	
+	private static final String NOTE_TABLE_UPGRADE =
+			String.format("Drop table if exists %s", NOTE_TABLE_NAME);
 	
    //db helper class
    private static class DbHelper extends SQLiteOpenHelper {
@@ -93,6 +113,8 @@ public class DBAdapter {
          Log.d(TAG, CREATE_TASK_TABLE);
          db.execSQL(CREATE_CAL_EVENT_TABLE);
          Log.d(TAG, CREATE_CAL_EVENT_TABLE);
+         db.execSQL(CREATE_NOTE_TABLE);         
+         Log.d(TAG, CREATE_NOTE_TABLE);
       }
       
       //drop Task table if exists
@@ -102,6 +124,8 @@ public class DBAdapter {
          Log.d(TAG, TASK_TABLE_UPGRADE);
          db.execSQL(CAL_EVENT_TABLE_UPGRADE);
          Log.d(TAG, CAL_EVENT_TABLE_UPGRADE);
+         db.execSQL(NOTE_TABLE_UPGRADE);
+         Log.d(TAG, NOTE_TABLE_UPGRADE);
       }
    }
    
@@ -270,6 +294,15 @@ public class DBAdapter {
 	      cursor = getEventById(eventId);
 	   } while (cursor.getCount() > 0);
 	   return eventId;
+	}
+
+	public Cursor getAllNotes() {
+		Log.d(TAG, "getAllNotes");
+		return sqlDatabase.query(NOTE_TABLE_NAME, new String[] {
+				NOTE_COLUMN_ID, NOTE_COLUMN_NAME, NOTE_COLUMN_TYPE,
+				NOTE_COLUMN_PATH, NOTE_COLUMN_VIEWID,
+				NOTE_COLUMN_SECONDARY_VIEWID },
+				null, null, null, null, null);
 	}
 
 }
