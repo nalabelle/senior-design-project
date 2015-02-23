@@ -44,6 +44,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.comp490.studybuddy.R;
+import com.comp490.studybuddy.database.DBAdapter;
 import com.comp490.studybuddy.models.CalendarEventModel;
 
 public class CalenActivity extends Activity {
@@ -169,7 +170,7 @@ public class CalenActivity extends Activity {
         private final Context context;
 
         private final List<String> list;
-        private CalDBAdapter db;
+        private DBAdapter db;
         private Cursor cursor;
         
         private Button gridcell;
@@ -182,7 +183,7 @@ public class CalenActivity extends Activity {
                 super();
                 this.context = context;
                 this.list = new ArrayList<String>();
-                db = new CalDBAdapter(context);
+                db = new DBAdapter(context);
                 db.open();
                 eventList = new ArrayList<CalendarEventModel>();
                 getEvents();

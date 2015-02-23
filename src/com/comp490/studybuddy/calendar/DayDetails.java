@@ -3,6 +3,7 @@ package com.comp490.studybuddy.calendar;
 import java.util.ArrayList;
 
 import com.comp490.studybuddy.R;
+import com.comp490.studybuddy.database.DBAdapter;
 import com.comp490.studybuddy.models.CalendarEventModel;
 
 import android.app.ActionBar;
@@ -29,7 +30,7 @@ public class DayDetails extends Activity {
 	private Intent prevIntent;
 	private String day_mon_yr;
 	private String dateTimeToday;
-	private CalDBAdapter db;
+	private DBAdapter db;
     private Cursor cursor;
     private ListView listView;
 	private ActionBar actionBar;
@@ -52,7 +53,7 @@ public class DayDetails extends Activity {
 	    dateTimeToday = dateTimeToday.substring(0,10);
 	    Log.d("DayDetail", "Searching for: " +dateTimeToday);
 	    //Get Events For the Day
-	    db = new CalDBAdapter(this);
+	    db = new DBAdapter(this);
 	    db.open();
 	    cursor = db.getEventByDay(dateTimeToday);
 	    //Get events from cursors, add to arrayList  

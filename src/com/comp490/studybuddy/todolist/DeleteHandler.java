@@ -18,13 +18,13 @@ import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.widget.Toast;
 
-import com.comp490.studybuddy.todolist.DbAdapter;
+import com.comp490.studybuddy.database.DBAdapter;
 import com.comp490.studybuddy.todolist.Task;
 
 //Class for delete confirmation dialogs before deleting task
 public class DeleteHandler {
 
-   public static void deleteDialog(Activity activity, Task task, DbAdapter databaseAdapter) {
+   public static void deleteDialog(Activity activity, Task task, DBAdapter databaseAdapter) {
       Dialog confirmDelete = new AlertDialog.Builder(activity)
       .setIcon(android.R.drawable.ic_menu_help)
       .setTitle("Are you sure to want to delete this task?")
@@ -40,9 +40,9 @@ public class DeleteHandler {
    private static class PositiveButtonListener implements OnClickListener {
       private Activity activity;
       private Task task;
-      private DbAdapter dbAdapter;
+      private DBAdapter dbAdapter;
 
-      public PositiveButtonListener(Activity activity, Task task, DbAdapter databaseAdapter) {
+      public PositiveButtonListener(Activity activity, Task task, DBAdapter databaseAdapter) {
          this.activity = activity;
          this.task = task;
          this.dbAdapter = databaseAdapter;
