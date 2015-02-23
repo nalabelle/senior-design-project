@@ -40,6 +40,7 @@
     <string name="action_create_event">Create Event</string>
     <string name="action_startDraw">Start Handwriting</string>
     <string name="action_undoDraw">Undo Handwriting</string>
+    <string name="action_redoDraw">Redo Handwriting</string>
     <string name="action_clearAllDraw">Clear All Handwriting</string>
     <string name="action_saveDraw">Save Handwriting</string>
     <string name="action_changePenWidth">Change Pen Width</string>
