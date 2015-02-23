@@ -24,10 +24,11 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 
 import com.comp490.studybuddy.R;
+import com.comp490.studybuddy.database.DBAdapter;
 
 public class ToDoMain extends DefaultActivity {
 
- 	private DbAdapter dbAdapter;
+ 	private DBAdapter dbAdapter;
 	private Cursor cursor;
 	private ListView listView;
    //adapter to display the list's data
@@ -58,7 +59,7 @@ public class ToDoMain extends DefaultActivity {
           }
       }); 
 		
-		dbAdapter = new DbAdapter(this);
+		dbAdapter = new DBAdapter(this);
 		dbAdapter.open();		
 		initTasksListView();
 	}
@@ -69,7 +70,7 @@ public class ToDoMain extends DefaultActivity {
 			cursor = dbAdapter.getAllTasks();
 			startManagingCursor(cursor);
 	      //specify which columns go into which views for the cursor adapter
-			String[] fromColumns = new String[]{DbAdapter.TASK_COLUMN_NAME};
+			String[] fromColumns = new String[]{DBAdapter.TASK_COLUMN_NAME};
 			//load data into layout components
 			int[] toViews = new int[]{R.id.view_listview};		
 		   //create an adapter to display the loaded data
@@ -87,12 +88,12 @@ public class ToDoMain extends DefaultActivity {
 		cursor.moveToFirst();
 		cursor.move(itemId);
 		//sets data for task item selected
-	   taskItem.setId(cursor.getInt(cursor.getColumnIndex(DbAdapter.TASK_COLUMN_ID)));
-		taskItem.setName(cursor.getString(cursor.getColumnIndex(DbAdapter.TASK_COLUMN_NAME)));
-		taskItem.getDate().setTimeInMillis(cursor.getLong(cursor.getColumnIndex(DbAdapter.TASK_COLUMN_DATE)));
-		taskItem.getTime().setTimeInMillis(cursor.getLong(cursor.getColumnIndex(DbAdapter.TASK_COLUMN_TIME)));
-		taskItem.setPriority(cursor.getInt(cursor.getColumnIndex(DbAdapter.TASK_COLUMN_PRIORITY)));
-		taskItem.setNotification(cursor.getInt(cursor.getColumnIndex(DbAdapter.TASK_COLUMN_NOTIFICATION)));
+	   taskItem.setId(cursor.getInt(cursor.getColumnIndex(DBAdapter.TASK_COLUMN_ID)));
+		taskItem.setName(cursor.getString(cursor.getColumnIndex(DBAdapter.TASK_COLUMN_NAME)));
+		taskItem.getDate().setTimeInMillis(cursor.getLong(cursor.getColumnIndex(DBAdapter.TASK_COLUMN_DATE)));
+		taskItem.getTime().setTimeInMillis(cursor.getLong(cursor.getColumnIndex(DBAdapter.TASK_COLUMN_TIME)));
+		taskItem.setPriority(cursor.getInt(cursor.getColumnIndex(DBAdapter.TASK_COLUMN_PRIORITY)));
+		taskItem.setNotification(cursor.getInt(cursor.getColumnIndex(DBAdapter.TASK_COLUMN_NOTIFICATION)));
 		//start activity
 		NavigationHandler.viewTask(this, taskItem);
 	}
@@ -105,8 +106,8 @@ public class ToDoMain extends DefaultActivity {
       cursor.moveToFirst();
       cursor.move(itemId);
       //sets data for task item selected
-      taskItem.setId(cursor.getInt(cursor.getColumnIndex(DbAdapter.TASK_COLUMN_ID)));
-      taskItem.setName(cursor.getString(cursor.getColumnIndex(DbAdapter.TASK_COLUMN_NAME)));
+      taskItem.setId(cursor.getInt(cursor.getColumnIndex(DBAdapter.TASK_COLUMN_ID)));
+      taskItem.setName(cursor.getString(cursor.getColumnIndex(DBAdapter.TASK_COLUMN_NAME)));
       DeleteHandler.deleteDialog(this, taskItem, this.dbAdapter);
       cursor.requery();    
       listViewAdapter.notifyDataSetChanged();

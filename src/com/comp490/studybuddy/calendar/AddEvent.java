@@ -7,6 +7,7 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import com.comp490.studybuddy.R;
+import com.comp490.studybuddy.database.DBAdapter;
 import com.comp490.studybuddy.models.CalendarEventModel;
 
 import android.app.ActionBar;
@@ -52,7 +53,7 @@ public class AddEvent extends Activity {
 	private int startDay;
 	private int startHour;
 	private int startMin;
-	private CalDBAdapter db;
+	private DBAdapter db;
 	private ArrayList<String> colorImgName;
 	
 	@Override
@@ -91,7 +92,7 @@ public class AddEvent extends Activity {
 							startHour, startMin);
 					EditText eventText = (EditText) findViewById(R.id.eventName);
 					String eventName = eventText.getText().toString(); 
-					db = new CalDBAdapter(this);
+					db = new DBAdapter(this);
 					db.open();
 					event = new CalendarEventModel(db.getNewEventId(), 
 							eventName, startDateTime.toString());

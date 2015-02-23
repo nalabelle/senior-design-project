@@ -12,8 +12,8 @@ package com.comp490.studybuddy.todolist;
 
 //import com.comp490.studybuddy.todolist.NotificationReceiver;
 import com.comp490.studybuddy.R;
+import com.comp490.studybuddy.database.DBAdapter;
 import com.comp490.studybuddy.todolist.CancelHandler;
-import com.comp490.studybuddy.todolist.DbAdapter;
 import com.comp490.studybuddy.todolist.Task;
 import java.util.Calendar;
 import android.os.Bundle;
@@ -38,14 +38,14 @@ public class ModifyTask extends DefaultActivity {
    private int taskJob;
    private final int EDIT_TASK = 1;
    private final int ADD_TASK = 2;
-   private DbAdapter dbAdapter;
+   private DBAdapter dbAdapter;
    
    
    @Override
    protected void onCreate(Bundle savedInstanceState) {
       super.onCreate(savedInstanceState);
       setContentView(R.layout.activity_modify_task);
-      dbAdapter = new DbAdapter(this);
+      dbAdapter = new DBAdapter(this);
       dbAdapter.open();
       //check if job is to add or edit and retrieve Task object from bundle
       Bundle modifyTaskBundle = this.getIntent().getExtras();
