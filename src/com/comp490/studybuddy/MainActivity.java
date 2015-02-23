@@ -20,10 +20,15 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.comp490.studybuddy.calendar.CalenActivity;
+import com.comp490.studybuddy.flashcards.FlashMain;
 import com.comp490.studybuddy.handwritingnote.HandwritingMain;
 import com.comp490.studybuddy.models.NoteEntryModel;
+import com.comp490.studybuddy.note.AudioBuilder;
 import com.comp490.studybuddy.note.NoteActivity;
+import com.comp490.studybuddy.note.PhotoViewerActivity;
+import com.comp490.studybuddy.note.PictureBuilder;
 import com.comp490.studybuddy.note.TextBuilder;
+import com.comp490.studybuddy.note.VideoViewerActivity;
 import com.comp490.studybuddy.todolist.ToDoMain;
 
 public class MainActivity extends Activity {
@@ -48,33 +53,41 @@ public class MainActivity extends Activity {
 		// Handle action bar item clicks here. The action bar will
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
-	   switch(item.getItemId()){
+	   switch(item.getItemId()) {
 	      case R.id.action_launch_sound: {
-
+	         startActivity(new Intent(this, NoteActivity.class));
+            return true;
 	      }
 	      case R.id.action_launch_photo: {
-
+	         startActivity(new Intent(this, PhotoViewerActivity.class));
+            return true;
 	      }
 	      case R.id.action_launch_video: {
-
+	         startActivity(new Intent(this, VideoViewerActivity.class));
+            return true;
 	      }
-	      case R.id.action_launch_text:{
-
+	      case R.id.action_launch_text: {
+	           startActivity(new Intent(this, NoteActivity.class));
+              return true;
 	      }
-	      case R.id.action_launch_handwriting:{
-	         
+	      case R.id.action_launch_handwriting: {
+	           startActivity(new Intent(this, HandwritingMain.class));
+              return true;
 	      }
-	      case R.id.action_launch_flashcards:{
-             
+	      case R.id.action_launch_flashcards: {
+	           //startActivity(new Intent(this, FlashMain.class));
+            return true;
 	      }
-	      case R.id.action_launch_calendar:{
-	         
+	      case R.id.action_launch_calendar: {
+	           startActivity(new Intent(this, CalenActivity.class));
+              return true;
 	      }
-	      case R.id.action_launch_todo:{
-	            
+	      case R.id.action_launch_todo: {
+	           startActivity(new Intent(this, ToDoMain.class));
+	           return true;
 	      }
 	      default:
-	            return super.onOptionsItemSelected(item);
+	           return super.onOptionsItemSelected(item);
 	      }
 	   }
 	  
@@ -114,6 +127,8 @@ public class MainActivity extends Activity {
 	   }
    
    public boolean onFlashcardhClick(View view) {
+      Intent FlashcardLaunch = new Intent(this.getApplicationContext(), FlashMain.class);
+      startActivity(FlashcardLaunch);
       return true;
    }
  }

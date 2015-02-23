@@ -6,8 +6,8 @@
     android:orientation="vertical" 
     tools:context="com.comp490.studybuddy.MainActivity" 
     android:layout_margin="0dp"
-    android:background="@drawable/background"
-    >
+    android:background="@drawable/background">
+    
     <View
              android:layout_width="fill_parent"
              android:layout_height="1dp"
@@ -34,7 +34,7 @@
             android:layout_marginBottom="39dp"
             android:background="@drawable/handwritingclick"
             android:minHeight="68dip"
-            android:onClick="onHandwritingClick />" />
+            android:onClick="onHandwritingClick" />
 
         <Button
             android:id="@+id/button5"
@@ -44,8 +44,7 @@
             android:layout_below="@+id/button1"
             android:layout_marginLeft="28dp"
             android:layout_marginTop="31dp"
-            android:background="@drawable/flashcardclick"
-            android:onClick="onFlashcardClick" />
+            android:background="@drawable/flashcardclick" />
 
         <Button
             android:id="@+id/button4"

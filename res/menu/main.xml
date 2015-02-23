@@ -19,17 +19,17 @@
         android:title="Text"/>       
         
         <item android:id="@+id/action_launch_handwriting"
-        android:title="Handwriting"/>
+        android:title="Writing"/>
         
         <item android:id="@+id/action_launch_flashcards"
-        android:title="Flashcards"/>
+        android:title="Cards"/>
         
         <item
         android:id="@+id/action_launch_calendar"
-        android:title="Calendar"/>  
+        android:title="Dates"/>  
                 
       <item 
         android:id="@+id/action_launch_todo"
-        android:title="To do"/> 
+        android:title="Tasks"/> 
 
 </menu>
