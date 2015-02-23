@@ -78,10 +78,14 @@ public class CalenActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_customcal_phone);
-		
 		swipeDetector = new GestureDetectorCompat(this, new SwipeListener());
-        
-        this.calendar = new DateTime();
+        // Check if returning from diff cal activity
+		Intent intent = getIntent();
+		String dateTimeString = intent.getStringExtra("date");
+		if (dateTimeString != null)
+			this.calendar = DateTime.parse(dateTimeString);
+		else
+			this.calendar = new DateTime();
         this.originalDate = new DateTime();
         
         currentMonth = (TextView) this.findViewById(R.id.curr_month);
