@@ -23,6 +23,7 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -77,16 +78,14 @@ public class CalenActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_customcal_phone);
-		
 		swipeDetector = new GestureDetectorCompat(this, new SwipeListener());
-		
-		//Make it fit, get width and height
-        DisplayMetrics metrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        width = metrics.widthPixels;
-        height = metrics.heightPixels;
-        
-        this.calendar = new DateTime();
+        // Check if returning from diff cal activity
+		Intent intent = getIntent();
+		String dateTimeString = intent.getStringExtra("date");
+		if (dateTimeString != null)
+			this.calendar = DateTime.parse(dateTimeString);
+		else
+			this.calendar = new DateTime();
         this.originalDate = new DateTime();
         
         currentMonth = (TextView) this.findViewById(R.id.curr_month);
@@ -102,9 +101,13 @@ public class CalenActivity extends Activity {
         calendarGrid = (GridView) this.findViewById(R.id.gridView1);
         
         // Grid --> Calendar
-        adapter = new GridCellAdapter(getApplicationContext(), R.id.grid_day);
-        adapter.notifyDataSetChanged();
-        calendarGrid.setAdapter(adapter); 
+        changeCalendarDisplay(); 
+	}
+	
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {       
+	    super.onConfigurationChanged(newConfig);
+	    changeCalendarDisplay();
 	}
 	
 	@Override
@@ -117,6 +120,10 @@ public class CalenActivity extends Activity {
 	
     private void changeCalendarDisplay()
     {
+    	DisplayMetrics metrics = new DisplayMetrics();
+	    getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        width = metrics.widthPixels;
+        height = metrics.heightPixels;
         adapter = new GridCellAdapter(getApplicationContext(), R.id.grid_day);
         currentMonth.setText(calendar.toString(dateFormatter));
         adapter.notifyDataSetChanged();
@@ -175,7 +182,7 @@ public class CalenActivity extends Activity {
         
         private Button gridcell;
         private TextView num_events_per_day;
-        private final HashMap<Integer, Integer> eventsPerMonthMap;
+        private final HashMap<String, Integer> eventsPerMonthMap;
         private ArrayList<CalendarEventModel> eventList;
 
         public GridCellAdapter(Context context, int cellID)
@@ -237,9 +244,9 @@ public class CalenActivity extends Activity {
         
         //Show number of events per days as red text in upper left
         // Buggy Shows red one on Jan 30 and Dec 30...
-		private HashMap<Integer, Integer> findEventsMonth(int year, int month)
+		private HashMap<String, Integer> findEventsMonth(int year, int month)
 		{
-		    HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
+		    HashMap<String, Integer> map = new HashMap<String, Integer>();
 		    for(int i = 0; i < eventList.size(); i++) {
 		    	CalendarEventModel event = eventList.get(i);
 		    	String startDate = event.getStart();
@@ -247,12 +254,13 @@ public class CalenActivity extends Activity {
 		    	int y = date.getYear();
 		    	int m = date.getMonthOfYear();
 		    	int d = date.getDayOfMonth();
+		    	String dayAndMonth = "" + d + date.monthOfYear().getAsText();
 		    	
 		    	if (y == year && m == month) {
 		    		if (map.containsKey(d)) {
-			    	    map.put(d, map.get(d)+1);
+			    	    map.put(dayAndMonth, map.get(d)+1);
 			    	} else { 
-			    	    map.put(d,1);
+			    	    map.put(dayAndMonth,1);
 			    	}
 		    	}
 		    	
@@ -320,15 +328,15 @@ public class CalenActivity extends Activity {
                 String themonth = day_color[2];
                 String theyear = day_color[3];
                 
-                int day = Integer.parseInt(theday);
+                String dayAndMonth = theday + themonth;
                 
                 num_events_per_day = (TextView) row.findViewById(R.id.num_events);
                 //Add number of events per day from HashMap.
                 if ((!eventsPerMonthMap.isEmpty()) && (eventsPerMonthMap != null))
                     {
-                        if (eventsPerMonthMap.containsKey(day))
+                        if (eventsPerMonthMap.containsKey(dayAndMonth))
                             {
-                                Integer numEvents = eventsPerMonthMap.get(day);
+                                Integer numEvents = eventsPerMonthMap.get(dayAndMonth);
                                 num_events_per_day.setText(numEvents.toString());
                                 if (numEvents == 0) {
                                 	num_events_per_day.setVisibility(View.GONE);
