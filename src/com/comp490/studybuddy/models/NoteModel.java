@@ -3,6 +3,8 @@ package com.comp490.studybuddy.models;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.util.Log;
+
 import com.comp490.studybuddy.database.DBAdapter;
 import com.comp490.studybuddy.models.NoteEntryModel.NoteType;
 
@@ -35,29 +37,34 @@ public class NoteModel {
 		android.database.Cursor cursor = dbAdapter.getAllTasks();
 		if(!cursor.moveToFirst()) return; //no data
 		
-		while(!cursor.isAfterLast()) {			
-			int id = cursor.getInt(cursor.getColumnIndex(DBAdapter.NOTE_COLUMN_ID));
-			String name = cursor.getString(cursor.getColumnIndex(DBAdapter.NOTE_COLUMN_NAME));
-			String type = cursor.getString(cursor.getColumnIndex(DBAdapter.NOTE_COLUMN_TYPE));
-			String path = cursor.getString(cursor.getColumnIndex(DBAdapter.NOTE_COLUMN_PATH));
-			int viewId = cursor.getInt(cursor.getColumnIndex(DBAdapter.NOTE_COLUMN_VIEWID));
-			int secondaryViewId = cursor.getInt(cursor.getColumnIndex(DBAdapter.NOTE_COLUMN_SECONDARY_VIEWID));
-			
-			NoteType noteType = null;
-			for(NoteType nt : NoteType.values()) {
-				if(nt.toString().equalsIgnoreCase(type)) noteType = nt;
+		while(!cursor.isAfterLast()) {
+			try {
+				int id = cursor.getInt(cursor.getColumnIndexOrThrow(DBAdapter.NOTE_COLUMN_ID));
+				String name = cursor.getString(cursor.getColumnIndexOrThrow(DBAdapter.NOTE_COLUMN_NAME));
+				String type = cursor.getString(cursor.getColumnIndexOrThrow(DBAdapter.NOTE_COLUMN_TYPE));
+				String path = cursor.getString(cursor.getColumnIndexOrThrow(DBAdapter.NOTE_COLUMN_PATH));
+				int viewId = cursor.getInt(cursor.getColumnIndexOrThrow(DBAdapter.NOTE_COLUMN_VIEWID));
+				int secondaryViewId = cursor.getInt(cursor.getColumnIndexOrThrow(DBAdapter.NOTE_COLUMN_SECONDARY_VIEWID));
+				
+				NoteType noteType = null;
+				for(NoteType nt : NoteType.values()) {
+					if(nt.toString().equalsIgnoreCase(type)) noteType = nt;
+				}
+				
+				if(noteType == null) return; //something went wrong
+		
+				NoteEntryModel note = new NoteEntryModel(noteType);
+				note.setName(name);
+				note.setFilePath(path);
+				note.setViewID(viewId);
+				note.setSecondaryViewID(secondaryViewId);
+				note.setID(id);
+				
+				this.add(note);
+			} catch(IllegalArgumentException e) {
+				Log.d("NoteModel", "Can't find column: " + e.getMessage());
 			}
-			
-			if(noteType == null) return; //something went wrong
-	
-			NoteEntryModel note = new NoteEntryModel(noteType);
-			note.setName(name);
-			note.setFilePath(path);
-			note.setViewID(viewId);
-			note.setSecondaryViewID(secondaryViewId);
-			note.setID(id);
-			this.add(note);
-			
+
 			cursor.moveToNext();
 		}
 		

@@ -35,7 +35,7 @@ public class DBAdapter {
    
    public static final String DATABASE_NAME = "studybuddy.db";
    
-   public static final int DATABASE_VERSION = 1;
+   public static final int DATABASE_VERSION = 4;
    
    public static final String TASK_TABLE_NAME = "tasks";
    public static final String TASK_COLUMN_ID = "_id";
@@ -53,7 +53,7 @@ public class DBAdapter {
    + TASK_COLUMN_DATE + " integer not null, "
    + TASK_COLUMN_TIME + " integer not null, "
    + TASK_COLUMN_PRIORITY + " integer not null, "
-   + TASK_COLUMN_NOTIFICATION + " integer not null)";
+   + TASK_COLUMN_NOTIFICATION + " integer not null);";
    
    private static final String TASK_TABLE_UPGRADE = 
 		   "Drop table if exists " + DBAdapter.TASK_TABLE_NAME;
@@ -89,8 +89,8 @@ public class DBAdapter {
 	
 	private static final String CREATE_NOTE_TABLE =
 			String.format("create table %s" +
-					"(%s integer primary key, %s text not null, %s text not null, %s text" +
-					"%s integer, %s integer",
+					"(%s integer primary key, %s text not null, %s text not null, %s text," +
+					"%s integer, %s integer);",
 					NOTE_TABLE_NAME, 
 					NOTE_COLUMN_ID, NOTE_COLUMN_NAME, NOTE_COLUMN_TYPE, NOTE_COLUMN_PATH,
 					NOTE_COLUMN_VIEWID, NOTE_COLUMN_SECONDARY_VIEWID);
@@ -99,35 +99,41 @@ public class DBAdapter {
 			String.format("Drop table if exists %s", NOTE_TABLE_NAME);
 	
    //db helper class
-   private static class DbHelper extends SQLiteOpenHelper {
-      
-      public DbHelper(Context context, String name, CursorFactory factory, int version) {
-         super(context, name, factory, version);         
-         Log.d(TAG,"Created " + DATABASE_NAME);
-      }
+	private static class DbHelper extends SQLiteOpenHelper {
 
-      //create Task table
-      @Override         
-      public void onCreate(SQLiteDatabase db) {  
-         db.execSQL(CREATE_TASK_TABLE);         
-         Log.d(TAG, CREATE_TASK_TABLE);
-         db.execSQL(CREATE_CAL_EVENT_TABLE);
-         Log.d(TAG, CREATE_CAL_EVENT_TABLE);
-         db.execSQL(CREATE_NOTE_TABLE);         
-         Log.d(TAG, CREATE_NOTE_TABLE);
-      }
-      
-      //drop Task table if exists
-      @Override
-      public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {         
-         db.execSQL(TASK_TABLE_UPGRADE);        
-         Log.d(TAG, TASK_TABLE_UPGRADE);
-         db.execSQL(CAL_EVENT_TABLE_UPGRADE);
-         Log.d(TAG, CAL_EVENT_TABLE_UPGRADE);
-         db.execSQL(NOTE_TABLE_UPGRADE);
-         Log.d(TAG, NOTE_TABLE_UPGRADE);
-      }
-   }
+		public DbHelper(Context context, String name, CursorFactory factory,
+				int version) {
+			super(context, name, factory, version);
+			Log.d(TAG, "Created " + DATABASE_NAME);
+		}
+
+		// create Task table
+		@Override
+		public void onCreate(SQLiteDatabase db) {
+			Log.d(TAG, CREATE_TASK_TABLE);
+			db.execSQL(CREATE_TASK_TABLE);
+			
+			Log.d(TAG, CREATE_CAL_EVENT_TABLE);
+			db.execSQL(CREATE_CAL_EVENT_TABLE);
+			
+			db.execSQL(NOTE_TABLE_UPGRADE);
+			Log.d(TAG, CREATE_NOTE_TABLE);
+			db.execSQL(CREATE_NOTE_TABLE);
+		}
+
+		// drop Task table if exists
+		@Override
+		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+			db.execSQL(TASK_TABLE_UPGRADE);
+			Log.d(TAG, TASK_TABLE_UPGRADE);
+			db.execSQL(CAL_EVENT_TABLE_UPGRADE);
+			Log.d(TAG, CAL_EVENT_TABLE_UPGRADE);
+			Log.d(TAG, NOTE_TABLE_UPGRADE);
+			db.execSQL(NOTE_TABLE_UPGRADE);
+			
+			this.onCreate(db);
+		}
+	}
    
    //constructor, pass the current activity to the context
    public DBAdapter(Context context) {
@@ -302,7 +308,7 @@ public class DBAdapter {
 				NOTE_COLUMN_ID, NOTE_COLUMN_NAME, NOTE_COLUMN_TYPE,
 				NOTE_COLUMN_PATH, NOTE_COLUMN_VIEWID,
 				NOTE_COLUMN_SECONDARY_VIEWID },
-				null, null, null, null, null);
+				null, null, null, null, null, null);
 	}
 	
 	public boolean insertNote(int id, String name, String type, String path, int vId, int vId2) {
