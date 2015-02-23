@@ -79,9 +79,14 @@ public class MainActivity extends Activity {
       startActivity(todoLaunch);
       return true;
    }
+   
    public boolean onHandwritingClick(View view) {
 	      Intent handwritingLaunch = new Intent(this.getApplicationContext(), HandwritingMain.class);
 	      startActivity(handwritingLaunch);
 	      return true;
 	   }
+   
+   public boolean onFlashcardhClick(View view) {
+      return true;
+   }
  }
