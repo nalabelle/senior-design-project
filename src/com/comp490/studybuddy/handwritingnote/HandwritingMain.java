@@ -50,6 +50,9 @@ public class HandwritingMain extends Activity {
 	        case R.id.action_undo:
 	            undo();
 	            return true;
+	        case R.id.action_redo:
+	            redo();
+	            return true;
 	        case R.id.action_clearAll:
 	            clearAll();
 	            return true;
@@ -100,6 +103,13 @@ public class HandwritingMain extends Activity {
 
 		hNote.undo();
 	}
+	
+	public void redo() {
+	if (hNote == null)
+		return;
+
+		hNote.redo();
+	}
 
 	public void clearAll() {
 		hNote = new HandwritingNote(HandwritingMain.this, flNote.getWidth(), flNote.getHeight());
@@ -121,11 +131,4 @@ public class HandwritingMain extends Activity {
 	public void penColor(int c){
 		hNote.setPenColor(c);
 	}
-	
-/*	public void redo() {
-		if (hNote == null)
-			return;
-
-		hNote.redo();
-	}*/
 }
