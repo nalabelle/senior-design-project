@@ -23,6 +23,7 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -79,12 +80,6 @@ public class CalenActivity extends Activity {
 		setContentView(R.layout.activity_customcal_phone);
 		
 		swipeDetector = new GestureDetectorCompat(this, new SwipeListener());
-		
-		//Make it fit, get width and height
-        DisplayMetrics metrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        width = metrics.widthPixels;
-        height = metrics.heightPixels;
         
         this.calendar = new DateTime();
         this.originalDate = new DateTime();
@@ -102,9 +97,13 @@ public class CalenActivity extends Activity {
         calendarGrid = (GridView) this.findViewById(R.id.gridView1);
         
         // Grid --> Calendar
-        adapter = new GridCellAdapter(getApplicationContext(), R.id.grid_day);
-        adapter.notifyDataSetChanged();
-        calendarGrid.setAdapter(adapter); 
+        changeCalendarDisplay(); 
+	}
+	
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {       
+	    super.onConfigurationChanged(newConfig);
+	    changeCalendarDisplay();
 	}
 	
 	@Override
@@ -117,6 +116,10 @@ public class CalenActivity extends Activity {
 	
     private void changeCalendarDisplay()
     {
+    	DisplayMetrics metrics = new DisplayMetrics();
+	    getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        width = metrics.widthPixels;
+        height = metrics.heightPixels;
         adapter = new GridCellAdapter(getApplicationContext(), R.id.grid_day);
         currentMonth.setText(calendar.toString(dateFormatter));
         adapter.notifyDataSetChanged();
