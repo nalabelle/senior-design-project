@@ -36,7 +36,7 @@ public class DBAdapter {
    
    public static final String DATABASE_NAME = "studybuddy.db";
    
-   public static final int DATABASE_VERSION = 4;
+   public static final int DATABASE_VERSION = 5;
    
    public static final String TASK_TABLE_NAME = "tasks";
    public static final String TASK_COLUMN_ID = "_id";
@@ -49,7 +49,7 @@ public class DBAdapter {
    private static final String CREATE_TASK_TABLE =
 		   "Create table " + TASK_TABLE_NAME
    + " ( "
-   + TASK_COLUMN_ID + " text primary key, "
+   + TASK_COLUMN_ID + " integer primary key autoincrement, "
    + TASK_COLUMN_NAME + " text not null, "
    + TASK_COLUMN_DATE + " integer not null, "
    + TASK_COLUMN_TIME + " integer not null, "
@@ -194,7 +194,6 @@ public class DBAdapter {
    //insert new task into Task table
    public void insertTask(Task task) {
       ContentValues initialValues = new ContentValues();
-      initialValues.put(TASK_COLUMN_ID, task.getId());
       initialValues.put(TASK_COLUMN_NAME, task.getName());
       initialValues.put(TASK_COLUMN_DATE, task.getDate().getTimeInMillis());
       initialValues.put(TASK_COLUMN_TIME, task.getTime().getTimeInMillis());
@@ -240,26 +239,14 @@ public class DBAdapter {
    
    //delete Task
    public void deleteTask(Task task) {
-      deleteTask(task);
+      deleteTask(task.getId());
         Log.d(TAG, "deleteTask " + task.getName());
    }
    
    //delete Task
-   public void deleteTask(String taskId) {
+   public void deleteTask(int taskId) {
       sqlDatabase.delete(TASK_TABLE_NAME, TASK_COLUMN_ID + " = '" + taskId + "'", null);        
       Log.d(TAG, "deleteTask " + taskId);
-   }
-
-   //get new randomly generated task id for when adding a new task
-   public String getNewTaskId() {
-      Log.d(TAG, "getNewTaskId");
-      String uuid = null;
-      Cursor cursor = null;
-      do {
-         uuid = UUID.randomUUID().toString();
-         cursor = getTaskById(uuid);
-      } while (cursor.getCount() > 0);
-      return uuid;
    }
    
 	public Cursor getAllEvents() {
@@ -384,18 +371,6 @@ public class DBAdapter {
 	      return sqlDatabase.insert(DECKS_TABLE_NAME, null, values);
 	   }
 	   
-	   //get random Deck id
-	   public String getNewDeckId() {
-	      Log.d(TAG, "getNewDeckId ");
-	      String deckId = null;
-	      Cursor cursor = null;
-	      do {
-	         deckId = UUID.randomUUID().toString();
-	         cursor = getDeckById(deckId);
-	      } while (cursor.getCount() > 0);
-	      return deckId;
-	   }
-	   
 	   //insert new Flashcard into Flashcard table
 	   public void insertFlashcard(Flashcard flashcard) {
 	      ContentValues values = new ContentValues();
@@ -446,18 +421,5 @@ public class DBAdapter {
 	      sqlDatabase.delete(FLASHCARDS_TABLE_NAME, FLASHCARDS_COLUMN_ID + " = '" + flashcardId + "'", null);        
 	      Log.d(TAG, "deleteFlashcard " + flashcardId);
 	   }
-
-	   //get random Flashcard id
-	   public String getNewFlashcardId() {
-	      Log.d(TAG, "getNewFlashcardId ");
-	      String cardId = null;
-	      Cursor cursor = null;
-	      do {
-	         cardId = UUID.randomUUID().toString();
-	         cursor = getFlashcardById(cardId);
-	      } while (cursor.getCount() > 0);
-	      return cardId;
-	   }
-
 
 }

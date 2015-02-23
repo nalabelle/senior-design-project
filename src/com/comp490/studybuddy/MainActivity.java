@@ -14,13 +14,16 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.comp490.studybuddy.calendar.CalenActivity;
 import com.comp490.studybuddy.handwritingnote.HandwritingMain;
+import com.comp490.studybuddy.models.NoteEntryModel;
 import com.comp490.studybuddy.note.NoteActivity;
+import com.comp490.studybuddy.note.TextBuilder;
 import com.comp490.studybuddy.todolist.ToDoMain;
 
 public class MainActivity extends Activity {
@@ -45,13 +48,37 @@ public class MainActivity extends Activity {
 		// Handle action bar item clicks here. The action bar will
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
-	}
-	
+	   switch(item.getItemId()){
+	      case R.id.action_launch_sound: {
+
+	      }
+	      case R.id.action_launch_photo: {
+
+	      }
+	      case R.id.action_launch_video: {
+
+	      }
+	      case R.id.action_launch_text:{
+
+	      }
+	      case R.id.action_launch_handwriting:{
+	         
+	      }
+	      case R.id.action_launch_flashcards:{
+             
+	      }
+	      case R.id.action_launch_calendar:{
+	         
+	      }
+	      case R.id.action_launch_todo:{
+	            
+	      }
+	      default:
+	            return super.onOptionsItemSelected(item);
+	      }
+	   }
+	  
+	  
 	public void onClickStartService(View V)
 	{
 		startService(new Intent(this,MyService.class));

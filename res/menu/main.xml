@@ -1,11 +1,35 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.studybuddy.MainActivity" >
+    
 
+    <item android:id="@+id/action_launch_sound"
+        android:title="Audio"
+        />
     <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:showAsAction="never"
-        android:title="@string/action_settings"/>
+        android:id="@+id/action_launch_photo"
+        android:title="Photo"/>
+    
+    <item
+        android:id="@+id/action_launch_video"
+        android:title="Video"/>
+    
+    <item
+        android:id="@+id/action_launch_text"
+        android:title="Text"/>       
+        
+        <item android:id="@+id/action_launch_handwriting"
+        android:title="Handwriting"/>
+        
+        <item android:id="@+id/action_launch_flashcards"
+        android:title="Flashcards"/>
+        
+        <item
+        android:id="@+id/action_launch_calendar"
+        android:title="Calendar"/>  
+                
+      <item 
+        android:id="@+id/action_launch_todo"
+        android:title="To do"/> 
 
 </menu>

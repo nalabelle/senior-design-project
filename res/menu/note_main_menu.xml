@@ -1,7 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.studybuddy.TextNote" >
-    
+
     <item android:id="@+id/action_launch_handwritting"
         android:icon="@drawable/ic_action_edit"
         android:title="@string/action_launch_handwrite"
