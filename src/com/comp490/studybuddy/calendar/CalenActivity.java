@@ -99,6 +99,13 @@ public class CalenActivity extends Activity {
         // calHeader.setText("New Event"); //Esthetic bug fix for now
 
         calendarGrid = (GridView) this.findViewById(R.id.gridView1);
+        calendarGrid.setOnTouchListener(new View.OnTouchListener() {  
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                          swipeDetector.onTouchEvent(motionEvent);
+                return true;
+            }
+        });
         
         // Grid --> Calendar
         changeCalendarDisplay(); 
@@ -321,6 +328,7 @@ public class CalenActivity extends Activity {
                 // day cells, button action
                 gridcell = (Button) row.findViewById(R.id.grid_day);
                 gridcell.setOnClickListener(this);
+                
                 
                 // Parse print month information
                 String[] day_color = list.get(position).split("-");
