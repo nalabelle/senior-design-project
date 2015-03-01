@@ -257,8 +257,8 @@ public class CalenActivity extends Activity {
 		    	String dayAndMonth = "" + d + date.monthOfYear().getAsText();
 		    	
 		    	if (y == year && m == month) {
-		    		if (map.containsKey(d)) {
-			    	    map.put(dayAndMonth, map.get(d)+1);
+		    		if (map.containsKey(dayAndMonth)) {
+			    	    map.put(dayAndMonth, map.get(dayAndMonth)+1);
 			    	} else { 
 			    	    map.put(dayAndMonth,1);
 			    	}

@@ -2,9 +2,9 @@ package com.comp490.studybuddy.calendar;
 
 import java.util.ArrayList;
 
-import com.comp490.studybuddy.R;
-import com.comp490.studybuddy.database.DBAdapter;
-import com.comp490.studybuddy.models.CalendarEventModel;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -13,7 +13,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v4.widget.SimpleCursorAdapter;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -24,17 +23,22 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.comp490.studybuddy.R;
+import com.comp490.studybuddy.database.DBAdapter;
+import com.comp490.studybuddy.models.CalendarEventModel;
+
 public class DayDetails extends Activity {
 	
 	private TextView dayDetailText;
 	private Intent prevIntent;
-	private String day_mon_yr;
 	private String dateTimeToday;
 	private DBAdapter db;
     private Cursor cursor;
     private ListView listView;
 	private ActionBar actionBar;
 	private ArrayList<CalendarEventModel> eventList;
+	private final DateTimeFormatter dateFormatter = 
+    		DateTimeFormat.forPattern("MMMM d, yyyy");
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -45,10 +49,10 @@ public class DayDetails extends Activity {
 	    eventList = new ArrayList<CalendarEventModel>();
 	    
 	    prevIntent = getIntent();
-	    day_mon_yr = prevIntent.getStringExtra("Day");
 	    dateTimeToday = prevIntent.getStringExtra("DT");
+	    DateTime today = DateTime.parse(dateTimeToday);
 	    dayDetailText = (TextView) this.findViewById(R.id.textView1);
-	    dayDetailText.setText(day_mon_yr);
+	    dayDetailText.setText(today.toString(dateFormatter));
 	    //Time DateTime String to relevant info for Query
 	    dateTimeToday = dateTimeToday.substring(0,10);
 	    Log.d("DayDetail", "Searching for: " +dateTimeToday);
@@ -110,25 +114,6 @@ public class DayDetails extends Activity {
 			return mView;
 		}
 		
-	}
-	
-	public int monthStringToInt(String month) {
-		int monthInt = -1;
-		switch(month) {
-			case "January": monthInt = 1; break;
-			case "February": monthInt = 2; break;
-			case "March": monthInt = 3; break;
-			case "April": monthInt = 4; break;
-			case "May": monthInt = 5; break;
-			case "June": monthInt = 6;  break;
-			case "July": monthInt = 7; break;
-			case "August": monthInt = 8; break;
-			case "September": monthInt = 9; break;
-			case "October": monthInt = 10; break;
-			case "November": monthInt = 11; break;
-			case "December": monthInt = 12; break;
-		}
-		return monthInt;
 	}
 	
 	@Override
