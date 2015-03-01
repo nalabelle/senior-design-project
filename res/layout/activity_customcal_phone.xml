@@ -4,38 +4,14 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/curr_month"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical|center_horizontal"
-        android:orientation="horizontal" >
-
-        <ImageButton
-            android:id="@+id/prevMonth"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="@string/cal_prev_month"
-            android:onClick="movePast"
-            android:src="@drawable/ic_action_previous_item" />
-
-        <TextView
-            android:id="@+id/curr_month"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="@string/cal_current_month"
-            android:paddingLeft="35dp"
-            android:paddingRight="35dp"
-            android:text="@string/cal_placeholder"
-            android:textSize="22sp" />
-
-        <ImageButton
-            android:id="@+id/nextMonth"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="@string/cal_next_month"
-            android:onClick="moveFuture"
-            android:src="@drawable/ic_action_next_item" />
-    </LinearLayout>
+        android:layout_gravity="center"
+        android:contentDescription="@string/cal_current_month"
+        android:text="@string/cal_placeholder"
+        android:textSize="30sp" />
 
 	<TextView
 		 android:id="@+id/cal_header"

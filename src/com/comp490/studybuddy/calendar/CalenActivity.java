@@ -56,8 +56,6 @@ public class CalenActivity extends Activity {
     
     //Days of week, add events. TODO
     private TextView calHeader;
-    private ImageButton prevButton;
-    private ImageButton nextButton;
     
     //Calendar skeleton and adapter
     private GridView calendarGrid;
@@ -79,7 +77,8 @@ public class CalenActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_customcal_phone);
 		swipeDetector = new GestureDetectorCompat(this, new SwipeListener());
-        // Check if returning from diff cal activity
+        
+		// Check if returning from different Cal activity goto that Date
 		Intent intent = getIntent();
 		String dateTimeString = intent.getStringExtra("date");
 		if (dateTimeString != null)
@@ -90,9 +89,6 @@ public class CalenActivity extends Activity {
         
         currentMonth = (TextView) this.findViewById(R.id.curr_month);
         currentMonth.setText(calendar.toString(dateFormatter));
-        
-        prevButton = (ImageButton) this.findViewById(R.id.prevMonth);
-        nextButton = (ImageButton) this.findViewById(R.id.nextMonth);
         
         //How to align to columns? Option for Su->Sa || M -> Su TODO
         calHeader = (TextView) this.findViewById(R.id.cal_header);

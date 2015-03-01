@@ -9,7 +9,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="Placeholder Text"
+        android:text="@string/cal_placeholder"
         android:textSize="30sp"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:paddingBottom="10dp" />
