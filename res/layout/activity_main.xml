@@ -44,7 +44,8 @@
             android:layout_below="@+id/button1"
             android:layout_marginLeft="28dp"
             android:layout_marginTop="31dp"
-            android:background="@drawable/flashcardclick" />
+            android:background="@drawable/flashcardclick" 
+            android:onClick="onFlashcardhClick" />
 
         <Button
             android:id="@+id/button4"

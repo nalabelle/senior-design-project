@@ -140,6 +140,22 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.comp490.studybuddy.note.NoteActivity" />
         </activity>
+        <activity
+            android:name="com.comp490.studybuddy.flashcards.AddDecks"
+            android:label="@string/title_add_deck">
+        </activity>
+        <activity
+            android:name="com.comp490.studybuddy.flashcards.ViewDecks"
+            android:label="@string/title_view_deck">
+        </activity>
+        <activity
+            android:name="com.comp490.studybuddy.flashcards.ViewCards"
+            android:label="@string/title_view_card">
+        </activity>
+        <activity
+            android:name="com.comp490.studybuddy.flashcards.AddCards"
+            android:label="@string/title_add_card">
+        </activity>
         
     </application>
 

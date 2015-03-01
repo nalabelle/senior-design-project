@@ -11,8 +11,6 @@
 package com.comp490.studybuddy.database;
 
 import java.util.UUID;
-
-import com.comp490.studybuddy.flashcards.Flashcard;
 import com.comp490.studybuddy.models.CalendarEventModel;
 import com.comp490.studybuddy.todolist.Task;
 
@@ -349,77 +347,5 @@ public class DBAdapter {
 		return (sqlDatabase.insert(NOTE_TABLE_NAME, null, initval) > -1);
 
 	}
-	
-	   //get all Decks in db
-	   public Cursor getAllDecks() {
-	      return sqlDatabase.query(DECKS_TABLE_NAME,
-	            new String[] {DECKS_COLUMN_ID, DECKS_COLUMN_NAME}, null, null, null, null, null);
-	   }
-	   
-	   //get Deck by id
-	   public Cursor getDeckById(String deckId) {
-	      return sqlDatabase.query(DECKS_TABLE_NAME,
-	            new String[] {DECKS_COLUMN_ID, DECKS_COLUMN_NAME},
-	            DECKS_COLUMN_ID + " = '" + deckId + "'", null, null, null, null);
-	   }
-	   
-	   //insert new Deck into Decks table
-	   public long insertDeck(String deckId, String deckTitle) {
-	      ContentValues values = new ContentValues();
-	      values.put(DECKS_COLUMN_ID, deckId);
-	      values.put(DECKS_COLUMN_NAME, deckTitle);
-	      return sqlDatabase.insert(DECKS_TABLE_NAME, null, values);
-	   }
-	   
-	   //insert new Flashcard into Flashcard table
-	   public void insertFlashcard(Flashcard flashcard) {
-	      ContentValues values = new ContentValues();
-	      values.put(FLASHCARDS_COLUMN_ID, flashcard.getId());
-	      values.put(FLASHCARDS_COLUMN_FRONT, flashcard.getFront());
-	      values.put(FLASHCARDS_COLUMN_BACK, flashcard.getBack());
-	      values.put(FLASHCARDS_COLUMN_DECK, flashcard.getDeck().getId());
-	      sqlDatabase.insert(FLASHCARDS_TABLE_NAME, null, values);       
-	      Log.d(TAG, "insertFlashcard " + flashcard.getFront());
-	   }
-	   
-	   //gets all Flashcards in db
-	   public Cursor getAllFlashcards() {
-	      Log.d(TAG, "getAllFlashcards");
-	      return sqlDatabase.query(FLASHCARDS_TABLE_NAME,
-	            new String[] {FLASHCARDS_COLUMN_ID, FLASHCARDS_COLUMN_FRONT, FLASHCARDS_COLUMN_BACK,  FLASHCARDS_COLUMN_DECK},
-	            null, null, null, null, null);
-	   }
-	   
-	   //get Flashcard by id
-	   public Cursor getFlashcardById(String flashcardId) {
-	      Log.d(TAG, "getFlashcardById " + flashcardId);
-	      return sqlDatabase.query(FLASHCARDS_TABLE_NAME,
-	            new String[] {FLASHCARDS_COLUMN_ID, FLASHCARDS_COLUMN_FRONT, 
-	            FLASHCARDS_COLUMN_BACK, FLASHCARDS_COLUMN_DECK},
-	            FLASHCARDS_COLUMN_ID + " = '" + flashcardId + "'", null, null, null, null);
-	   }
-	   
-	   //edit Flashcard
-	   public void editExistingFlashcard(Flashcard flashcard) {
-	      ContentValues newValues;
-	      newValues = new ContentValues();
-	      newValues.put(FLASHCARDS_COLUMN_FRONT, flashcard.getFront());
-	      newValues.put(FLASHCARDS_COLUMN_BACK, flashcard.getBack());      
-	      newValues.put(FLASHCARDS_COLUMN_DECK, flashcard.getDeck().getId());      
-	      sqlDatabase.update(FLASHCARDS_TABLE_NAME, newValues, FLASHCARDS_COLUMN_ID + " = '" + flashcard.getId() + "'", null);
-	      Log.d(TAG, "editExistingFlashcard " + flashcard.getFront());
-	   }
-	   
-	   //delete Flashcard
-	   public void deleteFlashcard(Flashcard flashcard) {
-	      deleteFlashcard(flashcard.getId());
-	        Log.d(TAG, "deleteFlashcard " + flashcard.getFront());
-	   }
-	   
-	   //delete Flashcard
-	   public void deleteFlashcard(String flashcardId) {
-	      sqlDatabase.delete(FLASHCARDS_TABLE_NAME, FLASHCARDS_COLUMN_ID + " = '" + flashcardId + "'", null);        
-	      Log.d(TAG, "deleteFlashcard " + flashcardId);
-	   }
 
 }
