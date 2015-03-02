@@ -13,7 +13,7 @@
         android:contentDescription="@string/cal_current_month"
         android:text="@string/cal_placeholder"
         android:textSize="30sp" 
-                android:textColor="#0099FF"/>
+        android:textColor="#0099FF"/>
     
 
 	<TextView

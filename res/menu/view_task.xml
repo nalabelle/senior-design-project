@@ -5,5 +5,11 @@
         android:title="@string/view_actionbar_edit_title"
         android:showAsAction="always"
         android:icon="@drawable/ic_action_edit" />
-    
+    <!--  
+    <item
+        android:id="@+id/view_actionbar_delete"
+        android:title="@string/view_actionbar_delete_title"
+        android:showAsAction="always"
+        android:icon="@drawable/ic_action_discard" />
+    -->
 </menu>

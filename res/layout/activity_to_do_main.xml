@@ -16,6 +16,7 @@
         android:layout_height="fill_parent"
         android:scrollbarStyle="outsideOverlay" 
         android:background="@drawable/border"
+        android:choiceMode="singleChoice"
         >
     </ListView>
 

@@ -154,6 +154,10 @@ public class ViewTask extends DefaultActivity {
       case R.id.view_actionbar_edit:
          NavigationHandler.editTask(this, this.task);
          return true;
+         /*
+      case R.id.view_actionbar_delete:
+         DeleteHandler.deleteDialog(this, this.task, this.dbAdapter);
+         */
       default:
          return super.onOptionsItemSelected(item);
       }

@@ -38,7 +38,8 @@ public class ToDoMain extends DefaultActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_to_do_main);
 		listView = (ListView) findViewById(R.id.view_all_tasks_listview);
-				
+		listView.setSelector(R.drawable.selector);
+		
       //short click to open task
 		listView.setOnItemClickListener(new OnItemClickListener() {
          @Override

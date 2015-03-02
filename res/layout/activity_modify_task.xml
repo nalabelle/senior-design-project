@@ -17,7 +17,7 @@
         <TableRow>
             <TextView
                 android:padding="2dp"
-                android:textColor="#8968CD"
+                android:textColor="#0099FF"
                 android:text=" "
                 android:textAppearance="?android:attr/textAppearanceSmall" />        
       </TableRow>
@@ -41,7 +41,7 @@
             <TextView
                 android:padding="2dp"                
                 android:layout_marginTop="5dp"
-                android:textColor="#8968CD"
+                android:textColor="#0099FF"
                 android:text="@string/task_name_label"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
         </TableRow>
@@ -61,7 +61,7 @@
         <TableRow>
             <TextView
                 android:layout_marginTop="5dp"
-                android:textColor="#8968CD"
+                android:textColor="#0099FF"
                 android:text="@string/task_date_label"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
         </TableRow>
@@ -77,7 +77,7 @@
         
         <TableRow>
             <TextView
-                android:textColor="#8968CD"
+                android:textColor="#0099FF"
                 android:text="@string/task_time_label"
                 android:textAppearance="?android:attr/textAppearanceSmall" />        
         </TableRow>
@@ -97,7 +97,7 @@
                 android:id="@+id/modify_notification"
                 android:padding="2dp"
                 android:text="@string/task_notification_label"            
-                android:textColor="#8968CD"
+                android:textColor="#0099FF"
                 android:textAppearance="?android:attr/textAppearanceSmall"/>
         </TableRow>
         <TableRow>
