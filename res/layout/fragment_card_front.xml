@@ -2,10 +2,11 @@
     android:id="@+id/layout_front"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#a6c"
+    android:background="#0ABAB5"
     android:gravity="center"
     android:orientation="vertical"
-    android:padding="16dp" >
+    android:padding="16dp" 
+    >
 
     <TextView
         android:id="@+id/text_front"
