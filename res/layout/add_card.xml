@@ -46,7 +46,8 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="15dp"
             android:padding="3dp"
-            android:text="@string/add_deck_save_label" />
+            android:text="@string/add_deck_save_label" 
+                    android:background="#0ABAB5"/>
 
         <Button
             android:id="@+id/deck_cancel"
@@ -54,7 +55,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="3dp"
-            android:text="@string/add_deck_cancel_label" />
+            android:text="@string/add_deck_cancel_label" 
+        android:background="#0ABAB5"/>
+
     </LinearLayout>
 
 </LinearLayout>

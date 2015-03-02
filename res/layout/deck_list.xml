@@ -9,7 +9,8 @@
         android:id="@+id/add_deck"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/add_deck" />
+        android:text="@string/add_deck" 
+        android:background="#0ABAB5"/>
 
     <ListView
         android:id="@android:id/list"
