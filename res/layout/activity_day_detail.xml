@@ -13,7 +13,9 @@
         android:text="@string/cal_placeholder"
         android:textSize="30sp"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:paddingBottom="10dp" />
+        android:paddingBottom="10dp" 
+            android:textColor="#0099FF"/>
+    
 
     <ListView
         android:id="@+id/listView1"

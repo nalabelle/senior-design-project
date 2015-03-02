@@ -12,7 +12,9 @@
         android:layout_gravity="center"
         android:contentDescription="@string/cal_current_month"
         android:text="@string/cal_placeholder"
-        android:textSize="30sp" />
+        android:textSize="30sp" 
+                android:textColor="#0099FF"/>
+    
 
 	<TextView
 		 android:id="@+id/cal_header"
@@ -28,7 +30,8 @@
 	    android:numColumns="7"
 	    android:verticalSpacing="5dp"
 	    android:paddingLeft="5dp"
-	    android:paddingRight="0dp" >
+	    android:paddingRight="0dp" 
+	    >
 	</GridView>
 
 </LinearLayout>
