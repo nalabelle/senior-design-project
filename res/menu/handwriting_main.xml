@@ -7,21 +7,10 @@
           android:title="@string/action_startDraw"
           android:showAsAction="always" >
     </item>
-    
-    <item android:id="@+id/action_undo"
-          android:icon="@drawable/ic_action_undo"
-          android:title="@string/action_undoDraw" 
-          android:showAsAction="always"> 
-    </item>
-    
-    <item android:id="@+id/action_redo"
-          android:icon="@drawable/ic_action_undo"
-          android:title="@string/action_redoDraw" 
-          android:showAsAction="always"> 
-    </item>
+
     
     <item android:id="@+id/action_penWidth"
-          android:icon="@drawable/ic_action_edit"
+          android:icon="@drawable/ic_action_width"
           android:title="@string/action_changePenWidth" 
           android:showAsAction="always"> 
 		<menu>
@@ -33,7 +22,7 @@
     </item>
     
     <item android:id="@+id/action_penColor"
-          android:icon="@drawable/ic_action_edit"
+          android:icon="@drawable/ic_action_color"
           android:title="@string/action_changePenColor" 
           android:showAsAction="always"> 
 		<menu>
@@ -54,6 +43,20 @@
 	    </menu>
 		    
     </item>
+    
+           
+    <item android:id="@+id/action_undo"
+          android:icon="@drawable/ic_action_undo"
+          android:title="@string/action_undoDraw" 
+          android:showAsAction="always"> 
+    </item>
+    
+    <item android:id="@+id/action_redo"
+          android:icon="@drawable/ic_action_redo"
+          android:title="@string/action_redoDraw" 
+          android:showAsAction="always"> 
+    </item>
+    
     
     <item android:id="@+id/action_clearAll"
           android:icon="@drawable/ic_action_discard"
