@@ -119,6 +119,11 @@ public class NoteActivity extends Activity {
 			return true;
 		}
 		case R.id.action_launch_handwritting:{
+			noteLayout = (RelativeLayout) findViewById(R.id.note_layout);
+			hNote = new HandwritingNote(noteActivity, noteLayout.getWidth(), noteLayout.getHeight());
+
+			noteLayout.addView(hNote);
+			//hNote.setBackgroundColor(0);
 			// launcher for handwritting
 			return true;
 		}
@@ -151,45 +156,35 @@ public class NoteActivity extends Activity {
 		
 		View v = menu.findItem(R.id.action_record_sound).getActionView();
 		View v2 = menu.findItem(R.id.action_launch_handwritting).getActionView();
+		
+		// Handwriting Action View
 		v2.findViewById(R.id.action_penWidth).setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				clickie("Cool");
-				noteLayout = (RelativeLayout) findViewById(R.id.note_layout);
-				hNote = new HandwritingNote(noteActivity, noteLayout.getWidth(), noteLayout.getHeight());
-				noteLayout.addView(hNote);
-				//noteLayout.setBackgroundDrawable(background)
-				
-				//noteLayout.setBackground(hNote.bitmap);
-				
 			}
-		});
-		
+		});		
 		v2.findViewById(R.id.action_penColor).setOnClickListener(new View.OnClickListener() {
+
 			@SuppressLint("NewApi")
 			@SuppressWarnings("deprecation")
 			@Override
 			public void onClick(View v) {
 				clickie("Done");
 				noteLayout = (RelativeLayout) findViewById(R.id.note_layout);
-				if (hNote != null){
-					
-					
+				if (hNote != null){					
 					int sdk = android.os.Build.VERSION.SDK_INT;
 					if(sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+						//for api less than 16
 					    noteLayout.setBackgroundDrawable(new BitmapDrawable(getResources(), hNote.bitmap));
 					} else {
-						
+						//for the rest
 					    noteLayout.setBackground(new BitmapDrawable(getResources(), hNote.bitmap));
 					}
 					noteLayout.removeView(hNote);
 				}
 				dispatchKeyEvent(new KeyEvent (KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK));
 				dispatchKeyEvent(new KeyEvent (KeyEvent.ACTION_UP, KeyEvent.KEYCODE_BACK));
-				//noteLayout.setBackgroundDrawable(background)
-				
-				//noteLayout.setBackground(hNote.bitmap);
-				
 			}
 		});
 		

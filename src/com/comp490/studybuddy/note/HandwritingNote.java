@@ -63,7 +63,7 @@ public class HandwritingNote extends View {
 		bitmap = Bitmap.createBitmap(screenWidth, screenHeight, Bitmap.Config.ARGB_8888);	
 		canvas = new Canvas(bitmap);
 		
-		canvas.drawColor(Color.WHITE);
+		canvas.drawColor(Color.TRANSPARENT);
 		path = new Path();
 		bitmapPaint = new Paint(Paint.DITHER_FLAG);	
 	}
