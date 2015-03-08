@@ -7,7 +7,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
+
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.Canvas;
@@ -95,34 +98,73 @@ public class Drawing extends View {
 		}
 	}
 	
-	public void setPenWidth(int w) {
-		currWidth = w;
-		setPaint();
+	public void setPenWidth(Context context){		
+		AlertDialog picker;
+		CharSequence[] widths = {"Thin", "Thick"};
+		AlertDialog.Builder build = new AlertDialog.Builder(context);
+		build.setTitle("Pen Width");
+		build.setSingleChoiceItems(widths, -1, new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				switch(which){
+				case 0:
+					currWidth = 5;
+					break;
+				case 1:
+					currWidth = 10;
+					break;
+				default:
+					break;				
+				}
+				dialog.dismiss();
+				setPaint();
+			}
+		});
+		picker = build.create();
+		picker.show();
 	}
 	
-	public void setPenColor(int c){
-		if(c == 1){
-			currColor = Color.BLACK;
-		}
-		else if(c == 2){
-			currColor = Color.BLUE;
-		}
-		else if(c == 3){
-			currColor = Color.CYAN;
-		}
-		else if(c == 4){
-			currColor = Color.GREEN;
-		}
-		else if(c == 5){
-			currColor = Color.RED;
-		}
-		else if(c == 6){
-			currColor = Color.YELLOW;
-		}
-		else{
-			currColor = Color.WHITE;
-		}
-		setPaint();
+	public void setPenColor(Context context) {
+		AlertDialog picker;
+		CharSequence[] colors = { "Black", "Blue", "Cyan", "Green", "Red",
+				"Yellow", "White" };
+		AlertDialog.Builder build = new AlertDialog.Builder(context);
+		build.setTitle("Pen Color");
+		build.setSingleChoiceItems(colors, -1,
+				new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						switch (which) {
+						case 0:
+							currColor = Color.BLACK;
+							break;
+						case 1:
+							currColor = Color.BLUE;
+							break;
+						case 2:
+							currColor = Color.CYAN;
+							break;
+						case 3:
+							currColor = Color.GREEN;
+							break;
+						case 4:
+							currColor = Color.RED;
+							break;
+						case 5:
+							currColor = Color.YELLOW;
+							break;
+						default:
+							currColor = Color.WHITE;
+							break;
+						}
+						dialog.dismiss();
+						setPaint();
+					}
+				});
+		picker = build.create();
+		picker.show();
 	}
 
 	@Override

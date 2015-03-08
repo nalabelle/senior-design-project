@@ -16,7 +16,6 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Random;
 
-import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.app.Activity;
@@ -32,7 +31,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.v4.view.MenuItemCompat;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -122,12 +120,10 @@ public class NoteActivity extends Activity {
 			return true;
 		}
 		case R.id.action_draw:{
+			// onClick of Pen icon
 			noteLayout = (RelativeLayout) findViewById(R.id.note_layout);
 			drawing = new Drawing(noteActivity, noteLayout.getWidth(), noteLayout.getHeight());
-
 			noteLayout.addView(drawing);
-			//hNote.setBackgroundColor(0);
-			// launcher for handwritting
 			return true;
 		}
 		// TO DO: SAVE NOTE AND NEW NOTE
@@ -158,9 +154,9 @@ public class NoteActivity extends Activity {
 		View soundActionView = menu.findItem(R.id.action_record_sound).getActionView();
 		View drawActionView = menu.findItem(R.id.action_draw).getActionView();
 		
-		// Need to intercept what the ActionView closes (i.e. on backpress)
-		// so we can save data and also remove the hNote from our Note and set the
-		// background
+		// Needed to intercept what the ActionView closes (i.e. on backpress)
+		// so we can save data and also remove the drawing from our Note and set
+		// it as the background
 		menu.findItem(R.id.action_draw).setOnActionExpandListener(
 				new OnActionExpandListener() {
 					@SuppressWarnings("deprecation")
@@ -195,15 +191,13 @@ public class NoteActivity extends Activity {
 		drawActionView.findViewById(R.id.action_penWidth).setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				// need to create a picker
-				clickie("Pen Width Selection");				
+				drawing.setPenWidth(noteActivity);			
 			}
 		});		
 		drawActionView.findViewById(R.id.action_penColor).setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				// need to create a picker
-				clickie("Pen Color Selection");				
+				drawing.setPenColor(context);			
 			}
 		});
 		drawActionView.findViewById(R.id.action_undo).setOnClickListener(new View.OnClickListener() {
