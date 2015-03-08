@@ -16,29 +16,30 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Random;
 
+import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.v4.widget.SimpleCursorAdapter;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.comp490.studybuddy.R;
-import com.comp490.studybuddy.database.DBAdapter;
 import com.comp490.studybuddy.models.NoteEntryModel;
 import com.comp490.studybuddy.models.NoteModel;
 
@@ -72,6 +73,11 @@ public class NoteActivity extends Activity {
 	
 	//let's make us one Note for now, can add more later!
 	private NoteModel note = new NoteModel();
+	
+	
+	private HandwritingNote hNote = null;
+	RelativeLayout noteLayout;
+	
 		
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -114,7 +120,7 @@ public class NoteActivity extends Activity {
 		}
 		case R.id.action_launch_handwritting:{
 			// launcher for handwritting
-			clickie("TODO: Link to handwritting implementation");
+			return true;
 		}
 		// TO DO: SAVE NOTE AND NEW NOTE
 		
@@ -142,8 +148,51 @@ public class NoteActivity extends Activity {
 		actionBar.setDisplayShowTitleEnabled(false); //hide actionbar title
 		actionBar.setDisplayShowHomeEnabled(false); //hide actionbar icon
 		getMenuInflater().inflate(R.menu.note_main_menu, menu);
-
+		
 		View v = menu.findItem(R.id.action_record_sound).getActionView();
+		View v2 = menu.findItem(R.id.action_launch_handwritting).getActionView();
+		v2.findViewById(R.id.action_penWidth).setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				clickie("Cool");
+				noteLayout = (RelativeLayout) findViewById(R.id.note_layout);
+				hNote = new HandwritingNote(noteActivity, noteLayout.getWidth(), noteLayout.getHeight());
+				noteLayout.addView(hNote);
+				//noteLayout.setBackgroundDrawable(background)
+				
+				//noteLayout.setBackground(hNote.bitmap);
+				
+			}
+		});
+		
+		v2.findViewById(R.id.action_penColor).setOnClickListener(new View.OnClickListener() {
+			@SuppressLint("NewApi")
+			@SuppressWarnings("deprecation")
+			@Override
+			public void onClick(View v) {
+				clickie("Done");
+				noteLayout = (RelativeLayout) findViewById(R.id.note_layout);
+				if (hNote != null){
+					
+					
+					int sdk = android.os.Build.VERSION.SDK_INT;
+					if(sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+					    noteLayout.setBackgroundDrawable(new BitmapDrawable(getResources(), hNote.bitmap));
+					} else {
+						
+					    noteLayout.setBackground(new BitmapDrawable(getResources(), hNote.bitmap));
+					}
+					noteLayout.removeView(hNote);
+				}
+				dispatchKeyEvent(new KeyEvent (KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK));
+				dispatchKeyEvent(new KeyEvent (KeyEvent.ACTION_UP, KeyEvent.KEYCODE_BACK));
+				//noteLayout.setBackgroundDrawable(background)
+				
+				//noteLayout.setBackground(hNote.bitmap);
+				
+			}
+		});
+		
 		
 		//listeners for Record actionView menu and appropriate response
 		final Button rec = (Button) v.findViewById(R.id.bActionSoundRecord);

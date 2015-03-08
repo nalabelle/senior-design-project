@@ -5,7 +5,8 @@
     <item android:id="@+id/action_launch_handwritting"
         android:icon="@drawable/ic_action_edit"
         android:title="@string/action_launch_handwrite"
-        android:showAsAction="ifRoom" />
+        android:showAsAction="ifRoom|collapseActionView" 
+        android:actionLayout="@layout/action_handwriting"/>
 
     <item android:id="@+id/action_record_sound"
         android:icon="@drawable/ic_action_mic"
