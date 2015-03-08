@@ -17,6 +17,7 @@ import java.util.Locale;
 import java.util.Random;
 
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
@@ -27,13 +28,16 @@ import android.graphics.drawable.BitmapDrawable;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.view.MenuItemCompat;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MenuItem.OnActionExpandListener;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
@@ -72,10 +76,9 @@ public class NoteActivity extends Activity {
 	private static final String LOG_TAG = "Notes";
 	
 	//let's make us one Note for now, can add more later!
-	private NoteModel note = new NoteModel();
+	private NoteModel note = new NoteModel();	
 	
-	
-	private HandwritingNote hNote = null;
+	private Drawing drawing = null;
 	RelativeLayout noteLayout;
 	
 		
@@ -118,11 +121,11 @@ public class NoteActivity extends Activity {
 			new TextBuilder(this, noteEntry); //TextBuilder text = 
 			return true;
 		}
-		case R.id.action_launch_handwritting:{
+		case R.id.action_draw:{
 			noteLayout = (RelativeLayout) findViewById(R.id.note_layout);
-			hNote = new HandwritingNote(noteActivity, noteLayout.getWidth(), noteLayout.getHeight());
+			drawing = new Drawing(noteActivity, noteLayout.getWidth(), noteLayout.getHeight());
 
-			noteLayout.addView(hNote);
+			noteLayout.addView(drawing);
 			//hNote.setBackgroundColor(0);
 			// launcher for handwritting
 			return true;
@@ -145,53 +148,103 @@ public class NoteActivity extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		if(!hasMic()) {
-			return false;
-		}
 
 		actionBar = getActionBar();
 		actionBar.setDisplayShowTitleEnabled(false); //hide actionbar title
 		actionBar.setDisplayShowHomeEnabled(false); //hide actionbar icon
 		getMenuInflater().inflate(R.menu.note_main_menu, menu);
 		
-		View v = menu.findItem(R.id.action_record_sound).getActionView();
-		View v2 = menu.findItem(R.id.action_launch_handwritting).getActionView();
 		
-		// Handwriting Action View
-		v2.findViewById(R.id.action_penWidth).setOnClickListener(new View.OnClickListener() {
+		View soundActionView = menu.findItem(R.id.action_record_sound).getActionView();
+		View drawActionView = menu.findItem(R.id.action_draw).getActionView();
+		
+		// Need to intercept what the ActionView closes (i.e. on backpress)
+		// so we can save data and also remove the hNote from our Note and set the
+		// background
+		menu.findItem(R.id.action_draw).setOnActionExpandListener(
+				new OnActionExpandListener() {
+					@SuppressWarnings("deprecation")
+					@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+					@Override
+					public boolean onMenuItemActionCollapse(MenuItem item) {
+						clickie("Drawing Closed");
+						noteLayout = (RelativeLayout) findViewById(R.id.note_layout);
+						int sdk = android.os.Build.VERSION.SDK_INT;
+						if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+							// for api less than 16
+							noteLayout.setBackgroundDrawable(new BitmapDrawable(
+									getResources(), drawing.bitmap));
+						} else {
+							// for the rest
+							noteLayout.setBackground(new BitmapDrawable(
+									getResources(), drawing.bitmap));
+						}
+						noteLayout.removeView(drawing);
+
+						return true; // Return true to collapse action view
+					}
+
+					@Override
+					public boolean onMenuItemActionExpand(MenuItem item) {
+						clickie("Drawing Started");
+						return true; // Return true to expand action view
+	        }
+	    });			
+			
+		//******** Handwriting ActionView ************
+		drawActionView.findViewById(R.id.action_penWidth).setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				clickie("Cool");
+				// need to create a picker
+				clickie("Pen Width Selection");				
 			}
 		});		
-		v2.findViewById(R.id.action_penColor).setOnClickListener(new View.OnClickListener() {
-
-			@SuppressLint("NewApi")
-			@SuppressWarnings("deprecation")
+		drawActionView.findViewById(R.id.action_penColor).setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				clickie("Done");
+				// need to create a picker
+				clickie("Pen Color Selection");				
+			}
+		});
+		drawActionView.findViewById(R.id.action_undo).setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				clickie("Undo Last");
+				drawing.undo();				
+			}
+		});
+		drawActionView.findViewById(R.id.action_redo).setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				clickie("Redo");
+				drawing.redo();				
+			}
+		});
+		drawActionView.findViewById(R.id.action_clearAll).setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				//need to add a confirmation box
 				noteLayout = (RelativeLayout) findViewById(R.id.note_layout);
-				if (hNote != null){					
-					int sdk = android.os.Build.VERSION.SDK_INT;
-					if(sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
-						//for api less than 16
-					    noteLayout.setBackgroundDrawable(new BitmapDrawable(getResources(), hNote.bitmap));
-					} else {
-						//for the rest
-					    noteLayout.setBackground(new BitmapDrawable(getResources(), hNote.bitmap));
-					}
-					noteLayout.removeView(hNote);
-				}
-				dispatchKeyEvent(new KeyEvent (KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK));
-				dispatchKeyEvent(new KeyEvent (KeyEvent.ACTION_UP, KeyEvent.KEYCODE_BACK));
+				noteLayout.removeView(drawing);
+				drawing = new Drawing(noteActivity, noteLayout.getWidth(), noteLayout.getHeight());
+				noteLayout.addView(drawing);
+				clickie("Clear all");				
+			}
+		});
+		drawActionView.findViewById(R.id.action_save).setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				clickie("Saved drawing to device");
+				drawing.saveFile();				
 			}
 		});
 		
 		
+		if(hasMic()) {
+			
 		//listeners for Record actionView menu and appropriate response
-		final Button rec = (Button) v.findViewById(R.id.bActionSoundRecord);
-		v.findViewById(R.id.bActionSoundRecord).setOnClickListener(new View.OnClickListener() {
+		final Button rec = (Button) soundActionView.findViewById(R.id.bActionSoundRecord);
+		soundActionView.findViewById(R.id.bActionSoundRecord).setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				//add the audionote entry. Not created until record is clicked once
@@ -205,7 +258,7 @@ public class NoteActivity extends Activity {
 				}
 			}
 		});
-		v.findViewById(R.id.ibActionSoundStop).setOnClickListener(new View.OnClickListener(){
+		soundActionView.findViewById(R.id.ibActionSoundStop).setOnClickListener(new View.OnClickListener(){
 			@Override
 			public void onClick(View v1) {
 				if (audio != null){
@@ -223,7 +276,9 @@ public class NoteActivity extends Activity {
 				}
 			}
 		});
-
+		}else{
+			clickie("No microphone detected");
+		}
 		return true;
 	}
 	

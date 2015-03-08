@@ -34,7 +34,7 @@
     <string name="action_delete_view">Remove</string>
     <string name="action_delete_sound">Delete Sound</string>
     <string name="action_sound_rename">Rename</string>
-    <string name="action_launch_handwrite">Handwrite</string>
+    <string name="action_draw">Draw</string>
     <string name="action_add_event">Add Event</string>
     <string name="action_edit_event">edit Event</string>
     <string name="action_create_event">Create Event</string>

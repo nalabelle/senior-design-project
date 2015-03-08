@@ -2,11 +2,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.studybuddy.TextNote" >
 
-    <item android:id="@+id/action_launch_handwritting"
+    <item android:id="@+id/action_draw"
         android:icon="@drawable/ic_action_edit"
-        android:title="@string/action_launch_handwrite"
+        android:title="@string/action_draw"
         android:showAsAction="ifRoom|collapseActionView" 
-        android:actionLayout="@layout/action_handwriting"/>
+        android:actionLayout="@layout/action_view_draw"/>
 
     <item android:id="@+id/action_record_sound"
         android:icon="@drawable/ic_action_mic"

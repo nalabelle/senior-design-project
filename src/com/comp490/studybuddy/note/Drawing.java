@@ -18,7 +18,7 @@ import android.os.Environment;
 import android.view.MotionEvent;
 import android.view.View;
 
-public class HandwritingNote extends View {
+public class Drawing extends View {
 	 Bitmap bitmap;
 	Canvas canvas;
 	private Path path;
@@ -46,7 +46,7 @@ public class HandwritingNote extends View {
 	private int currWidth = 5;
 	
 	//constructor
-	public HandwritingNote(Context context, int w, int h) {
+	public Drawing(Context context, int w, int h) {
 		super(context);
 		screenWidth = w;
 		screenHeight = h;		
