@@ -126,8 +126,7 @@ public class NoteActivity extends Activity {
 			noteLayout.addView(drawing);
 			return true;
 		}
-		// TO DO: SAVE NOTE AND NEW NOTE
-		
+		// TO DO: SAVE NOTE AND NEW NOTE		
 		//insert other action menu options here
 		default:
 				return super.onOptionsItemSelected(item);
@@ -139,8 +138,6 @@ public class NoteActivity extends Activity {
 	 is created to display record options. The playback interface is created 
 	 using a contextual action mode, which is also a menu, but a different 
 	 implementation.	 */
-	
-	//This is for the sound stuff.
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -187,7 +184,7 @@ public class NoteActivity extends Activity {
 	        }
 	    });			
 			
-		//******** Handwriting ActionView ************
+		//******** Handwriting aka Draw ActionView ************
 		drawActionView.findViewById(R.id.action_penWidth).setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -330,20 +327,6 @@ public class NoteActivity extends Activity {
 			Log.e(LOG_TAG, "onActivityResult failed to create media");
 	}
 	
-	/*
-	private static Uri getUri(int type) {
-		
-		File temp = null;
-		try {
-			temp = getMediaFile(type);
-		} catch (Exception e) {
-			Log.d("Note", "failed to create mediafile");
-			e.printStackTrace();
-			return null;
-		}
-		return Uri.fromFile(temp);
-	}*/
-
 	//Generate file and to store Photo or Video 
 	private static Uri getUri(int type) {
 		File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),"StudyBuddy_Files");
