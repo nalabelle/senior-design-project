@@ -10,13 +10,17 @@ import android.util.Log;
 
 public class NoteEntryModel {
 	//I store NoteEntries!
-	private NoteType type;
+	@Attributes(primaryKey = true, notNull = false)
+	private int id; //do something with this?
+	@Attributes(notNull = true, primaryKey = false)
 	private String name;
+	@Attributes(notNull = true, primaryKey = false)
+	private NoteType type;
 	//private String description;
 	private String filePath = null; //May not have one, who knows?
 	private int viewID = -1;
 	private int secondaryViewID = -1;
-	private int id; //do something with this?
+
 	
 	public NoteEntryModel(NoteType type) {
 		this.type = type;

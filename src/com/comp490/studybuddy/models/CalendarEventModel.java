@@ -3,10 +3,13 @@ package com.comp490.studybuddy.models;
 import android.util.Log;
 
 public class CalendarEventModel {
+	@Attributes(primaryKey = true, notNull = false)
 	private String id;
-	private String eventStart;
-	private String eventEnd;
+	@Attributes(notNull = true, primaryKey = false)
 	private String eventName;
+	@Attributes(notNull = true, primaryKey = false)
+	private String startDate;
+	private String endDate;
 	private String description;
 	private String color;
 	private final String TAG = "EventModel";
@@ -14,8 +17,8 @@ public class CalendarEventModel {
 	public CalendarEventModel() {
 		id = null;
 		eventName = null;
-		eventStart = null;
-		eventEnd = null;
+		startDate = null;
+		endDate = null;
 		description = null;
 		color = null;
 		
@@ -24,23 +27,23 @@ public class CalendarEventModel {
 	//require both a name and a start time, others are optional.
 	public CalendarEventModel(String id, String name, String start) {
 		this.id = id;
-		this.eventStart = start;
+		this.startDate = start;
 		this.eventName = name;
 	}
 	
 	public CalendarEventModel(String id, String name, String start, String end) {
 		this.id = id;
-		this.eventStart = start;
+		this.startDate = start;
 		this.eventName = name;
-		this.eventEnd = end;
+		this.endDate = end;
 	}
 	
 	public CalendarEventModel(String id, String name, String start, String end, 
 			String desc, String color) {
 		this.id = id;
-		this.eventStart = start;
+		this.startDate = start;
 		this.eventName = name;
-		this.eventEnd = end;
+		this.endDate = end;
 		this.description = desc;
 		this.color = color;
 	}
@@ -76,12 +79,12 @@ public class CalendarEventModel {
 	}
 	
 	public String getStart() {
-		return eventStart;
+		return startDate;
 	}
 	
 	public boolean setStart(String start) {
 		try {
-			eventStart = start;
+			startDate = start;
 			return true;
 		}
 		catch(Exception e) {
@@ -91,12 +94,12 @@ public class CalendarEventModel {
 	}
 	
 	public String getEnd() {
-		return eventEnd;
+		return endDate;
 	}
 	
 	public boolean setEnd(String end) {
 		try {
-			eventEnd = end;
+			endDate = end;
 			return true;
 		}
 		catch(Exception e) {
