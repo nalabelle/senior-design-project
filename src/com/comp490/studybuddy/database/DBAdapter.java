@@ -23,6 +23,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 //controls db
+@Deprecated
 public class DBAdapter {
 
    public static final String TAG = "database";

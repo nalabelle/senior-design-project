@@ -46,9 +46,11 @@ import android.widget.TextView;
 
 import com.comp490.studybuddy.R;
 import com.comp490.studybuddy.database.DBAdapter;
+import com.comp490.studybuddy.database.DBHelper;
 import com.comp490.studybuddy.models.CalendarEventModel;
+import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
 
-public class CalenActivity extends Activity {
+public class CalenActivity extends OrmLiteBaseActivity<DBHelper> {
 	
 	private DateTime calendar;
 	private DateTime originalDate;
