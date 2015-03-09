@@ -12,8 +12,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 public class DBHelper extends OrmLiteSqliteOpenHelper {
-	private static final String DATABASE_NAME = "sb.db";
-	private static final int DATABASE_VERSION = 7;
+	private static final String DATABASE_NAME = "studybuddy.db";
+	private static final int DATABASE_VERSION = 8;
 	
 	// the DAO object we use to access the SimpleData table
 	//private Dao<SimpleData, Integer> simpleDao = null;

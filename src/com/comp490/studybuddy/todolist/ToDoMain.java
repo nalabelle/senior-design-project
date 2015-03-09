@@ -107,6 +107,12 @@ public class ToDoMain extends DefaultActivity {
 		}
 		//TODO: Check for nulls.
       DeleteHandler.deleteDialog(this, taskItem);
+      try {
+		getHelper().getTaskDao().clearObjectCache();
+	} catch (SQLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
       listViewAdapter.notifyDataSetChanged();
    }
 

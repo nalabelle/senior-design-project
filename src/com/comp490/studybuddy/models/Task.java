@@ -106,4 +106,8 @@ public class Task implements Serializable {
    public void setNotification(int notify) {
       this.notification = notify;
    }  
+   
+   public String toString() {
+	   return name;
+   }
 }
