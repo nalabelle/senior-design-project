@@ -15,4 +15,8 @@ public class FlashcardModel {
 	private DeckModel deck;
 	//+ "foreign key ( " + FLASHCARDS_COLUMN_DECK + " ) references " + DECKS_TABLE_NAME + " ( " + DECKS_COLUMN_ID + " ) "
 	
+	FlashcardModel() {
+		
+	}
+	
 }

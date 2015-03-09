@@ -28,7 +28,9 @@ public class NoteEntryModel {
 	@DatabaseField
 	private int secondaryViewID = -1;
 
-	
+	NoteEntryModel() {
+		
+	}
 	public NoteEntryModel(NoteType type) {
 		this.type = type;
 	}

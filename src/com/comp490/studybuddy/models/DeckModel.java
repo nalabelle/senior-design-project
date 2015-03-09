@@ -9,4 +9,8 @@ public class DeckModel {
 	private String id;
 	@DatabaseField
 	private String name;
+	
+	DeckModel() {
+		
+	}
 }

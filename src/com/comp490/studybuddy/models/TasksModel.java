@@ -17,6 +17,10 @@ public class TasksModel {
 	private int priority;
 	@DatabaseField
 	private int notification;
+	
+	TasksModel() {
+		
+	}
 
 	public int getId() {
 		return id;
