@@ -1,5 +1,6 @@
 package com.comp490.studybuddy.calendar;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import org.joda.time.DateTime;
@@ -7,23 +8,19 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import com.comp490.studybuddy.R;
-import com.comp490.studybuddy.database.DBAdapter;
+import com.comp490.studybuddy.database.DBHelper;
 import com.comp490.studybuddy.models.CalendarEvent;
-
+import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
 import android.app.ActionBar;
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.TimePickerDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.format.DateFormat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -40,7 +37,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 
-public class AddEvent extends Activity {
+public class AddEvent extends OrmLiteBaseActivity<DBHelper> {
 	
 	private ActionBar actionBar;
 	private int dateButt = -1;
@@ -53,7 +50,6 @@ public class AddEvent extends Activity {
 	private int startDay;
 	private int startHour;
 	private int startMin;
-	private DBAdapter db;
 	private ArrayList<String> colorImgName;
 	
 	@Override
@@ -92,12 +88,17 @@ public class AddEvent extends Activity {
 							startHour, startMin);
 					EditText eventText = (EditText) findViewById(R.id.eventName);
 					String eventName = eventText.getText().toString(); 
-					db = new DBAdapter(this);
-					db.open();
+		    		
 					event = new CalendarEvent( 
 							eventName, startDateTime.toString());
-					// Save Event
-					db.insertEvent(event);
+
+		    		try {
+		    			getHelper().getDao(CalendarEvent.class).create(event);
+		    		} catch (SQLException e) {
+		    			// TODO Auto-generated catch block
+		    			e.printStackTrace();
+		    		}
+					
 					//Return to Calendar
 					Intent back2Cal = new Intent(this, CalenActivity.class);
 					back2Cal.putExtra("date", startDateTime.toString());

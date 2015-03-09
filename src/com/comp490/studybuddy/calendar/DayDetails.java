@@ -57,12 +57,11 @@ public class DayDetails extends OrmLiteBaseActivity<DBHelper> {
 	    Log.d("DayDetail", "Searching for: " +dateTimeToday);
 
 	    //Get Events For the Day
-		QueryBuilder<CalendarEvent, ?> queryBuilder;
 		try {
-			queryBuilder = getHelper().getDao(
+			QueryBuilder<CalendarEvent, ?> queryBuilder = getHelper().getDao(
 					CalendarEvent.class).queryBuilder();
 			queryBuilder.where().like(CalendarEvent.CAL_EVENT_START_DATE,
-					dateTimeToday);
+					dateTimeToday+"%");
 			PreparedQuery<CalendarEvent> preparedQuery = queryBuilder.prepare();
 			eventList = getHelper().getDao(CalendarEvent.class).query(preparedQuery);
 		} catch (SQLException e) {

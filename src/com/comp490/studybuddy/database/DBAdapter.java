@@ -58,27 +58,6 @@ public class DBAdapter {
    private static final String TASK_TABLE_UPGRADE = 
 		   "Drop table if exists " + DBAdapter.TASK_TABLE_NAME;
 
-	private static final String CAL_EVENT_TABLE = "calEvents";
-	private static final String CAL_EVENT_ID = "_eventId";
-	private static final String CAL_EVENT_NAME = "_eventName";
-	private static final String CAL_EVENT_START_DATE = "_startDate";
-	private static final String CAL_EVENT_END_DATE = "_endDate";
-	private static final String CAL_EVENT_DESCRIPTION = "_description";
-	private static final String CAL_EVENT_COLOR = "_color";
-	
-	private static final String CREATE_CAL_EVENT_TABLE = 
-			"create table " + CAL_EVENT_TABLE + " ( " +
-					CAL_EVENT_ID + " text primary key, " +
-					CAL_EVENT_NAME + " text not null, " + 
-					CAL_EVENT_START_DATE + " text not null, " +
-					CAL_EVENT_END_DATE + " text," +
-					CAL_EVENT_DESCRIPTION + " text, " + 
-					CAL_EVENT_COLOR + " text " + " ); ";
-	
-	private static final String CAL_EVENT_TABLE_UPGRADE =
-	         "Drop table if exists " + CAL_EVENT_TABLE;
-
-	
 	public static final String NOTE_TABLE_NAME 					= "notes";
 	public static final String NOTE_COLUMN_ID 					= "_id";
 	public static final String NOTE_COLUMN_NAME					= "_name";
@@ -146,9 +125,6 @@ public class DBAdapter {
 			Log.d(TAG, CREATE_TASK_TABLE);
 			db.execSQL(CREATE_TASK_TABLE);
 			
-			Log.d(TAG, CREATE_CAL_EVENT_TABLE);
-			db.execSQL(CREATE_CAL_EVENT_TABLE);
-			
 			Log.d(TAG, CREATE_NOTE_TABLE);
 			db.execSQL(CREATE_NOTE_TABLE);
 
@@ -162,8 +138,6 @@ public class DBAdapter {
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 			db.execSQL(TASK_TABLE_UPGRADE);
 			Log.d(TAG, TASK_TABLE_UPGRADE);
-			db.execSQL(CAL_EVENT_TABLE_UPGRADE);
-			Log.d(TAG, CAL_EVENT_TABLE_UPGRADE);
 			Log.d(TAG, NOTE_TABLE_UPGRADE);
 			db.execSQL(NOTE_TABLE_UPGRADE);
 	        db.execSQL(DECKS_TABLE_UPGRADE);
@@ -247,7 +221,7 @@ public class DBAdapter {
       sqlDatabase.delete(TASK_TABLE_NAME, TASK_COLUMN_ID + " = '" + taskId + "'", null);        
       Log.d(TAG, "deleteTask " + taskId);
    }
-   
+   /*
 	public Cursor getAllEvents() {
 		return sqlDatabase.query(CAL_EVENT_TABLE, 
 				new String[] {CAL_EVENT_ID, CAL_EVENT_NAME, CAL_EVENT_START_DATE, 
@@ -326,7 +300,7 @@ public class DBAdapter {
 	   } while (cursor.getCount() > 0);
 	   return eventId;
 	}
-
+*/
 	public Cursor getAllNotes() {
 		Log.d(TAG, "getAllNotes");
 		return sqlDatabase.query(NOTE_TABLE_NAME, new String[] {

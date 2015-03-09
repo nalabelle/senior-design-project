@@ -12,6 +12,7 @@
 
 package com.comp490.studybuddy.calendar;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,11 +21,9 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import android.app.ActionBar;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.view.GestureDetectorCompat;
@@ -41,14 +40,16 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.GridView;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.comp490.studybuddy.R;
-import com.comp490.studybuddy.database.DBAdapter;
+import com.comp490.studybuddy.database.DBHelper;
 import com.comp490.studybuddy.models.CalendarEvent;
+import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
+import com.j256.ormlite.stmt.PreparedQuery;
+import com.j256.ormlite.stmt.QueryBuilder;
 
-public class CalenActivity extends Activity {
+public class CalenActivity extends OrmLiteBaseActivity<DBHelper> {
 	
 	private DateTime calendar;
 	private DateTime originalDate;
@@ -180,24 +181,19 @@ public class CalenActivity extends Activity {
         private final Context context;
 
         private final List<String> list;
-        private DBAdapter db;
-        private Cursor cursor;
         
         private Button gridcell;
         private TextView num_events_per_day;
         private final HashMap<String, Integer> eventsPerMonthMap;
-        private ArrayList<CalendarEvent> eventList;
+        private List<CalendarEvent> eventList;
 
         public GridCellAdapter(Context context, int cellID)
         {
                 super();
                 this.context = context;
                 this.list = new ArrayList<String>();
-                db = new DBAdapter(context);
-                db.open();
-                eventList = new ArrayList<CalendarEvent>();
                 getEvents();
-                db.close();
+
                 // Print Month
                 printMonth();
 
@@ -217,26 +213,24 @@ public class CalenActivity extends Activity {
         	String curr = calendar.toString();
         	String next = nextDT.toString();
         	//Get relevant part Year and Month
-        	prev = prev.substring(0,7);
-        	curr = curr.substring(0,7);
-        	next = next.substring(0,7);
+        	prev = prev.substring(0,7)+"%";
+        	curr = curr.substring(0,7)+"%";
+        	next = next.substring(0,7)+"%";
         	
-        	cursor = db.getEventByYear(prev, curr, next);
-    		//cursor = db.getAllEvents();
-    		if (cursor.moveToFirst()){
-    			   while(!cursor.isAfterLast()){
-    				  int id = cursor.getInt(cursor.getColumnIndex("_eventId"));
-    				  String name = cursor.getString(cursor.getColumnIndex("_eventName"));
-    			      String startDate = cursor.getString(cursor.getColumnIndex("_startDate"));
-    			      String endDate = cursor.getString(cursor.getColumnIndex("_endDate"));
-    			      String description = cursor.getString(cursor.getColumnIndex("_description"));
-    			      String color = cursor.getString(cursor.getColumnIndex("_color"));
-    			      CalendarEvent event = new CalendarEvent(id, 
-    			    		  name, startDate, endDate, description, color);
-    			      eventList.add(event);
-    			      cursor.moveToNext();
-    			   }
-    			}
+    	    //Get Events For the Day
+    		try {
+    			QueryBuilder<CalendarEvent, ?> queryBuilder = getHelper().getDao(
+    					CalendarEvent.class).queryBuilder();
+    			queryBuilder.where()
+    				.like(CalendarEvent.CAL_EVENT_START_DATE, prev).or()
+    				.like(CalendarEvent.CAL_EVENT_START_DATE, curr).or()
+    				.like(CalendarEvent.CAL_EVENT_START_DATE, next);
+    			PreparedQuery<CalendarEvent> preparedQuery = queryBuilder.prepare();
+    			eventList = getHelper().getDao(CalendarEvent.class).query(preparedQuery);
+    		} catch (SQLException e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		}
     	}
         
         @Override
