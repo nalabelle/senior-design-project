@@ -8,7 +8,7 @@ import org.joda.time.format.DateTimeFormatter;
 
 import com.comp490.studybuddy.R;
 import com.comp490.studybuddy.database.DBAdapter;
-import com.comp490.studybuddy.models.CalendarEventModel;
+import com.comp490.studybuddy.models.CalendarEvent;
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -45,7 +45,7 @@ public class AddEvent extends Activity {
 	private ActionBar actionBar;
 	private int dateButt = -1;
 	private int timeButt = -1;
-	private CalendarEventModel event;
+	private CalendarEvent event;
 	private DateTime startDateTime;
 	private DateTime finishDateTime;
 	private int startYear;
@@ -94,7 +94,7 @@ public class AddEvent extends Activity {
 					String eventName = eventText.getText().toString(); 
 					db = new DBAdapter(this);
 					db.open();
-					event = new CalendarEventModel( 
+					event = new CalendarEvent( 
 							eventName, startDateTime.toString());
 					// Save Event
 					db.insertEvent(event);

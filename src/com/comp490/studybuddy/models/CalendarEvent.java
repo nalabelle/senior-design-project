@@ -6,12 +6,15 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable(tableName="Calendar")
-public class CalendarEventModel {
+public class CalendarEvent {
+	//static are for the DB Tables, if you change these, things break.
+	public static final String CAL_EVENT_START_DATE = "startDate";
+	
 	@DatabaseField(generatedId = true)
-	private String id;
+	private int id;
 	@DatabaseField
 	private String eventName;
-	@DatabaseField
+	@DatabaseField(columnName = CAL_EVENT_START_DATE)
 	private String startDate;
 	@DatabaseField
 	private String endDate;
@@ -21,24 +24,24 @@ public class CalendarEventModel {
 	private String color;
 	private final String TAG = "EventModel";
 	
-	CalendarEventModel() {
+	CalendarEvent() {
 		
 	}
 	
 	//require both a name and a start time, others are optional.
-	public CalendarEventModel(String name, String start) {
+	public CalendarEvent(String name, String start) {
 		this.startDate = start;
 		this.eventName = name;
 	}
 	
-	public CalendarEventModel(String id, String name, String start, String end) {
+	public CalendarEvent(int id, String name, String start, String end) {
 		this.id = id;
 		this.startDate = start;
 		this.eventName = name;
 		this.endDate = end;
 	}
 	
-	public CalendarEventModel(String id, String name, String start, String end, 
+	public CalendarEvent(int id, String name, String start, String end, 
 			String desc, String color) {
 		this.id = id;
 		this.startDate = start;
@@ -48,11 +51,11 @@ public class CalendarEventModel {
 		this.color = color;
 	}
 	
-	public String getId() {
+	public int getId() {
 		return id;
 	}
 	
-	public boolean setId(String id) {
+	public boolean setId(int id) {
 		try {
 			this.id = id;
 			return true;

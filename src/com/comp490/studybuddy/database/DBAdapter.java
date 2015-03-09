@@ -11,7 +11,7 @@
 package com.comp490.studybuddy.database;
 
 import java.util.UUID;
-import com.comp490.studybuddy.models.CalendarEventModel;
+import com.comp490.studybuddy.models.CalendarEvent;
 import com.comp490.studybuddy.todolist.Task;
 
 import android.content.ContentValues;
@@ -255,7 +255,7 @@ public class DBAdapter {
 				null, null, null, null, null);
 	}
 	
-	public void insertEvent(CalendarEventModel event) {
+	public void insertEvent(CalendarEvent event) {
 		ContentValues values = new ContentValues();
 		values.put(CAL_EVENT_ID, event.getId());
 		values.put(CAL_EVENT_NAME, event.getName());
@@ -296,7 +296,7 @@ public class DBAdapter {
 	   		CAL_EVENT_START_DATE + " LIKE " + "'" + nextMonth + "%'", null, null, null, null);
 	}
 	
-	public void editExistingTask(CalendarEventModel event) {
+	public void editExistingTask(CalendarEvent event) {
 		ContentValues values = new ContentValues();
 		values.put(CAL_EVENT_ID, event.getId());
 		values.put(CAL_EVENT_NAME, event.getName());
@@ -310,8 +310,8 @@ public class DBAdapter {
 	}
 	
 	//delete Task
-	public void deleteEvent(CalendarEventModel event) {
-		String eventId = event.getId();
+	public void deleteEvent(CalendarEvent event) {
+		int eventId = event.getId();
 		sqlDatabase.delete(CAL_EVENT_TABLE, CAL_EVENT_ID + " = '" + eventId + "'", null); 
 		Log.d(TAG, "deleteEvent " + event.getName());
 	}

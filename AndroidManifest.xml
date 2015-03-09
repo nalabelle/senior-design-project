@@ -98,10 +98,6 @@
                 android:value="com.comp490.studybuddy.calendar.CalenActivity" />
         </activity>
 
-        <provider
-            android:name=".database.CalContentProvider"
-            android:authorities="com.comp490.studybuddy.database.provider.CalContentProvider" />
-
         <activity
             android:name=".todolist.ToDoMain"
             android:label="@string/title_activity_to_do_main" >

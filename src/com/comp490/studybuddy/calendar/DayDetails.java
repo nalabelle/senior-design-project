@@ -1,16 +1,15 @@
 package com.comp490.studybuddy.calendar;
 
-import java.util.ArrayList;
+import java.sql.SQLException;
+import java.util.List;
 
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import android.app.ActionBar;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,19 +23,20 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.comp490.studybuddy.R;
-import com.comp490.studybuddy.database.DBAdapter;
-import com.comp490.studybuddy.models.CalendarEventModel;
+import com.comp490.studybuddy.database.DBHelper;
+import com.comp490.studybuddy.models.CalendarEvent;
+import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
+import com.j256.ormlite.stmt.PreparedQuery;
+import com.j256.ormlite.stmt.QueryBuilder;
 
-public class DayDetails extends Activity {
+public class DayDetails extends OrmLiteBaseActivity<DBHelper> {
 	
 	private TextView dayDetailText;
 	private Intent prevIntent;
 	private String dateTimeToday;
-	private DBAdapter db;
-    private Cursor cursor;
     private ListView listView;
 	private ActionBar actionBar;
-	private ArrayList<CalendarEventModel> eventList;
+	private List<CalendarEvent> eventList;
 	private final DateTimeFormatter dateFormatter = 
     		DateTimeFormat.forPattern("MMMM d, yyyy");
 	
@@ -46,7 +46,6 @@ public class DayDetails extends Activity {
 	    setContentView(R.layout.activity_day_detail);
 	    //Grab the list view, create an Array to hold events
 	    listView = (ListView) findViewById(R.id.listView1);
-	    eventList = new ArrayList<CalendarEventModel>();
 	    
 	    prevIntent = getIntent();
 	    dateTimeToday = prevIntent.getStringExtra("DT");
@@ -56,37 +55,35 @@ public class DayDetails extends Activity {
 	    //Time DateTime String to relevant info for Query
 	    dateTimeToday = dateTimeToday.substring(0,10);
 	    Log.d("DayDetail", "Searching for: " +dateTimeToday);
+
 	    //Get Events For the Day
-	    db = new DBAdapter(this);
-	    db.open();
-	    cursor = db.getEventByDay(dateTimeToday);
-	    //Get events from cursors, add to arrayList  
-	    if (cursor.moveToFirst()){
-			   while(!cursor.isAfterLast()){
-				  String id = cursor.getString(cursor.getColumnIndex("_eventId"));
-				  String name = cursor.getString(cursor.getColumnIndex("_eventName"));
-			      String startDate = cursor.getString(cursor.getColumnIndex("_startDate"));
-			      String endDate = cursor.getString(cursor.getColumnIndex("_endDate"));
-			      CalendarEventModel event = new CalendarEventModel(id, name, startDate, endDate);
-			      eventList.add(event);
-			      cursor.moveToNext();
-			   }
-			}
-	    db.close();
-	    if (eventList.isEmpty()) {Log.d("DAYDETAIL", "NULL");}
+		QueryBuilder<CalendarEvent, ?> queryBuilder;
+		try {
+			queryBuilder = getHelper().getDao(
+					CalendarEvent.class).queryBuilder();
+			queryBuilder.where().like(CalendarEvent.CAL_EVENT_START_DATE,
+					dateTimeToday);
+			PreparedQuery<CalendarEvent> preparedQuery = queryBuilder.prepare();
+			eventList = getHelper().getDao(CalendarEvent.class).query(preparedQuery);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	    if (eventList == null || eventList.isEmpty()) {Log.d("DAYDETAIL", "NULL");}
 	    //Create an adapter to transfer the the events to the list of textViews
 	    CustomListAdapter adapter = new CustomListAdapter(this, 
 	    		R.layout.day_detail_list_item, eventList);
 	    listView.setAdapter(adapter);
 	}
 	
-	private class CustomListAdapter extends ArrayAdapter<CalendarEventModel> {
+	private class CustomListAdapter extends ArrayAdapter<CalendarEvent> {
 		private Context mContext;
 		private int id;
-		private ArrayList<CalendarEventModel> events;
+		private List<CalendarEvent> events;
 		
 		public CustomListAdapter(Context context, int textViewId, 
-				ArrayList<CalendarEventModel> eventList) {
+				List<CalendarEvent> eventList) {
 			super(context, textViewId, eventList);
 			mContext = context;
 			id = textViewId;

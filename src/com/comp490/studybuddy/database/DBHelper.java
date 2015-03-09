@@ -10,7 +10,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 public class DBHelper extends OrmLiteSqliteOpenHelper {
-	private static final String DATABASE_NAME = "studdybuddy.db";
+	private static final String DATABASE_NAME = "sb.db";
 	private static final int DATABASE_VERSION = 6;
 	
 	// the DAO object we use to access the SimpleData table
@@ -19,7 +19,7 @@ public class DBHelper extends OrmLiteSqliteOpenHelper {
 	
 	private String[] classes = {
 			"com.comp490.studybuddy.models.TasksModel",
-			"com.comp490.studybuddy.models.CalendarEventModel",
+			"com.comp490.studybuddy.models.CalendarEvent",
 			"com.comp490.studybuddy.models.NoteEntryModel"
 			};
 

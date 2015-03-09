@@ -46,11 +46,9 @@ import android.widget.TextView;
 
 import com.comp490.studybuddy.R;
 import com.comp490.studybuddy.database.DBAdapter;
-import com.comp490.studybuddy.database.DBHelper;
-import com.comp490.studybuddy.models.CalendarEventModel;
-import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
+import com.comp490.studybuddy.models.CalendarEvent;
 
-public class CalenActivity extends OrmLiteBaseActivity<DBHelper> {
+public class CalenActivity extends Activity {
 	
 	private DateTime calendar;
 	private DateTime originalDate;
@@ -72,7 +70,7 @@ public class CalenActivity extends OrmLiteBaseActivity<DBHelper> {
     private ActionBar actionBar;
     
     private GestureDetectorCompat swipeDetector;
-    private static ArrayList<CalendarEventModel> eventList;
+    private static ArrayList<CalendarEvent> eventList;
     
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -188,7 +186,7 @@ public class CalenActivity extends OrmLiteBaseActivity<DBHelper> {
         private Button gridcell;
         private TextView num_events_per_day;
         private final HashMap<String, Integer> eventsPerMonthMap;
-        private ArrayList<CalendarEventModel> eventList;
+        private ArrayList<CalendarEvent> eventList;
 
         public GridCellAdapter(Context context, int cellID)
         {
@@ -197,7 +195,7 @@ public class CalenActivity extends OrmLiteBaseActivity<DBHelper> {
                 this.list = new ArrayList<String>();
                 db = new DBAdapter(context);
                 db.open();
-                eventList = new ArrayList<CalendarEventModel>();
+                eventList = new ArrayList<CalendarEvent>();
                 getEvents();
                 db.close();
                 // Print Month
@@ -227,13 +225,13 @@ public class CalenActivity extends OrmLiteBaseActivity<DBHelper> {
     		//cursor = db.getAllEvents();
     		if (cursor.moveToFirst()){
     			   while(!cursor.isAfterLast()){
-    				  String id = cursor.getString(cursor.getColumnIndex("_eventId"));
+    				  int id = cursor.getInt(cursor.getColumnIndex("_eventId"));
     				  String name = cursor.getString(cursor.getColumnIndex("_eventName"));
     			      String startDate = cursor.getString(cursor.getColumnIndex("_startDate"));
     			      String endDate = cursor.getString(cursor.getColumnIndex("_endDate"));
     			      String description = cursor.getString(cursor.getColumnIndex("_description"));
     			      String color = cursor.getString(cursor.getColumnIndex("_color"));
-    			      CalendarEventModel event = new CalendarEventModel(id, 
+    			      CalendarEvent event = new CalendarEvent(id, 
     			    		  name, startDate, endDate, description, color);
     			      eventList.add(event);
     			      cursor.moveToNext();
@@ -253,7 +251,7 @@ public class CalenActivity extends OrmLiteBaseActivity<DBHelper> {
 		{
 		    HashMap<String, Integer> map = new HashMap<String, Integer>();
 		    for(int i = 0; i < eventList.size(); i++) {
-		    	CalendarEventModel event = eventList.get(i);
+		    	CalendarEvent event = eventList.get(i);
 		    	String startDate = event.getStart();
 		    	DateTime date = DateTime.parse(startDate);
 		    	int y = date.getYear();
