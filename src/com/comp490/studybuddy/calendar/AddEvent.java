@@ -8,6 +8,7 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import com.comp490.studybuddy.R;
+import com.comp490.studybuddy.calendar.CalenActivity.GridCellAdapter;
 import com.comp490.studybuddy.database.DBHelper;
 import com.comp490.studybuddy.models.CalendarEvent;
 import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
@@ -26,12 +27,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -52,11 +55,16 @@ public class AddEvent extends OrmLiteBaseActivity<DBHelper> {
 	private int startMin;
 	private ArrayList<String> colorImgName;
 	
+	String[] colorName = {"Blue", "Purple", "Green", "Orange", "Red"};
+	Integer[] imgId = {R.drawable.blue, R.drawable.blue, R.drawable.blue, R.drawable.blue, R.drawable.blue};
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.add_task_calendar);
 		colorImgName = new ArrayList<String>();
+		int blueId = this.getResources().getIdentifier("blue", "drawable", this.getPackageName());
+		colorImgName.add(""+blueId + "-Blue");
 		
 		//currentDateTime = new DateTime();
 	}
@@ -239,23 +247,51 @@ public class AddEvent extends OrmLiteBaseActivity<DBHelper> {
 	//ListFragment
 	public class ListViewFragment extends DialogFragment {
 	
-		//TODO
-		CustomListAdapter adapter;
+		public ListViewFragment create() {
+			ListViewFragment frag = new ListViewFragment();
+			return frag;
+		}
+		
+		@Override
+		public void onCreate(Bundle savedInstanceState) {
+			super.onCreate(savedInstanceState);
+		}
+		
+		@Override
+	    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+			getDialog().setTitle("Set Color");
+	        ListView v = new ListView(getActivity());
+	        CustomListAdapter adapter = new CustomListAdapter(this.getActivity().getBaseContext(), colorName, imgId);
+	        v.setAdapter(adapter); 
+
+	        //Handle on Clicks
+	        v.setClickable(true);
+	        v.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+	        	//Handle onTouch
+	            @Override
+	            public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
+	                Toast.makeText(getApplicationContext(),""+arg3,Toast.LENGTH_SHORT).show();
+	            }
+	        });
+	        
+	        return v;
+	    }
 		
 		
 	}
 	
 	private class CustomListAdapter extends ArrayAdapter<String> {
 		private Context mContext;
-		private int id;
-		private ArrayList<String> list;
+		private final String[] colorName;
+		private final Integer[] imgId;
 		
-		public CustomListAdapter(Context context, int textViewId, 
-				ArrayList colorImgName) {
-			super(context, textViewId, colorImgName);
+		public CustomListAdapter(Context context, String[] colorName,
+				Integer[] imgId) {
+			super(context, R.layout.color_list, colorName);
 			mContext = context;
-			id = textViewId;
-			list = colorImgName;
+			this.colorName = colorName;
+			this.imgId = imgId;
 			
 		}
 		
@@ -271,14 +307,9 @@ public class AddEvent extends OrmLiteBaseActivity<DBHelper> {
 			//Apply image
 			ImageView img = (ImageView) mView.findViewById(R.id.img);
 			TextView text = (TextView) mView.findViewById(R.id.txt);
-			if(list.get(position) != null) {
-				String[] temp = list.get(position).split("-");
-				int circle = Integer.parseInt(temp[0]);
-				String colorName = temp[2];
-				img.setImageResource(circle);
-				text.setTextColor(Color.WHITE);
-				text.setText(colorName);
-			}
+			img.setImageResource(imgId[position]);
+			text.setText(colorName[position]);
+			
 			return mView;
 		}
 		

@@ -402,8 +402,9 @@ public class CalenActivity extends OrmLiteBaseActivity<DBHelper> {
 	        @Override
 	        public boolean onFling(MotionEvent event1, MotionEvent event2, 
 	                float velocityX, float velocityY) {
-	            Log.d(DEBUG_TAG, "onFling: " + event1.toString() + "\n Event2:"
-	            		+event2.toString());
+	            //Log causing Null pointers
+	        	// Log.d(DEBUG_TAG, "onFling: " + event1.toString() + "\n Event2:"
+	            		//+event2.toString());
 	            //Threshold
 	            //if(velocityX < 100)
 	            	//return false;
