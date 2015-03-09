@@ -45,6 +45,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.comp490.studybuddy.R;
+import com.comp490.studybuddy.database.CalendarAdapter;
 import com.comp490.studybuddy.database.DBAdapter;
 import com.comp490.studybuddy.models.CalendarEventModel;
 

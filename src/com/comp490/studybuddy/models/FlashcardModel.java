@@ -1,12 +1,17 @@
 package com.comp490.studybuddy.models;
 
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
+
+@DatabaseTable(tableName="Flashcards")
 public class FlashcardModel {
-	@Attributes(primaryKey=true, notNull = false)
+	@DatabaseField(generatedId = true)
 	private String id;
-	@Attributes(notNull=true, primaryKey = false)
+	@DatabaseField
 	private String front;
+	@DatabaseField
 	private String back;
-	@Attributes(notNull = false, primaryKey = false)
+	@DatabaseField(foreign=true)
 	private DeckModel deck;
 	//+ "foreign key ( " + FLASHCARDS_COLUMN_DECK + " ) references " + DECKS_TABLE_NAME + " ( " + DECKS_COLUMN_ID + " ) "
 	

@@ -1,5 +1,8 @@
 package com.comp490.studybuddy.models;
 
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
+
 import android.util.Log;
 
 /* NoteEntryModel stores all relevant data about the note objects we create.
@@ -8,17 +11,21 @@ import android.util.Log;
  * x/y positions. 
  */
 
+@DatabaseTable(tableName="NoteEntries")
 public class NoteEntryModel {
 	//I store NoteEntries!
-	@Attributes(primaryKey = true, notNull = false)
+	@DatabaseField(generatedId = true)
 	private int id; //do something with this?
-	@Attributes(notNull = true, primaryKey = false)
+	@DatabaseField
 	private String name;
-	@Attributes(notNull = true, primaryKey = false)
+	@DatabaseField
 	private NoteType type;
 	//private String description;
+	@DatabaseField
 	private String filePath = null; //May not have one, who knows?
+	@DatabaseField
 	private int viewID = -1;
+	@DatabaseField
 	private int secondaryViewID = -1;
 
 	

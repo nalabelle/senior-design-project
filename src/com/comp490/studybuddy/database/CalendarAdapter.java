@@ -1,4 +1,4 @@
-package com.comp490.studybuddy.calendar;
+package com.comp490.studybuddy.database;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -9,7 +9,6 @@ import android.database.Cursor;
 import android.util.Log;
 import android.util.SparseArray;
 
-import com.comp490.studybuddy.database.DBAdapter;
 import com.comp490.studybuddy.models.CalendarEventModel;
 
 public class CalendarAdapter {
@@ -40,24 +39,21 @@ public class CalendarAdapter {
 		return events;
 	}
 	
-	public void load(Context ctx) {
-		DBAdapter db = new DBAdapter(ctx);
+	public void load() {
+		DBAdapter db = new DBAdapter();
 		for(db.)
 		
 	}
 
 	public ArrayList<CalendarEventModel> getAllEvents() {
-		// TODO Auto-generated method stub
-		return null;
+		ArrayList<CalendarEventModel> events = new ArrayList<CalendarEventModel>();
+		for(int i = 0, nsize = list.size(); i < nsize; i++) {
+		    events.add(list.valueAt(i));
+		}
+		return events;
 	}
 	
-	public Cursor getAllEvents() {
-		return sqlDatabase.query(CAL_EVENT_TABLE, 
-				new String[] {CAL_EVENT_ID, CAL_EVENT_NAME, CAL_EVENT_START_DATE, 
-					CAL_EVENT_END_DATE, CAL_EVENT_DESCRIPTION, CAL_EVENT_COLOR}, 
-				null, null, null, null, null);
-	}
-	
+
 	public void insertEvent(CalendarEventModel event) {
 		ContentValues values = new ContentValues();
 		values.put(CAL_EVENT_ID, event.getId());

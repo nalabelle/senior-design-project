@@ -2,15 +2,22 @@ package com.comp490.studybuddy.models;
 
 import android.util.Log;
 
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
+
+@DatabaseTable(tableName="Calendar")
 public class CalendarEventModel {
-	@Attributes(primaryKey = true, notNull = false)
+	@DatabaseField(generatedId = true)
 	private String id;
-	@Attributes(notNull = true, primaryKey = false)
+	@DatabaseField
 	private String eventName;
-	@Attributes(notNull = true, primaryKey = false)
+	@DatabaseField
 	private String startDate;
+	@DatabaseField
 	private String endDate;
+	@DatabaseField
 	private String description;
+	@DatabaseField
 	private String color;
 	private final String TAG = "EventModel";
 	

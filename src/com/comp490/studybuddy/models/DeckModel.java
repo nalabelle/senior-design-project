@@ -1,8 +1,12 @@
 package com.comp490.studybuddy.models;
 
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
+
+@DatabaseTable(tableName="Decks")
 public class DeckModel {
-	@Attributes(primaryKey=true, notNull = false)
+	@DatabaseField(generatedId = true)
 	private String id;
-	@Attributes(notNull=true, primaryKey = false)
+	@DatabaseField
 	private String name;
 }

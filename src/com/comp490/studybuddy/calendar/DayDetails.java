@@ -23,6 +23,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.comp490.studybuddy.R;
+import com.comp490.studybuddy.database.CalendarAdapter;
 import com.comp490.studybuddy.models.CalendarEventModel;
 
 public class DayDetails extends Activity {

@@ -1,17 +1,21 @@
 package com.comp490.studybuddy.models;
 
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
+
+@DatabaseTable(tableName="Tasks")
 public class TasksModel {
-	@Attributes(primaryKey = true, notNull = false)
+	@DatabaseField(generatedId = true)
 	private int id;
-	@Attributes(notNull = true, primaryKey = false)
+	@DatabaseField
 	private String title;
-	@Attributes(notNull = true, primaryKey = false)
+	@DatabaseField
 	private int date;
-	@Attributes(notNull = true, primaryKey = false)
+	@DatabaseField
 	private int time;
-	@Attributes(notNull = true, primaryKey = false)
+	@DatabaseField
 	private int priority;
-	@Attributes(notNull = true, primaryKey = false)
+	@DatabaseField
 	private int notification;
 
 	public int getId() {

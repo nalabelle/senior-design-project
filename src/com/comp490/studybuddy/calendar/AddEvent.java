@@ -7,6 +7,7 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import com.comp490.studybuddy.R;
+import com.comp490.studybuddy.database.CalendarAdapter;
 import com.comp490.studybuddy.database.DBAdapter;
 import com.comp490.studybuddy.models.CalendarEventModel;
 
