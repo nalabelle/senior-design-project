@@ -11,6 +11,7 @@ Contributing team members: Anthony Summer Nik
 package com.comp490.studybuddy.note;
 
 import java.io.File;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -42,8 +43,9 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.comp490.studybuddy.R;
-import com.comp490.studybuddy.models.NoteEntryModel;
-import com.comp490.studybuddy.models.NoteModel;
+import com.comp490.studybuddy.database.DBHelper;
+import com.comp490.studybuddy.models.NoteEntry;
+import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
 
 /* General Information: 
  * 
@@ -53,7 +55,7 @@ import com.comp490.studybuddy.models.NoteModel;
  * "<insert media type>Menu" = loads a submenu of options to use on entries (delete, rename,etc) 
  */
 
-public class NoteActivity extends Activity {	
+public class NoteActivity extends OrmLiteBaseActivity<DBHelper> {	
 	// Sound related variables
 	ActionBar actionBar;
 	final Context context = this;
@@ -72,9 +74,7 @@ public class NoteActivity extends Activity {
 	static String path;	
 	
 	private static final String LOG_TAG = "Notes";
-	
-	//let's make us one Note for now, can add more later!
-	private NoteModel note = new NoteModel();	
+		
 	
 	private Drawing drawing = null;
 	RelativeLayout noteLayout;
@@ -83,7 +83,6 @@ public class NoteActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		note.getEntriesFromDatabase(context);
 		setContentView(R.layout.activity_note);
 	}
 	
@@ -115,7 +114,8 @@ public class NoteActivity extends Activity {
 		case R.id.action_create_text:{
 			//onClick of keyboard icon
 
-			NoteEntryModel noteEntry = this.note.add(NoteEntryModel.NoteType.TEXT);
+			NoteEntry noteEntry = new NoteEntry(NoteEntry.NoteType.TEXT);
+			this.createNote(noteEntry);
 			new TextBuilder(this, noteEntry); //TextBuilder text = 
 			return true;
 		}
@@ -240,7 +240,8 @@ public class NoteActivity extends Activity {
 			public void onClick(View v) {
 				//add the audionote entry. Not created until record is clicked once
 				if (audio == null){
-					NoteEntryModel noteEntry = note.add(NoteEntryModel.NoteType.AUDIO);
+					NoteEntry noteEntry = new NoteEntry(NoteEntry.NoteType.AUDIO);
+					noteActivity.createNote(noteEntry);
 					audio = new AudioBuilder(noteEntry, noteActivity);					
 				} 
 				if (!audio.getStatus().equals(AudioBuilder.Status.RECORDING)){ // already recording?
@@ -273,6 +274,7 @@ public class NoteActivity extends Activity {
 		return true;
 	}
 	
+
 // ********** PHOTO / VIDEO related **************************
 	
 	// verify device has a camera
@@ -311,15 +313,17 @@ public class NoteActivity extends Activity {
 		
 		if (requestCode == MEDIA_TYPE_VIDEO && resultCode == Activity.RESULT_OK) {	
 		   // ********** creates VIDEO **************************
-			NoteEntryModel noteEntry = this.note.add(NoteEntryModel.NoteType.VIDEO);
+			NoteEntry noteEntry = new NoteEntry(NoteEntry.NoteType.VIDEO);
 			noteEntry.setFilePath(mediaFile.toString()); //not sure about this
+			this.createNote(noteEntry);
 			new VideoBuilder(noteActivity, data.getData(), noteEntry);	//VideoBuilder videoBuilder = 		        
 	    }
 		
 		else if ( requestCode == MEDIA_TYPE_IMAGE && resultCode == Activity.RESULT_OK) {
 		   // ********** creates PICTURE **************************
-			NoteEntryModel noteEntry = this.note.add(NoteEntryModel.NoteType.PICTURE);
+			NoteEntry noteEntry = new NoteEntry(NoteEntry.NoteType.PICTURE);
 			noteEntry.setFilePath(path); // photofilepath
+			this.createNote(noteEntry);
 			new PictureBuilder(noteActivity, noteEntry); //PictureBuilder picObject = 
 		}	
 		
@@ -401,10 +405,6 @@ public class NoteActivity extends Activity {
 		super.onDestroy();
 	}
 	
-	protected NoteModel getNoteModel(){ //used for NoteModel entry deletions
-		return note;
-	}	
-	
 	// generate a random ID for a view that isn't being used
 	protected int generateViewID(){
 		int result;
@@ -417,5 +417,27 @@ public class NoteActivity extends Activity {
 	
 	public void clickie(String message){ //for testing
 		Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+	}
+
+	public boolean createNote(NoteEntry entry) {
+		try {
+			int i = getHelper().getDao(NoteEntry.class).create(entry);
+			if(i == 1) return true;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
+	public boolean deleteNote(NoteEntry entry) {
+		try {
+			int i = getHelper().getDao(NoteEntry.class).delete(entry);
+			if(i == 1) return true;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
 	}
 }

@@ -58,25 +58,6 @@ public class DBAdapter {
    private static final String TASK_TABLE_UPGRADE = 
 		   "Drop table if exists " + DBAdapter.TASK_TABLE_NAME;
 
-	public static final String NOTE_TABLE_NAME 					= "notes";
-	public static final String NOTE_COLUMN_ID 					= "_id";
-	public static final String NOTE_COLUMN_NAME					= "_name";
-	public static final String NOTE_COLUMN_TYPE 				= "_type";
-	public static final String NOTE_COLUMN_PATH 				= "_path";
-	public static final String NOTE_COLUMN_VIEWID 				= "_viewid";
-	public static final String NOTE_COLUMN_SECONDARY_VIEWID 	= "_viewid2";
-	
-	private static final String CREATE_NOTE_TABLE =
-			String.format("create table %s" +
-					"(%s integer primary key, %s text not null, %s text not null, %s text," +
-					"%s integer, %s integer);",
-					NOTE_TABLE_NAME, 
-					NOTE_COLUMN_ID, NOTE_COLUMN_NAME, NOTE_COLUMN_TYPE, NOTE_COLUMN_PATH,
-					NOTE_COLUMN_VIEWID, NOTE_COLUMN_SECONDARY_VIEWID);
-	
-	private static final String NOTE_TABLE_UPGRADE =
-			String.format("Drop table if exists %s", NOTE_TABLE_NAME);
-	
 	   //decks table
 	   public static final String DECKS_TABLE_NAME = "_decks";
 	   public static final String DECKS_COLUMN_ID = "_id";
@@ -124,9 +105,6 @@ public class DBAdapter {
 		public void onCreate(SQLiteDatabase db) {
 			Log.d(TAG, CREATE_TASK_TABLE);
 			db.execSQL(CREATE_TASK_TABLE);
-			
-			Log.d(TAG, CREATE_NOTE_TABLE);
-			db.execSQL(CREATE_NOTE_TABLE);
 
 			db.execSQL(DECKS_TABLE_CREATE);
 			db.execSQL(FLASHCARDS_TABLE_CREATE);
@@ -138,8 +116,6 @@ public class DBAdapter {
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 			db.execSQL(TASK_TABLE_UPGRADE);
 			Log.d(TAG, TASK_TABLE_UPGRADE);
-			Log.d(TAG, NOTE_TABLE_UPGRADE);
-			db.execSQL(NOTE_TABLE_UPGRADE);
 	        db.execSQL(DECKS_TABLE_UPGRADE);
 	        db.execSQL(FLASHCARDS_TABLE_UPGRADE);
 	        Log.d(TAG, DECKS_TABLE_UPGRADE + "; " + FLASHCARDS_TABLE_UPGRADE);
@@ -300,7 +276,7 @@ public class DBAdapter {
 	   } while (cursor.getCount() > 0);
 	   return eventId;
 	}
-*/
+
 	public Cursor getAllNotes() {
 		Log.d(TAG, "getAllNotes");
 		return sqlDatabase.query(NOTE_TABLE_NAME, new String[] {
@@ -322,5 +298,5 @@ public class DBAdapter {
 		return (sqlDatabase.insert(NOTE_TABLE_NAME, null, initval) > -1);
 
 	}
-
+*/
 }

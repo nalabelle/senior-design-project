@@ -17,13 +17,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.comp490.studybuddy.R;
-import com.comp490.studybuddy.models.NoteEntryModel;
+import com.comp490.studybuddy.models.NoteEntry;
 
 public class AudioBuilder {
 	 //essentially another context of Note activity, but required for getting views
 	// temp fix for now
 	private NoteActivity noteActivity;
-	private NoteEntryModel entry;
+	private NoteEntry entry;
 	//private MediaRecorder recorder = null;
 	private Status status = Status.PAUSED;
 	private static final String LOG_TAG = "Sound Record";
@@ -36,10 +36,10 @@ public class AudioBuilder {
 	ImageButton soundButton;
 	TextView soundTitle;
 	
-	public AudioBuilder(NoteEntryModel entry, NoteActivity noteContext) {
+	public AudioBuilder(NoteEntry entry, NoteActivity noteContext) {
 		this.noteActivity = noteContext;
 		this.entry = entry;
-		this.entry.setType(NoteEntryModel.NoteType.AUDIO);
+		this.entry.setType(NoteEntry.NoteType.AUDIO);
 	}
 	
 	public boolean startRecording() { // on actionView REC button press

@@ -7,7 +7,7 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import com.comp490.studybuddy.R;
-import com.comp490.studybuddy.models.NoteEntryModel;
+import com.comp490.studybuddy.models.NoteEntry;
 
 /* This class creates an button for a recorded video. It updates the model 
  *  entry with the button's ID and the video Uri (stored as a string in 
@@ -16,17 +16,17 @@ import com.comp490.studybuddy.models.NoteEntryModel;
 public class VideoBuilder {
 	private NoteActivity noteActivity;
 	private VideoBuilder videoBuilder = this;
-	private NoteEntryModel entry;
+	private NoteEntry entry;
 	private int viewID;
 	private ImageButton videoButton;
 	Uri data;
 
-	public VideoBuilder(NoteActivity noteActivity, Uri data, NoteEntryModel entry) {
+	public VideoBuilder(NoteActivity noteActivity, Uri data, NoteEntry entry) {
 		this.noteActivity = noteActivity;
 		this.entry = entry;
 		this.data = data;
 		createVideoButton();
-		this.entry.setType(NoteEntryModel.NoteType.VIDEO);
+		this.entry.setType(NoteEntry.NoteType.VIDEO);
 	}
 
 	private void createVideoButton() {
@@ -64,7 +64,7 @@ public class VideoBuilder {
 
 	// might be unnecessary
 	protected void deleteObject() {
-		noteActivity.getNoteModel().remove(entry);
+		noteActivity.deleteNote(entry);
 		videoButton = null;
 		videoBuilder = null;
 	}

@@ -18,7 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.comp490.studybuddy.R;
-import com.comp490.studybuddy.models.NoteEntryModel;
+import com.comp490.studybuddy.models.NoteEntry;
 
 
 /*
@@ -26,12 +26,12 @@ import com.comp490.studybuddy.models.NoteEntryModel;
  */
 public class SoundPlayMenu implements ActionMode.Callback {
 	private NoteActivity noteActivity;
-	NoteEntryModel entry;
+	NoteEntry entry;
 	private Status status = Status.PAUSED;
 	private static final String LOG_TAG = "Sound Action Menu Callback";
 	final String path;
 	
-	public SoundPlayMenu(NoteActivity noteActivity, NoteEntryModel entry) {
+	public SoundPlayMenu(NoteActivity noteActivity, NoteEntry entry) {
 		this.noteActivity = noteActivity;
 		this.entry = entry;		
 		path = entry.getFilePath();
@@ -147,7 +147,7 @@ public class SoundPlayMenu implements ActionMode.Callback {
 						try { // clicked yes
 							View viewToDelete = noteActivity.findViewById(entry.getViewID());
 							((LinearLayout) viewToDelete.getParent()).removeView(viewToDelete);
-							noteActivity.getNoteModel().remove(entry);							
+							noteActivity.deleteNote(entry);					
 						} catch (Exception e1) {
 							Log.e(LOG_TAG, "Delete of soundbutton failed");
 						}

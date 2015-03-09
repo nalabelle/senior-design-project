@@ -12,7 +12,7 @@ import android.util.Log;
  */
 
 @DatabaseTable(tableName="NoteEntries")
-public class NoteEntryModel {
+public class NoteEntry {
 	//I store NoteEntries!
 	@DatabaseField(generatedId = true)
 	private int id; //do something with this?
@@ -28,10 +28,10 @@ public class NoteEntryModel {
 	@DatabaseField
 	private int secondaryViewID = -1;
 
-	NoteEntryModel() {
+	NoteEntry() {
 		
 	}
-	public NoteEntryModel(NoteType type) {
+	public NoteEntry(NoteType type) {
 		this.type = type;
 	}
 	

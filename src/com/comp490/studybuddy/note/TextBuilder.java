@@ -8,20 +8,20 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import com.comp490.studybuddy.R;
-import com.comp490.studybuddy.models.NoteEntryModel;
+import com.comp490.studybuddy.models.NoteEntry;
 
 public class TextBuilder{
 	protected EditText textBox;
 	private NoteActivity noteActivity;
 	private TextBuilder textBuilder = this;
-	private NoteEntryModel entry;
+	private NoteEntry entry;
 	private int viewID;
 	
-	public TextBuilder(NoteActivity noteActivity, NoteEntryModel entry){
+	public TextBuilder(NoteActivity noteActivity, NoteEntry entry){
 		this.noteActivity = noteActivity;
 		this.entry = entry;
 		createTextView();
-		this.entry.setType(NoteEntryModel.NoteType.TEXT);
+		this.entry.setType(NoteEntry.NoteType.TEXT);
 	}
 	
 	private void createTextView(){
@@ -53,7 +53,7 @@ public class TextBuilder{
 	
 	// might be unnecessary, but probably beneficial for garbage collection
 	protected void deleteObject(){
-		noteActivity.getNoteModel().remove(entry);
+		noteActivity.deleteNote(entry);
 		textBox = null;
 		textBuilder = null;
 	}

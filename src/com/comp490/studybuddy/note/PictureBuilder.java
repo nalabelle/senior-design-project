@@ -15,7 +15,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.comp490.studybuddy.R;
-import com.comp490.studybuddy.models.NoteEntryModel;
+import com.comp490.studybuddy.models.NoteEntry;
 
 /* Generates the View to house our newly created photos. Only a thumbnail
  * is displayed to avoid memory issues. OnClick spawns a menu for other
@@ -26,14 +26,14 @@ public class PictureBuilder {
 	protected ImageView pic;
 	private NoteActivity noteActivity; //essentially context of Note activity
 	private PictureBuilder pictureBuilder = this;
-	private NoteEntryModel entry;
+	private NoteEntry entry;
 	private int viewID;
 	private Bitmap bitmap;
 	
-	public PictureBuilder(NoteActivity noteActivity, NoteEntryModel entry){
+	public PictureBuilder(NoteActivity noteActivity, NoteEntry entry){
 		this.entry = entry;
 		this.noteActivity = noteActivity;
-		this.entry.setType(NoteEntryModel.NoteType.PICTURE);
+		this.entry.setType(NoteEntry.NoteType.PICTURE);
 		createPicView();		
 	}	
 	
@@ -83,7 +83,7 @@ public class PictureBuilder {
 	
 	// might be unnecessary
 	protected void deleteObject(){
-		noteActivity.getNoteModel().remove(entry);
+		noteActivity.deleteNote(entry);
 		pic = null;
 		pictureBuilder = null;
 	}
