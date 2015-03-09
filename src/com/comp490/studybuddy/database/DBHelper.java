@@ -1,5 +1,7 @@
 package com.comp490.studybuddy.database;
 
+import com.comp490.studybuddy.models.CalendarEvent;
+import com.comp490.studybuddy.models.NoteEntry;
 import com.comp490.studybuddy.models.Task;
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.dao.Dao;
@@ -15,10 +17,9 @@ public class DBHelper extends OrmLiteSqliteOpenHelper {
 	private static final String DATABASE_NAME = "studybuddy.db";
 	private static final int DATABASE_VERSION = 8;
 	
-	// the DAO object we use to access the SimpleData table
-	//private Dao<SimpleData, Integer> simpleDao = null;
-	//private RuntimeExceptionDao<SimpleData, Integer> simpleRuntimeDao = null;
 	private Dao<Task, Integer> taskDao = null;
+	private Dao<CalendarEvent, Integer> calDao = null;
+	private Dao<NoteEntry, Integer> noteDao = null;
 	
 	private String[] classes = {
 			"com.comp490.studybuddy.models.Task",
@@ -72,10 +73,26 @@ public class DBHelper extends OrmLiteSqliteOpenHelper {
 		return taskDao;
 	}
 	
+	public Dao<CalendarEvent, Integer> getCalendarEventDao() throws SQLException {
+		if (calDao == null) {
+			calDao = getDao(CalendarEvent.class);
+		}
+		return calDao;
+	}
+	
+	public Dao<NoteEntry, Integer> getNoteEntryDao() throws SQLException {
+		if (noteDao == null) {
+			noteDao = getDao(NoteEntry.class);
+		}
+		return noteDao;
+	}
+	
 	@Override
 	public void close() {
 		super.close();
 		taskDao = null;
+		noteDao = null;
+		calDao = null;
 	}
 
 }

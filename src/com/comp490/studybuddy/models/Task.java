@@ -20,7 +20,8 @@ import com.j256.ormlite.table.DatabaseTable;
 //Model class for a Task with id, name, date, time, priority and notification attributes
 @DatabaseTable(tableName="Tasks")
 public class Task implements Serializable {
-
+	private static final long serialVersionUID = -6729243053406191476L;
+	
 	@DatabaseField(generatedId = true)
    private int id;
 	@DatabaseField

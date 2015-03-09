@@ -7,7 +7,7 @@ import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable(tableName="Calendar")
 public class CalendarEvent {
-	//static are for the DB Tables, if you change these, things break.
+	//static are for the DB Table queries, if you change these, things break.
 	public static final String CAL_EVENT_START_DATE = "startDate";
 	
 	@DatabaseField(generatedId = true)
