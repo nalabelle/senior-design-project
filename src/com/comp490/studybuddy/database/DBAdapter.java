@@ -30,5 +30,12 @@ public class DBAdapter extends SQLiteOpenHelper {
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		this.onCreate(db);
 	}
+	
+	public void onOpen() {
+		DBReflector dbr = new DBReflector(db);
+		for(String className : classes) {
+			dbr.createClassFromTable(className);
+		}
+	}
 
 }

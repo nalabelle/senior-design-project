@@ -14,19 +14,8 @@ public class CalendarEventModel {
 	private String color;
 	private final String TAG = "EventModel";
 	
-	public CalendarEventModel() {
-		id = null;
-		eventName = null;
-		startDate = null;
-		endDate = null;
-		description = null;
-		color = null;
-		
-	}
-	
 	//require both a name and a start time, others are optional.
-	public CalendarEventModel(String id, String name, String start) {
-		this.id = id;
+	public CalendarEventModel(String name, String start) {
 		this.startDate = start;
 		this.eventName = name;
 	}

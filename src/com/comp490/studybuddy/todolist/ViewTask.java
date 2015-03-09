@@ -37,8 +37,8 @@ public class ViewTask extends DefaultActivity {
    protected void onCreate(Bundle savedInstanceState) {
       super.onCreate(savedInstanceState);
       setContentView(R.layout.activity_view_task);
-      dbAdapter = new DBAdapter(this);
-      dbAdapter.open();
+      //dbAdapter = new DBAdapter(this);
+      //dbAdapter.open();
       //get task object from bundle
       Bundle taskBundle = this.getIntent().getExtras();
       try {

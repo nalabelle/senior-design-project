@@ -10,7 +10,6 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,7 +23,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.comp490.studybuddy.R;
-import com.comp490.studybuddy.database.DBAdapter;
 import com.comp490.studybuddy.models.CalendarEventModel;
 
 public class DayDetails extends Activity {
@@ -32,8 +30,7 @@ public class DayDetails extends Activity {
 	private TextView dayDetailText;
 	private Intent prevIntent;
 	private String dateTimeToday;
-	private DBAdapter db;
-    private Cursor cursor;
+	private CalendarAdapter db;
     private ListView listView;
 	private ActionBar actionBar;
 	private ArrayList<CalendarEventModel> eventList;
@@ -57,22 +54,8 @@ public class DayDetails extends Activity {
 	    dateTimeToday = dateTimeToday.substring(0,10);
 	    Log.d("DayDetail", "Searching for: " +dateTimeToday);
 	    //Get Events For the Day
-	    db = new DBAdapter(this);
-	    db.open();
-	    cursor = db.getEventByDay(dateTimeToday);
-	    //Get events from cursors, add to arrayList  
-	    if (cursor.moveToFirst()){
-			   while(!cursor.isAfterLast()){
-				  String id = cursor.getString(cursor.getColumnIndex("_eventId"));
-				  String name = cursor.getString(cursor.getColumnIndex("_eventName"));
-			      String startDate = cursor.getString(cursor.getColumnIndex("_startDate"));
-			      String endDate = cursor.getString(cursor.getColumnIndex("_endDate"));
-			      CalendarEventModel event = new CalendarEventModel(id, name, startDate, endDate);
-			      eventList.add(event);
-			      cursor.moveToNext();
-			   }
-			}
-	    db.close();
+	    this.db = new CalendarAdapter();
+	    eventList = db.getEventByDay(dateTimeToday);
 	    if (eventList.isEmpty()) {Log.d("DAYDETAIL", "NULL");}
 	    //Create an adapter to transfer the the events to the list of textViews
 	    CustomListAdapter adapter = new CustomListAdapter(this, 
@@ -82,14 +65,12 @@ public class DayDetails extends Activity {
 	
 	private class CustomListAdapter extends ArrayAdapter<CalendarEventModel> {
 		private Context mContext;
-		private int id;
 		private ArrayList<CalendarEventModel> events;
 		
 		public CustomListAdapter(Context context, int textViewId, 
 				ArrayList<CalendarEventModel> eventList) {
 			super(context, textViewId, eventList);
 			mContext = context;
-			id = textViewId;
 			events = eventList;
 			
 		}

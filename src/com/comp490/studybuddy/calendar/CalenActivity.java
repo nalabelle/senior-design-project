@@ -180,7 +180,7 @@ public class CalenActivity extends Activity {
         private final Context context;
 
         private final List<String> list;
-        private DBAdapter db;
+        private CalendarAdapter db;
         private Cursor cursor;
         
         private Button gridcell;
@@ -193,11 +193,9 @@ public class CalenActivity extends Activity {
                 super();
                 this.context = context;
                 this.list = new ArrayList<String>();
-                db = new DBAdapter(context);
-                db.open();
-                eventList = new ArrayList<CalendarEventModel>();
-                getEvents();
-                db.close();
+                db = new CalendarAdapter();
+                eventList = db.getAllEvents();
+               
                 // Print Month
                 printMonth();
 

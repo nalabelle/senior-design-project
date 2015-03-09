@@ -53,7 +53,7 @@ public class AddEvent extends Activity {
 	private int startDay;
 	private int startHour;
 	private int startMin;
-	private DBAdapter db;
+	private CalendarAdapter db;
 	private ArrayList<String> colorImgName;
 	
 	@Override
@@ -61,7 +61,7 @@ public class AddEvent extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.add_task_calendar);
 		colorImgName = new ArrayList<String>();
-		
+		this.db = new CalendarAdapter();
 		//currentDateTime = new DateTime();
 	}
 	
@@ -92,10 +92,7 @@ public class AddEvent extends Activity {
 							startHour, startMin);
 					EditText eventText = (EditText) findViewById(R.id.eventName);
 					String eventName = eventText.getText().toString(); 
-					db = new DBAdapter(this);
-					db.open();
-					event = new CalendarEventModel(db.getNewEventId(), 
-							eventName, startDateTime.toString());
+					event = new CalendarEventModel(eventName, startDateTime.toString());
 					// Save Event
 					db.insertEvent(event);
 					//Return to Calendar
