@@ -10,8 +10,7 @@
 
 package com.comp490.studybuddy.todolist;
 
-import com.comp490.studybuddy.database.DBAdapter;
-import com.comp490.studybuddy.todolist.Task;
+import com.comp490.studybuddy.models.Task;
 import com.comp490.studybuddy.todolist.ToDoMain;
 import com.comp490.studybuddy.todolist.ModifyTask;
 import com.comp490.studybuddy.todolist.ViewTask;
@@ -30,7 +29,7 @@ public class NavigationHandler {
    }
 
    //go to ModifyTask to add new task
-   public static void addTask(Activity activity, DBAdapter databaseAdapter) {
+   public static void addTask(Activity activity) {
       // Start the activity for user to add task
       Intent addNewTaskIntent = new Intent(activity, ModifyTask.class);
       activity.startActivityForResult(addNewTaskIntent, ToDoMain.ADD_NEW_TASK);

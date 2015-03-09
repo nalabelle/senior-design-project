@@ -9,13 +9,16 @@
 
 package com.comp490.studybuddy.todolist;
 
+import com.comp490.studybuddy.database.DBHelper;
+import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
+
 import android.app.ActionBar;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.MenuItem;
 
 //Default layout configurations used for all activities
-public class DefaultActivity extends Activity {
+public class DefaultActivity extends OrmLiteBaseActivity<DBHelper> {
 
    @Override
    protected void onCreate(Bundle savedInstanceState) {

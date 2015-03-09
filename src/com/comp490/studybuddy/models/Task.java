@@ -8,25 +8,37 @@
  * Contribution: Uyen Nguyen
  */
 
-package com.comp490.studybuddy.todolist;
+package com.comp490.studybuddy.models;
 
 import java.io.Serializable;
 import java.util.Calendar;
 
+import com.j256.ormlite.field.DataType;
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
+
 //Model class for a Task with id, name, date, time, priority and notification attributes
-@SuppressWarnings("serial")
+@DatabaseTable(tableName="Tasks")
 public class Task implements Serializable {
 
+	@DatabaseField(generatedId = true)
    private int id;
+	@DatabaseField
    private String name;
-   private Calendar dueDate, dueTime;
+	@DatabaseField(dataType=DataType.SERIALIZABLE)
+   private Calendar dueDate;
+	@DatabaseField(dataType=DataType.SERIALIZABLE)
+   private Calendar dueTime;
+	@DatabaseField
    private int priorityLevel;
+	@DatabaseField
    private int notification;
+	
    public static final int NO_PRIORITY = 0;
    public static final int YES_PRIORITY = 1;
    public static final int NOTIFICATION_UNCHECKED = 0;
    public static final int NOTIFICATION_CHECKED = 1;
-   public static final String TASK_BUNDLE = "task_bundle";  
+   public static final String TASK_BUNDLE = "task_bundle";
 
    public Task() {
       this.id = 0;

@@ -1,6 +1,8 @@
 package com.comp490.studybuddy.database;
 
+import com.comp490.studybuddy.models.Task;
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
+import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 
@@ -11,16 +13,17 @@ import android.util.Log;
 
 public class DBHelper extends OrmLiteSqliteOpenHelper {
 	private static final String DATABASE_NAME = "sb.db";
-	private static final int DATABASE_VERSION = 6;
+	private static final int DATABASE_VERSION = 7;
 	
 	// the DAO object we use to access the SimpleData table
 	//private Dao<SimpleData, Integer> simpleDao = null;
 	//private RuntimeExceptionDao<SimpleData, Integer> simpleRuntimeDao = null;
+	private Dao<Task, Integer> taskDao = null;
 	
 	private String[] classes = {
-			"com.comp490.studybuddy.models.TasksModel",
+			"com.comp490.studybuddy.models.Task",
 			"com.comp490.studybuddy.models.CalendarEvent",
-			"com.comp490.studybuddy.models.NoteEntryModel"
+			"com.comp490.studybuddy.models.NoteEntry"
 			};
 
 	public DBHelper(Context ctx) {
@@ -56,14 +59,23 @@ public class DBHelper extends OrmLiteSqliteOpenHelper {
 			Log.e(DBHelper.class.getName(), "Can't drop databases", e);
 			throw new RuntimeException(e);
 		}
-		this.onCreate(database);
+	}
+	
+	/**
+	 * Returns the Database Access Object (DAO) for our SimpleData class. It will create it or just give the cached
+	 * value.
+	 */
+	public Dao<Task, Integer> getTaskDao() throws SQLException {
+		if (taskDao == null) {
+			taskDao = getDao(Task.class);
+		}
+		return taskDao;
 	}
 	
 	@Override
 	public void close() {
 		super.close();
-		//simpleDao = null;
-		//simpleRuntimeDao = null;
+		taskDao = null;
 	}
 
 }

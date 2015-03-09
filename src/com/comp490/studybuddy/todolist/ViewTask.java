@@ -13,10 +13,9 @@ import java.util.Calendar;
 import java.util.Locale;
 
 import com.comp490.studybuddy.R;
-import com.comp490.studybuddy.database.DBAdapter;
+import com.comp490.studybuddy.models.Task;
 import com.comp490.studybuddy.todolist.NavigationHandler;
 import com.comp490.studybuddy.todolist.DeleteHandler;
-import com.comp490.studybuddy.todolist.Task;
 
 import android.os.Bundle;
 import android.content.Intent;
@@ -31,7 +30,6 @@ public class ViewTask extends DefaultActivity {
    private Task task;
    //request edit task
    public static final int EDIT_TASK = 1;
-   private DBAdapter dbAdapter;
 
    @Override
    protected void onCreate(Bundle savedInstanceState) {

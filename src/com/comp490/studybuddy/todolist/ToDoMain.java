@@ -10,27 +10,30 @@
 
 package com.comp490.studybuddy.todolist;
 
+import java.sql.SQLException;
+import java.util.List;
+
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.comp490.studybuddy.R;
-import com.comp490.studybuddy.database.DBAdapter;
+import com.comp490.studybuddy.database.DBHelper;
+import com.comp490.studybuddy.models.Task;
+import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
 
 public class ToDoMain extends DefaultActivity {
 
- 	private DBAdapter dbAdapter;
-	private Cursor cursor;
 	private ListView listView;
    //adapter to display the list's data
-	private SimpleCursorAdapter listViewAdapter;
+	private ArrayAdapter<Task> listViewAdapter;
 	public static final int ADD_NEW_TASK = 1;
 	
 	@Override
@@ -57,24 +60,23 @@ public class ToDoMain extends DefaultActivity {
             return true;
           }
       }); 
-		
-		dbAdapter = new DBAdapter(this);
-		dbAdapter.open();		
+			
 		initTasksListView();
 	}
 
    //initialize all tasks and add them to listview from db
-   @SuppressWarnings("deprecation")
    public void initTasksListView() {
-			cursor = dbAdapter.getAllTasks();
-			startManagingCursor(cursor);
-	      //specify which columns go into which views for the cursor adapter
-			String[] fromColumns = new String[]{DBAdapter.TASK_COLUMN_NAME};
-			//load data into layout components
-			int[] toViews = new int[]{R.id.view_listview};		
+			List<Task> list = null;
+			try {
+				list = getHelper().getTaskDao().queryForAll();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}		
+			if(list == null) return;
 		   //create an adapter to display the loaded data
-			listViewAdapter = new SimpleCursorAdapter(this,
-					R.layout.activity_view_listview, cursor, fromColumns, toViews, 1);
+			listViewAdapter = new ArrayAdapter<Task>(this,
+					R.layout.activity_view_listview, R.id.view_listview, list);
 			//set adapter for the list view
 			this.listView.setAdapter(listViewAdapter);
 	}
@@ -82,33 +84,29 @@ public class ToDoMain extends DefaultActivity {
 	//event handler for item shortn clicked from listView
 	private void listViewItemClickHandler(AdapterView<?> adapterView, View listView, int itemId) {
 		//new task object with data to be passed to next activity to show detail
-		Task taskItem = new Task();
-		//move cursor to right position
-		cursor.moveToFirst();
-		cursor.move(itemId);
-		//sets data for task item selected
-	   taskItem.setId(cursor.getInt(cursor.getColumnIndex(DBAdapter.TASK_COLUMN_ID)));
-		taskItem.setName(cursor.getString(cursor.getColumnIndex(DBAdapter.TASK_COLUMN_NAME)));
-		taskItem.getDate().setTimeInMillis(cursor.getLong(cursor.getColumnIndex(DBAdapter.TASK_COLUMN_DATE)));
-		taskItem.getTime().setTimeInMillis(cursor.getLong(cursor.getColumnIndex(DBAdapter.TASK_COLUMN_TIME)));
-		taskItem.setPriority(cursor.getInt(cursor.getColumnIndex(DBAdapter.TASK_COLUMN_PRIORITY)));
-		taskItem.setNotification(cursor.getInt(cursor.getColumnIndex(DBAdapter.TASK_COLUMN_NOTIFICATION)));
+		Task taskItem = null;
+		try {
+			taskItem = getHelper().getTaskDao().queryForId(itemId);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		//TODO: Check for nulls.
 		//start activity
 		NavigationHandler.viewTask(this, taskItem);
 	}
 	
 	//event handler for item long clicked from listView
-   @SuppressWarnings("deprecation")
    private void listViewItemLongClickHandler(AdapterView<?> adapterView, View listView, int itemId) {
       Task taskItem = new Task();
-      //move cursor to right position
-      cursor.moveToFirst();
-      cursor.move(itemId);
-      //sets data for task item selected
-      taskItem.setId(cursor.getInt(cursor.getColumnIndex(DBAdapter.TASK_COLUMN_ID)));
-      taskItem.setName(cursor.getString(cursor.getColumnIndex(DBAdapter.TASK_COLUMN_NAME)));
-      DeleteHandler.deleteDialog(this, taskItem, this.dbAdapter);
-      cursor.requery();    
+		try {
+			taskItem = getHelper().getTaskDao().queryForId(itemId);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		//TODO: Check for nulls.
+      DeleteHandler.deleteDialog(this, taskItem);
       listViewAdapter.notifyDataSetChanged();
    }
 
@@ -116,7 +114,7 @@ public class ToDoMain extends DefaultActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.view_all_tasks_actionbar_add:
-			NavigationHandler.addTask(this, this.dbAdapter);
+			NavigationHandler.addTask(this);
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);

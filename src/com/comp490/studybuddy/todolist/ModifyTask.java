@@ -12,9 +12,10 @@ package com.comp490.studybuddy.todolist;
 
 //import com.comp490.studybuddy.todolist.NotificationReceiver;
 import com.comp490.studybuddy.R;
-import com.comp490.studybuddy.database.DBAdapter;
+import com.comp490.studybuddy.models.Task;
 import com.comp490.studybuddy.todolist.CancelHandler;
-import com.comp490.studybuddy.todolist.Task;
+
+import java.sql.SQLException;
 import java.util.Calendar;
 import android.os.Bundle;
 import android.content.Intent;
@@ -38,15 +39,12 @@ public class ModifyTask extends DefaultActivity {
    private int taskJob;
    private final int EDIT_TASK = 1;
    private final int ADD_TASK = 2;
-   private DBAdapter dbAdapter;
    
    
    @Override
    protected void onCreate(Bundle savedInstanceState) {
       super.onCreate(savedInstanceState);
       setContentView(R.layout.activity_modify_task);
-      dbAdapter = new DBAdapter(this);
-      dbAdapter.open();
       //check if job is to add or edit and retrieve Task object from bundle
       Bundle modifyTaskBundle = this.getIntent().getExtras();
       try {
@@ -137,7 +135,12 @@ public class ModifyTask extends DefaultActivity {
        */
       
       //call dbAdapter to update task
-      dbAdapter.editExistingTask(this.task);
+      try {
+		getHelper().getTaskDao().update(this.task);
+	} catch (SQLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
       Toast.makeText(getBaseContext(), "Task updated: " + this.task.getName(), Toast.LENGTH_LONG).show();
    }
 
@@ -216,7 +219,13 @@ public class ModifyTask extends DefaultActivity {
       //load data from form to this.task object
       updateTask();
       //call the dbAdapter to add new task
-      this.dbAdapter.insertTask(this.task);
+      try {
+		getHelper().getTaskDao().create(this.task);
+	} catch (SQLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+      
       Toast.makeText(getBaseContext(), "Task added: " + this.task.getName(), Toast.LENGTH_LONG).show();
    }
    
