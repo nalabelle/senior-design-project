@@ -134,7 +134,7 @@ public class DayDetails extends OrmLiteBaseActivity<DBHelper> {
 				return true;
 			case R.id.addEvent:
 				Intent intent = new Intent(getApplicationContext(), AddEvent.class);
-				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+				//intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
 				startActivity(intent);
 			    return true;
 			default:

@@ -110,8 +110,8 @@ public class AddEvent extends OrmLiteBaseActivity<DBHelper> {
 					//Return to Calendar
 					Intent back2Cal = new Intent(this, CalenActivity.class);
 					back2Cal.putExtra("date", startDateTime.toString());
-					back2Cal.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | 
-							Intent.FLAG_ACTIVITY_NEW_TASK);
+					//back2Cal.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | 
+							//Intent.FLAG_ACTIVITY_NEW_TASK);
 		    		startActivity(back2Cal);
 				} catch (Exception e) {
 					Toast.makeText(getApplicationContext(), 
