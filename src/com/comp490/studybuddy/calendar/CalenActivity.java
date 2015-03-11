@@ -51,11 +51,11 @@ import com.j256.ormlite.stmt.QueryBuilder;
 
 public class CalenActivity extends OrmLiteBaseActivity<DBHelper> {
 	
-	private DateTime calendar;
-	private DateTime originalDate;
+	private DateTime displayedDateTime;
+	private DateTime todayDateTime;
     private TextView currentMonth;
     
-    //Days of week, add events. TODO
+    //TODO Header for Days MON --> SUN
     private TextView calHeader;
     
     //Calendar skeleton and adapter
@@ -77,24 +77,25 @@ public class CalenActivity extends OrmLiteBaseActivity<DBHelper> {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_customcal_phone);
-		swipeDetector = new GestureDetectorCompat(this, new SwipeListener());
         
+		this.todayDateTime = new DateTime();
 		// Check if returning from different Cal activity goto that Date
 		Intent intent = getIntent();
 		String dateTimeString = intent.getStringExtra("date");
 		if (dateTimeString != null)
-			this.calendar = DateTime.parse(dateTimeString);
+			this.displayedDateTime = DateTime.parse(dateTimeString);
 		else
-			this.calendar = new DateTime();
-        this.originalDate = new DateTime();
+			this.displayedDateTime = new DateTime();
         
+		//Set the Name of the Month (Month Year)
         currentMonth = (TextView) this.findViewById(R.id.curr_month);
-        currentMonth.setText(calendar.toString(dateFormatter));
+        currentMonth.setText(displayedDateTime.toString(dateFormatter));
         
-        //How to align to columns? Option for Su->Sa || M -> Su TODO
+        //TODO Unused Ideally want MON --> SUN as headers to columns
         calHeader = (TextView) this.findViewById(R.id.cal_header);
-        // calHeader.setText("New Event"); //Esthetic bug fix for now
 
+        //Apply swipe detection to calendar
+        swipeDetector = new GestureDetectorCompat(this, new SwipeListener());
         calendarGrid = (GridView) this.findViewById(R.id.gridView1);
         calendarGrid.setOnTouchListener(new View.OnTouchListener() {  
             @Override
@@ -104,24 +105,18 @@ public class CalenActivity extends OrmLiteBaseActivity<DBHelper> {
             }
         });
         
-        // Grid --> Calendar
+        //Initail drawing of the calendar, set to the current month
         changeCalendarDisplay(); 
-	}
+	} //End on Create
 	
+	//ReDraw Calendar when orientation is changed.
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {       
 	    super.onConfigurationChanged(newConfig);
 	    changeCalendarDisplay();
 	}
 	
-	@Override
-    public boolean onTouchEvent(MotionEvent event) {
-
-        swipeDetector.onTouchEvent(event);  
-        Log.d("TAG", "Touch");
-        return super.onTouchEvent(event);
-    }
-	
+	//Logic of how to reDraw Calendar
     private void changeCalendarDisplay()
     {
     	DisplayMetrics metrics = new DisplayMetrics();
@@ -129,14 +124,13 @@ public class CalenActivity extends OrmLiteBaseActivity<DBHelper> {
         width = metrics.widthPixels;
         height = metrics.heightPixels;
         adapter = new GridCellAdapter(getApplicationContext(), R.id.grid_day);
-        currentMonth.setText(calendar.toString(dateFormatter));
+        currentMonth.setText(displayedDateTime.toString(dateFormatter));
         adapter.notifyDataSetChanged();
         calendarGrid.setAdapter(adapter);
     }
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
 		actionBar = getActionBar();
 	    actionBar.show();
 		getMenuInflater().inflate(R.menu.calen, menu);
@@ -145,17 +139,17 @@ public class CalenActivity extends OrmLiteBaseActivity<DBHelper> {
 		return super.onCreateOptionsMenu(menu);
 	}
 
+	//User hits "+" to create a new event
+	//Pass the DateTime object for the currently viewed month
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
 		switch(id) {
 			case R.id.action_settings:
 				return true;
 			case R.id.addEvent:
 				Intent intent = new Intent(getApplicationContext(), AddEvent.class);
+				intent.putExtra("DT", displayedDateTime.toString());
 			    startActivity(intent);
 			    return true;
 			default:
@@ -163,25 +157,25 @@ public class CalenActivity extends OrmLiteBaseActivity<DBHelper> {
 		}		
 	}
 	
+	//Swipe Right, move the calendar back one month
 	public void movePast(View v)
 	{
-		this.calendar = this.calendar.minusMonths(1);
+		this.displayedDateTime = this.displayedDateTime.minusMonths(1);
 		changeCalendarDisplay();
 	}
 	
+	//Swipe Left, move the calendar forward one month
 	public void moveFuture(View v)
 	{
-		this.calendar = this.calendar.plusMonths(1);
+		this.displayedDateTime = this.displayedDateTime.plusMonths(1);
 		changeCalendarDisplay();
     }
 	
-	//Grid --> Calendar
+	//Grid Adapter
 	public class GridCellAdapter extends BaseAdapter implements OnClickListener
 	{
         private final Context context;
-
         private final List<String> list;
-        
         private Button gridcell;
         private TextView num_events_per_day;
         private final HashMap<String, Integer> eventsPerMonthMap;
@@ -198,19 +192,19 @@ public class CalenActivity extends OrmLiteBaseActivity<DBHelper> {
                 printMonth();
 
                 // Find Number of Events
-                eventsPerMonthMap = findEventsMonth(calendar.getYear(), calendar.getMonthOfYear());
+                eventsPerMonthMap = findEventsMonth(displayedDateTime.getYear(), displayedDateTime.getMonthOfYear());
         }
         
         public void getEvents() {
         	//calendar is the current view of the calendar as a dateTime
         	//Get the previous month and next month
-        	DateTime prevDT = new DateTime(calendar);
+        	DateTime prevDT = new DateTime(displayedDateTime);
         	prevDT = prevDT.minusMonths(1);
-        	DateTime nextDT = new DateTime(calendar);
+        	DateTime nextDT = new DateTime(displayedDateTime);
         	nextDT = nextDT.plusMonths(1);
         	//Turn to Strings
         	String prev = prevDT.toString();
-        	String curr = calendar.toString();
+        	String curr = displayedDateTime.toString();
         	String next = nextDT.toString();
         	//Get relevant part Year and Month
         	prev = prev.substring(0,7)+"%";
@@ -270,19 +264,19 @@ public class CalenActivity extends OrmLiteBaseActivity<DBHelper> {
         private void printMonth()
         {
         	//Set up dates with padding.
-        	DateTime startDate = calendar.withDayOfMonth(calendar.dayOfMonth().getMinimumValue()).withDayOfWeek(calendar.dayOfWeek().getMinimumValue());
-        	DateTime endDate = calendar.withDayOfMonth(calendar.dayOfMonth().getMaximumValue()).withDayOfWeek(calendar.dayOfWeek().getMaximumValue());
+        	DateTime startDate = displayedDateTime.withDayOfMonth(displayedDateTime.dayOfMonth().getMinimumValue()).withDayOfWeek(displayedDateTime.dayOfWeek().getMinimumValue());
+        	DateTime endDate = displayedDateTime.withDayOfMonth(displayedDateTime.dayOfMonth().getMaximumValue()).withDayOfWeek(displayedDateTime.dayOfWeek().getMaximumValue());
         	
         	//Iterate over every date in the period (startDate --> endDate).
         	for (DateTime date = startDate; date.isBefore(endDate.plusDays(1)); date = date.plusDays(1)) {
         		//Check if we're in the right month.
-        		if(!calendar.monthOfYear().equals(date.monthOfYear())) {
-        			if(date.isBefore(calendar.withDayOfMonth(calendar.dayOfMonth().getMinimumValue())))  //Previous Month
+        		if(!displayedDateTime.monthOfYear().equals(date.monthOfYear())) {
+        			if(date.isBefore(displayedDateTime.withDayOfMonth(displayedDateTime.dayOfMonth().getMinimumValue())))  //Previous Month
         				list.add(date.getDayOfMonth() + "-GREY" + "-" + date.monthOfYear().getAsText() + "-" + date.year().getAsText());
-        			else if(date.isAfter(calendar.withDayOfMonth(calendar.dayOfMonth().getMaximumValue()))) //Future Month
+        			else if(date.isAfter(displayedDateTime.withDayOfMonth(displayedDateTime.dayOfMonth().getMaximumValue()))) //Future Month
         				list.add(date.getDayOfMonth() + "-GREY" + "-" + date.monthOfYear().getAsText() + "-" + date.year().getAsText());
         		} else { //we're in this month.
-        			if(originalDate.withTimeAtStartOfDay().isEqual(date.withTimeAtStartOfDay())) //today
+        			if(todayDateTime.withTimeAtStartOfDay().isEqual(date.withTimeAtStartOfDay())) //today
 	        			list.add(date.getDayOfMonth() + "-WHITE" + "-" + date.monthOfYear().getAsText() + "-" + date.year().getAsText());
         			else
         				list.add(date.getDayOfMonth() + "-BLUE" + "-" + date.monthOfYear().getAsText() + "-" + date.year().getAsText());
