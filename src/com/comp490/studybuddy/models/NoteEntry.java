@@ -36,7 +36,7 @@ public class NoteEntry {
 	}
 	
 	public enum NoteType {
-		TEXT, AUDIO, PICTURE, VIDEO;
+		TEXT, AUDIO, PICTURE, VIDEO, DRAW;
 	}
 
 	public void setName(String text) {

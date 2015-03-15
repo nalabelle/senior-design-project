@@ -33,6 +33,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.ActionMode;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -121,9 +122,10 @@ public class NoteActivity extends OrmLiteBaseActivity<DBHelper> {
 		}
 		case R.id.action_draw:{
 			// onClick of Pen icon
-			noteLayout = (RelativeLayout) findViewById(R.id.note_layout);
-			drawing = new Drawing(noteActivity, noteLayout.getWidth(), noteLayout.getHeight());
-			noteLayout.addView(drawing);
+			NoteEntry noteEntry = new NoteEntry(NoteEntry.NoteType.DRAW);
+			this.createNote(noteEntry);
+			ActionMode.Callback drawMenu = new DrawMenu(this, noteEntry);
+			this.startActionMode(drawMenu); 
 			return true;
 		}
 		// TO DO: SAVE NOTE AND NEW NOTE		
@@ -149,87 +151,6 @@ public class NoteActivity extends OrmLiteBaseActivity<DBHelper> {
 		
 		
 		View soundActionView = menu.findItem(R.id.action_record_sound).getActionView();
-		View drawActionView = menu.findItem(R.id.action_draw).getActionView();
-		
-		// Needed to intercept what the ActionView closes (i.e. on backpress)
-		// so we can save data and also remove the drawing from our Note and set
-		// it as the background
-		menu.findItem(R.id.action_draw).setOnActionExpandListener(
-				new OnActionExpandListener() {
-					@SuppressWarnings("deprecation")
-					@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-					@Override
-					public boolean onMenuItemActionCollapse(MenuItem item) {
-						clickie("Drawing Closed");
-						noteLayout = (RelativeLayout) findViewById(R.id.note_layout);
-						int sdk = android.os.Build.VERSION.SDK_INT;
-						if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
-							// for api less than 16
-							noteLayout.setBackgroundDrawable(new BitmapDrawable(
-									getResources(), drawing.bitmap));
-						} else {
-							// for the rest
-							noteLayout.setBackground(new BitmapDrawable(
-									getResources(), drawing.bitmap));
-						}
-						noteLayout.removeView(drawing);
-
-						return true; // Return true to collapse action view
-					}
-
-					@Override
-					public boolean onMenuItemActionExpand(MenuItem item) {
-						clickie("Drawing Started");
-						return true; // Return true to expand action view
-	        }
-	    });			
-			
-		//******** Handwriting aka Draw ActionView ************
-		drawActionView.findViewById(R.id.action_penWidth).setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				drawing.setPenWidth(noteActivity);			
-			}
-		});		
-		drawActionView.findViewById(R.id.action_penColor).setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				drawing.setPenColor(context);			
-			}
-		});
-		drawActionView.findViewById(R.id.action_undo).setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				clickie("Undo Last");
-				drawing.undo();				
-			}
-		});
-		drawActionView.findViewById(R.id.action_redo).setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				clickie("Redo");
-				drawing.redo();				
-			}
-		});
-		drawActionView.findViewById(R.id.action_clearAll).setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				//need to add a confirmation box
-				noteLayout = (RelativeLayout) findViewById(R.id.note_layout);
-				noteLayout.removeView(drawing);
-				drawing = new Drawing(noteActivity, noteLayout.getWidth(), noteLayout.getHeight());
-				noteLayout.addView(drawing);
-				clickie("Clear all");				
-			}
-		});
-		drawActionView.findViewById(R.id.action_save).setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				clickie("Saved drawing to device");
-				drawing.saveFile();				
-			}
-		});
-		
 		
 		if(hasMic()) {
 			
