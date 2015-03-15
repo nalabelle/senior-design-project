@@ -76,9 +76,7 @@ public class NoteActivity extends OrmLiteBaseActivity<DBHelper> {
 	
 	private static final String LOG_TAG = "Notes";
 		
-	
-	private Drawing drawing = null;
-	RelativeLayout noteLayout;
+	private NoteEntry drawEntry = null;
 	
 		
 	@Override
@@ -122,10 +120,12 @@ public class NoteActivity extends OrmLiteBaseActivity<DBHelper> {
 		}
 		case R.id.action_draw:{
 			// onClick of Pen icon
-			NoteEntry noteEntry = new NoteEntry(NoteEntry.NoteType.DRAW);
-			this.createNote(noteEntry);
-			ActionMode.Callback drawMenu = new DrawMenu(this, noteEntry);
-			this.startActionMode(drawMenu); 
+			if (drawEntry == null){
+				drawEntry = new NoteEntry(NoteEntry.NoteType.DRAW);
+				this.createNote(drawEntry);
+			}
+			ActionMode.Callback drawMenu = new DrawMenu(this, drawEntry);
+			this.startActionMode(drawMenu);
 			return true;
 		}
 		// TO DO: SAVE NOTE AND NEW NOTE		

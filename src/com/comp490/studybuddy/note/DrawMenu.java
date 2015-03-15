@@ -26,8 +26,12 @@ public class DrawMenu implements ActionMode.Callback {
 		
 		//create a temporary transparent view to cover everything else
 		noteLayout = (RelativeLayout) noteActivity.findViewById(R.id.note_layout);
-		drawing = new Drawing(noteActivity, noteLayout.getWidth(), noteLayout.getHeight());
+		if (noteEntry.getDrawPath() != null){
+			setBitmap(true);
+		}
+		drawing = new Drawing(noteActivity, noteLayout.getWidth(), noteLayout.getHeight(), noteEntry.getDrawPath());
 		noteLayout.addView(drawing);	
+
 	}
 	
 	@Override
@@ -71,7 +75,8 @@ public class DrawMenu implements ActionMode.Callback {
 						@Override
 						public void onClick(DialogInterface dialog, int id) {
 							noteLayout.removeView(drawing);
-							drawing = new Drawing(noteActivity, noteLayout.getWidth(), noteLayout.getHeight());
+							noteEntry.setDrawPath(null);
+							drawing = new Drawing(noteActivity, noteLayout.getWidth(), noteLayout.getHeight(), null);
 							noteLayout.addView(drawing);
 							setBitmap(true); //true = clear background
 							noteActivity.clickie("Drawing Removed");
@@ -105,6 +110,7 @@ public class DrawMenu implements ActionMode.Callback {
 		noteActivity.clickie("Drawing Closed");
 		setBitmap(false); 
 		noteLayout.removeView(drawing);
+		noteEntry.setDrawPath(drawing.getSavePath());
 
 		// NEED TO EITHER SAVE BITMAP TO ENTRY OR A DATA STRUCTURE WITH ALL
 		// THE DRAWINGS

@@ -1,9 +1,12 @@
 package com.comp490.studybuddy.models;
 
-import com.j256.ormlite.field.DatabaseField;
-import com.j256.ormlite.table.DatabaseTable;
+import java.util.ArrayList;
 
 import android.util.Log;
+
+import com.comp490.studybuddy.note.Drawing.DrawPath;
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
 
 /* NoteEntryModel stores all relevant data about the note objects we create.
  * Includes absolute file paths to media files, ViewIds of corresponding
@@ -27,6 +30,9 @@ public class NoteEntry {
 	private int viewID = -1;
 	@DatabaseField
 	private int secondaryViewID = -1;
+	
+	//@DatabaseField
+	private ArrayList<DrawPath> drawing = null;
 
 	NoteEntry() {
 		
@@ -96,5 +102,13 @@ public class NoteEntry {
 
 	public int getID() {
 		return this.id;
+	}
+	
+	public void setDrawPath(ArrayList<DrawPath> drawing){
+		this.drawing = drawing;
+	}
+	
+	public ArrayList<DrawPath> getDrawPath(){
+		return drawing;
 	}
 }
