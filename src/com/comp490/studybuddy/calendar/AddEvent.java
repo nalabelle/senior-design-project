@@ -7,11 +7,6 @@ import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
-import com.comp490.studybuddy.R;
-import com.comp490.studybuddy.calendar.CalenActivity.GridCellAdapter;
-import com.comp490.studybuddy.database.DBHelper;
-import com.comp490.studybuddy.models.CalendarEvent;
-import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
 import android.app.ActionBar;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -19,7 +14,6 @@ import android.app.DialogFragment;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
@@ -38,6 +32,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
+
+import com.comp490.studybuddy.R;
+import com.comp490.studybuddy.database.DBHelper;
+import com.comp490.studybuddy.models.CalendarEvent;
+import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
 
 
 public class AddEvent extends OrmLiteBaseActivity<DBHelper> {
@@ -110,8 +109,7 @@ public class AddEvent extends OrmLiteBaseActivity<DBHelper> {
 					//Return to Calendar
 					Intent back2Cal = new Intent(this, CalenActivity.class);
 					back2Cal.putExtra("date", startDateTime.toString());
-					//back2Cal.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | 
-							//Intent.FLAG_ACTIVITY_NEW_TASK);
+					back2Cal.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		    		startActivity(back2Cal);
 				} catch (Exception e) {
 					Toast.makeText(getApplicationContext(), 

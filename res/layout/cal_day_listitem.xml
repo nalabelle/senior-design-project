@@ -7,7 +7,7 @@
         android:id="@+id/eventItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Placeholder"
+        android:text=""
         android:textSize="20sp" 
         android:textColor="#0099FF"/>
         
