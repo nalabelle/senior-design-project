@@ -87,11 +87,15 @@ public class AddEvent extends OrmLiteBaseActivity<DBHelper> {
 				return true;
 			case R.id.createEvent:
 				try {
-					startDateTime = new DateTime(startYear, startMonth, startDay, 
-							startHour, startMin);
+					//Need logic to handle from and desc data
 					EditText eventText = (EditText) findViewById(R.id.eventName);
 					String eventName = eventText.getText().toString(); 
-		    		
+					startDateTime = new DateTime(startYear, startMonth, startDay, 
+							startHour, startMin);
+					//finishDateTime = new DateTime(finishYear, finishMonth, finishDay,
+							//finishHour, finishMin);
+		    		//EditText eventDesc = (EditText) findViewById(R.id.eventDesc);
+					//String desc = eventDesc.getText().toString();
 					event = new CalendarEvent( 
 							eventName, startDateTime.toString(), "", "", color);
 

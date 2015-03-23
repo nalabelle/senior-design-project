@@ -92,6 +92,34 @@
     <LinearLayout
         android:layout_width="fill_parent"
     	android:layout_height="wrap_content"
+    	android:orientation="vertical"
+    	android:paddingTop="20dp" >
+       
+        <TextView
+        	android:id="@+id/textView4"
+        	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:text="Description"
+        	android:textColor="#0099FF"
+        	android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <EditText
+            android:id="@+id/eventDesc"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:inputType="textMultiLine" 
+            android:hint="Optional additional details">
+
+            <requestFocus />
+        </EditText>
+       
+    </LinearLayout>
+    
+    <LinearLayout
+        android:layout_width="fill_parent"
+    	android:layout_height="wrap_content"
     	android:orientation="horizontal"
     	android:paddingTop="20dp" >
 
