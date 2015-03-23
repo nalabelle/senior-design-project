@@ -76,6 +76,37 @@ public class DayDetails extends OrmLiteBaseActivity<DBHelper> {
 	    listView.setAdapter(adapter);
 	}
 	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		actionBar = getActionBar();
+	    actionBar.show();
+		getMenuInflater().inflate(R.menu.calen, menu);
+		menu.findItem(R.id.createEvent).setVisible(false);
+		menu.findItem(R.id.editEvent).setVisible(false);
+		return super.onCreateOptionsMenu(menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// Handle action bar item clicks here. The action bar will
+		// automatically handle clicks on the Home/Up button, so long
+		// as you specify a parent activity in AndroidManifest.xml.
+		int id = item.getItemId();
+		switch(id) {
+			case R.id.action_settings:
+				return true;
+			case R.id.addEvent:
+				Intent intent = new Intent(getApplicationContext(), AddEvent.class);
+				intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				startActivity(intent);
+			    return true;
+			default:
+				return super.onOptionsItemSelected(item);
+		}		
+	}
+	
+	//List Adapter to show Events
 	private class CustomListAdapter extends ArrayAdapter<CalendarEvent> {
 		private Context mContext;
 		private int id;
@@ -110,36 +141,6 @@ public class DayDetails extends OrmLiteBaseActivity<DBHelper> {
 			return mView;
 		}
 		
-	}
-	
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		actionBar = getActionBar();
-	    actionBar.show();
-		getMenuInflater().inflate(R.menu.calen, menu);
-		menu.findItem(R.id.createEvent).setVisible(false);
-		menu.findItem(R.id.editEvent).setVisible(false);
-		return super.onCreateOptionsMenu(menu);
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-		switch(id) {
-			case R.id.action_settings:
-				return true;
-			case R.id.addEvent:
-				Intent intent = new Intent(getApplicationContext(), AddEvent.class);
-				intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-				startActivity(intent);
-			    return true;
-			default:
-				return super.onOptionsItemSelected(item);
-		}		
-	}
+	} //End Adapter
 
 }

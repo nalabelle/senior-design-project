@@ -47,14 +47,14 @@
            android:id="@+id/fromButtDate"
            android:layout_width="wrap_content" 
     	   android:layout_height="wrap_content"
-       	   android:text="Pick Date" 
+       	   android:text="Start Date" 
            android:onClick="showDatePickerDialog" />
        
        <Button
            android:id="@+id/fromButtTime"
            android:layout_width="wrap_content" 
     	   android:layout_height="wrap_content"
-       	   android:text="Pick Time" 
+       	   android:text="Start Time" 
            android:onClick="showTimePickerDialog" />
         
     </LinearLayout>
@@ -77,14 +77,14 @@
            android:id="@+id/toButtDate"
            android:layout_width="wrap_content" 
     	   android:layout_height="wrap_content"
-       	   android:text="Pick Date" 
+       	   android:text="End Date" 
            android:onClick="showDatePickerDialog" />
        
        <Button
            android:id="@+id/toButtTime"
            android:layout_width="wrap_content" 
     	   android:layout_height="wrap_content"
-       	   android:text="Pick Time" 
+       	   android:text="End Time" 
            android:onClick="showTimePickerDialog" />
         
     </LinearLayout>
@@ -104,7 +104,7 @@
         	android:textColor="#0099FF" />
 
     	<Button
-        	android:id="@+id/button1"
+        	android:id="@+id/colorButt"
         	android:layout_width="wrap_content"
         	android:layout_height="wrap_content"
         	android:text="Pick a Color"
