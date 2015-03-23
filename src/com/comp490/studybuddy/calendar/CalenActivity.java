@@ -240,14 +240,13 @@ public class CalenActivity extends OrmLiteBaseActivity<DBHelper> {
         	
     	    //Get Events For the Day
     		try {
-    			QueryBuilder<CalendarEvent, ?> queryBuilder = getHelper().getDao(
-    					CalendarEvent.class).queryBuilder();
+    			QueryBuilder<CalendarEvent, ?> queryBuilder = getHelper().getCalendarEventDao().queryBuilder();
     			queryBuilder.where()
     				.like(CalendarEvent.CAL_EVENT_START_DATE, prev).or()
     				.like(CalendarEvent.CAL_EVENT_START_DATE, curr).or()
     				.like(CalendarEvent.CAL_EVENT_START_DATE, next);
     			PreparedQuery<CalendarEvent> preparedQuery = queryBuilder.prepare();
-    			eventList = getHelper().getDao(CalendarEvent.class).query(preparedQuery);
+    			eventList = getHelper().getCalendarEventDao().query(preparedQuery);
     		} catch (SQLException e) {
     			// TODO Auto-generated catch block
     			e.printStackTrace();
