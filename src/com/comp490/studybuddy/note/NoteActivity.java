@@ -106,6 +106,7 @@ public class NoteActivity extends OrmLiteBaseActivity<DBHelper> {
 					new TextBuilder(this, entry);
 					break;
 				case VIDEO:
+					new VideoBuilder(this, entry);
 					break;
 				default:
 					break;
@@ -287,14 +288,14 @@ public class NoteActivity extends OrmLiteBaseActivity<DBHelper> {
 		if (requestCode == MEDIA_TYPE_VIDEO && resultCode == Activity.RESULT_OK) {	
 		   // ********** creates VIDEO **************************
 			NoteEntry noteEntry = new NoteEntry(NoteEntry.NoteType.VIDEO);
-			noteEntry.setFilePath(mediaFile.toString()); //not sure about this
-			new VideoBuilder(noteActivity, data.getData(), noteEntry);	//VideoBuilder videoBuilder = 		        
+			noteEntry.setFilePath(mediaFile.getAbsolutePath());
+			new VideoBuilder(noteActivity, noteEntry);	//VideoBuilder videoBuilder = 		        
 	    }
 		
 		else if ( requestCode == MEDIA_TYPE_IMAGE && resultCode == Activity.RESULT_OK) {
 		   // ********** creates PICTURE **************************
 			NoteEntry noteEntry = new NoteEntry(NoteEntry.NoteType.PICTURE);
-			noteEntry.setFilePath(path); // photofilepath
+			noteEntry.setFilePath(data.getData().toString()); // photofilepath
 			new PictureBuilder(noteActivity, noteEntry); //PictureBuilder picObject = 
 		}	
 		

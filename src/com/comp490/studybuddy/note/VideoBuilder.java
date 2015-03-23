@@ -2,7 +2,10 @@ package com.comp490.studybuddy.note;
 
 import java.sql.SQLException;
 
+import android.graphics.Bitmap;
+import android.media.ThumbnailUtils;
 import android.net.Uri;
+import android.provider.MediaStore;
 import android.view.ActionMode;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,22 +25,12 @@ public class VideoBuilder {
 	private NoteEntry entry;
 	private int viewID;
 	private ImageButton videoButton;
-	Uri data;
 
-	public VideoBuilder(NoteActivity noteActivity, Uri data, NoteEntry entry) {
+	public VideoBuilder(NoteActivity noteActivity, NoteEntry entry) {
 		this.noteActivity = noteActivity;
 		this.entry = entry;
-		this.data = data;
 		createVideoButton();
 		this.entry.setType(NoteEntry.NoteType.VIDEO);
-		
-		//creates the note in the DB
-		try {
-			this.noteActivity.getHelper().getNoteEntryDao().create(entry);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 
 	private void createVideoButton() {
@@ -50,12 +43,18 @@ public class VideoBuilder {
 		viewID = noteActivity.generateViewID();
 		videoButton.setId(viewID);
 		entry.setViewID(viewID);
-		entry.setFilePath(data.toString()); // When loading, need to parse back
-														// into an Uri with Uri.parse(
+		if(entry.getX() != 0) {
+			videoButton.setX(entry.getX());
+			videoButton.setY(entry.getY());
+		}
 
 		ViewGroup layout = (ViewGroup) noteActivity
 				.findViewById(R.id.note_layout);
 		layout.addView(videoButton);
+		
+		Bitmap thumbnail = ThumbnailUtils.createVideoThumbnail( entry.getFilePath(), MediaStore.Video.Thumbnails.MINI_KIND );
+		//this should work but doesn't ^
+		//videoButton.setImageBitmap(thumbnail);
 
 		videoButton.setOnLongClickListener(new View.OnLongClickListener() {
 			@Override
@@ -67,10 +66,22 @@ public class VideoBuilder {
 				return true;
 			}
 		});
+		
+		//creates the note in the DB
+		try {
+			this.noteActivity.getHelper().getNoteEntryDao().createOrUpdate(entry);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	protected int getID() {
 		return viewID;
+	}
+	
+	public String getPath() {
+		return this.entry.getFilePath();
 	}
 
 	protected void deleteObject() {
@@ -83,5 +94,15 @@ public class VideoBuilder {
 		
 		videoButton = null;
 		videoBuilder = null;
+	}
+
+	public void setXY() {
+		this.entry.setXY(this.videoButton.getX(), this.videoButton.getY());	
+		try {
+			this.noteActivity.getHelper().getNoteEntryDao().update(this.entry);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

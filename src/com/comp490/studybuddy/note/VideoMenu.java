@@ -59,7 +59,7 @@ public class VideoMenu implements ActionMode.Callback {
 		case R.id.menuSoundPlay: {
 			//launch VideoActivity to play fullscreen video
 			Intent launchVideo = new Intent(noteActivity.getApplicationContext(), VideoViewerActivity.class);
-			launchVideo.putExtra("videoUri", videoBuilder.data.toString());
+			launchVideo.putExtra("videoUri", videoBuilder.getPath());
 			noteActivity.startActivity(launchVideo);
 			return true;
 		}
@@ -108,7 +108,7 @@ public class VideoMenu implements ActionMode.Callback {
 	public void onDestroyActionMode(ActionMode mode) {
 		video.setOnTouchListener(null);
 		noteActivity.clickie("Video icon position locked.");
-		//TO DO: need to update location X, Y in entry
+		videoBuilder.setXY();
 	}
 
 	public void allowViewMovement() {
