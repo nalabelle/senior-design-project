@@ -26,7 +26,7 @@ public class TextBuilder{
 		createTextView();
 		this.entry.setType(NoteEntry.NoteType.TEXT);
 		try {
-			this.noteActivity.getHelper().getNoteEntryDao().create(entry);
+			this.noteActivity.getHelper().getNoteEntryDao().createOrUpdate(entry);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

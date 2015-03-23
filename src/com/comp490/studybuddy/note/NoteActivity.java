@@ -83,7 +83,22 @@ public class NoteActivity extends OrmLiteBaseActivity<DBHelper> {
 		try {
 			List<NoteEntry> list = getHelper().getNoteEntryDao().queryForAll();
 			for (NoteEntry entry : list) {
-				//How do we load these into views?
+				switch(entry.getType()) {
+				case AUDIO:
+					break;
+				case DRAW:
+					break;
+				case PICTURE:
+					break;
+				case TEXT:
+					new TextBuilder(this, entry);
+					break;
+				case VIDEO:
+					break;
+				default:
+					break;
+				
+				}
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -131,6 +146,16 @@ public class NoteActivity extends OrmLiteBaseActivity<DBHelper> {
 			ActionMode.Callback drawMenu = new DrawMenu(this, drawEntry);
 			this.startActionMode(drawMenu);
 			return true;
+		}
+		case R.id.action_save_note: {
+			try {
+				for(NoteEntry entry : getHelper().getNoteEntryDao().queryForAll()) {
+					getHelper().getNoteEntryDao().update(entry);
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		// TO DO: SAVE NOTE AND NEW NOTE		
 		//insert other action menu options here
