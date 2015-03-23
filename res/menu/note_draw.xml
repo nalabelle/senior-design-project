@@ -12,7 +12,7 @@
         android:id="@+id/action_penColor"
         android:icon="@drawable/ic_action_color"
         android:showAsAction="ifRoom|collapseActionView"
-        android:title="@string/action_changePenWidth">
+        android:title="@string/action_changePenColor">
     </item>
     <item
         android:id="@+id/action_undo"

@@ -61,7 +61,7 @@ public class NoteActivity extends OrmLiteBaseActivity<DBHelper> {
 	ActionBar actionBar;
 	final Context context = this;
 	NoteActivity noteActivity = this;
-	AudioBuilder audio = null; 
+	SoundBuilder audio = null; 
 	
 	//Players
 	protected MediaPlayer player = null;
@@ -163,9 +163,9 @@ public class NoteActivity extends OrmLiteBaseActivity<DBHelper> {
 				if (audio == null){
 					NoteEntry noteEntry = new NoteEntry(NoteEntry.NoteType.AUDIO);
 					noteActivity.createNote(noteEntry);
-					audio = new AudioBuilder(noteEntry, noteActivity);					
+					audio = new SoundBuilder(noteEntry, noteActivity);					
 				} 
-				if (!audio.getStatus().equals(AudioBuilder.Status.RECORDING)){ // already recording?
+				if (!audio.getStatus().equals(SoundBuilder.Status.RECORDING)){ // already recording?
 					rec.setTextColor(Color.RED);
 					audio.startRecording();
 				}
@@ -175,7 +175,7 @@ public class NoteActivity extends OrmLiteBaseActivity<DBHelper> {
 			@Override
 			public void onClick(View v1) {
 				if (audio != null){
-					if (audio.getStatus().equals(AudioBuilder.Status.RECORDING)){
+					if (audio.getStatus().equals(SoundBuilder.Status.RECORDING)){
 						rec.setTextColor(Color.WHITE);
 					}
 					audio.stopRecording();

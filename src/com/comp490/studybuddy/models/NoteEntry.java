@@ -18,7 +18,7 @@ import com.j256.ormlite.table.DatabaseTable;
 public class NoteEntry {
 	//I store NoteEntries!
 	@DatabaseField(generatedId = true)
-	private int id; //do something with this?
+	private int id; //do something with this?  //3/22/2015 Ant to Nik, not sure what this ID is or if its needed
 	@DatabaseField
 	private String name;
 	@DatabaseField

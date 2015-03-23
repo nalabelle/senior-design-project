@@ -3,9 +3,10 @@ package com.comp490.studybuddy.note;
 import android.net.Uri;
 import android.view.ActionMode;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
+
 import com.comp490.studybuddy.R;
 import com.comp490.studybuddy.models.NoteEntry;
 
@@ -42,8 +43,8 @@ public class VideoBuilder {
 		entry.setFilePath(data.toString()); // When loading, need to parse back
 														// into an Uri with Uri.parse(
 
-		LinearLayout layout = (LinearLayout) noteActivity
-				.findViewById(R.id.note_inner_layout);
+		ViewGroup layout = (ViewGroup) noteActivity
+				.findViewById(R.id.note_layout);
 		layout.addView(videoButton);
 
 		videoButton.setOnLongClickListener(new View.OnLongClickListener() {

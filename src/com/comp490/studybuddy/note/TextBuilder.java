@@ -3,6 +3,7 @@ package com.comp490.studybuddy.note;
 import android.text.InputType;
 import android.view.ActionMode;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -26,14 +27,15 @@ public class TextBuilder{
 	
 	private void createTextView(){
 		textBox = new EditText(noteActivity);
-		textBox.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+		textBox.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
 		textBox.setHint("Enter Text");
 		textBox.requestFocus();
+		textBox.setClickable(true);
 		viewID = (noteActivity.generateViewID());
 		textBox.setId(viewID); //required for deletion
 		entry.setViewID(viewID);
 		textBox.setRawInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
-		LinearLayout layout = (LinearLayout) noteActivity.findViewById(R.id.note_inner_layout);
+		ViewGroup layout = (ViewGroup) noteActivity.findViewById(R.id.note_layout);
 		layout.addView(textBox);
 
 		textBox.setOnLongClickListener(new View.OnLongClickListener() {

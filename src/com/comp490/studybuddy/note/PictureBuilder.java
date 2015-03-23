@@ -11,6 +11,7 @@ import android.media.ThumbnailUtils;
 import android.view.ActionMode;
 import android.view.Display;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -42,7 +43,7 @@ public class PictureBuilder {
 		//Create the view, ID, size, etc
 		pic = new ImageView(noteActivity);
 		pic.setLayoutParams(new LinearLayout.LayoutParams(android.view.ViewGroup.LayoutParams.WRAP_CONTENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT));
-		LinearLayout layout = (LinearLayout) noteActivity.findViewById(R.id.note_inner_layout);
+		ViewGroup layout = (ViewGroup) noteActivity.findViewById(R.id.note_layout);
 		viewID = noteActivity.generateViewID();
 		pic.setId(viewID); //required for deletion
 		entry.setViewID(viewID);
