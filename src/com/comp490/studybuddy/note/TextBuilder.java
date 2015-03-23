@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import android.text.InputType;
 import android.view.ActionMode;
 import android.view.View;
+import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.EditText;
@@ -24,19 +25,20 @@ public class TextBuilder{
 		this.noteActivity = noteActivity;
 		this.entry = entry;
 		createTextView();
-		this.entry.setType(NoteEntry.NoteType.TEXT);
-		try {
-			this.noteActivity.getHelper().getNoteEntryDao().createOrUpdate(entry);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 	
 	private void createTextView(){
 		textBox = new EditText(noteActivity);
 		textBox.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-		textBox.setHint("Enter Text");
+		if(entry.getText() == null) {
+			textBox.setHint("Enter Text");
+		} else {
+			textBox.setText(entry.getText());
+		}
+		if(entry.getX() != 0) {
+			textBox.setX(entry.getX());
+			textBox.setY(entry.getY());
+		}
 		textBox.requestFocus();
 		textBox.setClickable(true);
 		viewID = (noteActivity.generateViewID());
@@ -55,15 +57,34 @@ public class TextBuilder{
 				return true;
 			}
 		});
+		textBox.setOnFocusChangeListener(new OnFocusChangeListener() {
+
+			@Override
+			public void onFocusChange(View v, boolean hasFocus) {
+				//I think this cast should be safe.
+				EditText e = (EditText) v;
+				if(!hasFocus)
+					entry.setText(e.getText().toString());
+			}
+			
+		});
+				
+		try {
+			this.noteActivity.getHelper().getNoteEntryDao().createOrUpdate(entry);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		this.noteActivity.addNote(entry);
 	}
 	
 	public int getID(){
 		return viewID;
 	}
 	
-	// might be unnecessary, but probably beneficial for garbage collection
 	protected void deleteObject(){
 		try {
+			noteActivity.deleteNote(entry);
 			noteActivity.getHelper().getNoteEntryDao().delete(entry);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -71,5 +92,9 @@ public class TextBuilder{
 		}
 		textBox = null;
 		textBuilder = null;
+	}
+
+	public void setXY() {
+		this.entry.setXY(this.textBox.getX(), this.textBox.getY());
 	}
 }

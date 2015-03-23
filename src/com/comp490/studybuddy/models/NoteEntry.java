@@ -19,17 +19,23 @@ public class NoteEntry {
 	//I store NoteEntries!
 	@DatabaseField(generatedId = true)
 	private int id; //do something with this?  //3/22/2015 Ant to Nik, not sure what this ID is or if its needed
+	//It now does things. - Nik
 	@DatabaseField
 	private String name;
 	@DatabaseField
 	private NoteType type;
-	//private String description;
+	@DatabaseField
+	private String text;
 	@DatabaseField
 	private String filePath = null; //May not have one, who knows?
 	@DatabaseField
 	private int viewID = -1;
 	@DatabaseField
 	private int secondaryViewID = -1;
+	@DatabaseField
+	private float X;
+	@DatabaseField
+	private float Y;
 	
 	//@DatabaseField
 	private ArrayList<DrawPath> drawing = null;
@@ -110,5 +116,23 @@ public class NoteEntry {
 	
 	public ArrayList<DrawPath> getDrawPath(){
 		return drawing;
+	}
+	
+	public String getText() {
+		return text;
+	}
+	public void setText(String text) {
+		this.text = text;
+	}
+	public void setXY(float x2, float y2) {
+		this.X = x2;
+		this.Y = y2;		
+	}
+	public float getX() {
+		return this.X;
+	}
+	
+	public float getY() {
+		return this.Y;
 	}
 }

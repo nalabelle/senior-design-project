@@ -13,6 +13,7 @@ package com.comp490.studybuddy.note;
 import java.io.File;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -31,12 +32,14 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.util.SparseArray;
 import android.view.ActionMode;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.comp490.studybuddy.R;
@@ -74,12 +77,18 @@ public class NoteActivity extends OrmLiteBaseActivity<DBHelper> {
 		
 	private NoteEntry drawEntry = null;
 	
+	private SparseArray<NoteEntry> noteList = new SparseArray<NoteEntry>();
+	
 		
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_note);
-		
+		//load previous stuff.
+		this.initializeViews();
+	}
+	
+	private void initializeViews() {
 		try {
 			List<NoteEntry> list = getHelper().getNoteEntryDao().queryForAll();
 			for (NoteEntry entry : list) {
@@ -148,14 +157,7 @@ public class NoteActivity extends OrmLiteBaseActivity<DBHelper> {
 			return true;
 		}
 		case R.id.action_save_note: {
-			try {
-				for(NoteEntry entry : getHelper().getNoteEntryDao().queryForAll()) {
-					getHelper().getNoteEntryDao().update(entry);
-				}
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			this.saveNotes();
 		}
 		// TO DO: SAVE NOTE AND NEW NOTE		
 		//insert other action menu options here
@@ -364,5 +366,45 @@ public class NoteActivity extends OrmLiteBaseActivity<DBHelper> {
 	
 	public void clickie(String message){ //for testing
 		Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+	}
+
+	public void addNote(NoteEntry entry) {
+		noteList.put(entry.getID(), entry);
+	}
+	
+	public void deleteNote(NoteEntry entry) {
+		noteList.delete(entry.getID());
+	}
+	
+	public void saveNotes() {
+		try {
+			int key = 0;
+			for(int i = 0; i < noteList.size(); i++) {
+			   key = noteList.keyAt(i);
+			   NoteEntry entry = noteList.get(key);
+			   //custom handling for types, if needed.
+			   switch(entry.getType()) {
+					case AUDIO:
+						break;
+					case DRAW:
+						break;
+					case PICTURE:
+						break;
+					case TEXT:
+						EditText text = (EditText) this.findViewById(entry.getViewID());
+						entry.setText(text.getText().toString());
+						break;
+					case VIDEO:
+						break;
+					default:
+						break;
+			   
+			   }
+			   getHelper().getNoteEntryDao().update(entry);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

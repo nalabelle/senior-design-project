@@ -13,6 +13,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -98,6 +99,7 @@ public class TextMenu implements ActionMode.Callback {
 			text.setOnTouchListener(null);
 			noteActivity.clickie("Text Position Locked.");
 			//TO DO: need to update location X, Y in entry
+			textBuilder.setXY();
 		}
 	}
 	
