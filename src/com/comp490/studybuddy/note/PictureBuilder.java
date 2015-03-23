@@ -37,13 +37,6 @@ public class PictureBuilder {
 		this.noteActivity = noteActivity;
 		this.entry.setType(NoteEntry.NoteType.PICTURE);
 		createPicView();
-		
-		try {
-			this.noteActivity.getHelper().getNoteEntryDao().create(entry);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}	
 	
 	private void createPicView(){
@@ -55,6 +48,10 @@ public class PictureBuilder {
 		viewID = noteActivity.generateViewID();
 		pic.setId(viewID); //required for deletion
 		entry.setViewID(viewID);
+		if(entry.getX() != 0) {
+			pic.setX(entry.getX());
+			pic.setY(entry.getY());
+		}
 		layout.addView(pic);
 		
 		//Find dimensions of display to determine size of thumbnail
@@ -80,6 +77,14 @@ public class PictureBuilder {
 		});
 		
 		pic.setImageBitmap(bitmap);
+		
+		
+		try {
+			this.noteActivity.getHelper().getNoteEntryDao().createOrUpdate(entry);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}	
 	
 	public int getID(){
@@ -129,6 +134,16 @@ public class PictureBuilder {
 		matrix.postRotate(rotate);
 		bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(),
 				bitmap.getHeight(), matrix, true);
+	}
+
+	public void setXY() {
+		this.entry.setXY(this.pic.getX(), this.pic.getY());	
+		try {
+			this.noteActivity.getHelper().getNoteEntryDao().update(this.entry);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}	
 	
 	/* temp saving in case we use some scaling 

@@ -106,7 +106,7 @@ public class PictureMenu implements ActionMode.Callback {
 		if (listen != null){
 			pic.setOnTouchListener(null);
 			noteActivity.clickie("Picture position locked.");
-			//TO DO: need to update location X, Y in entry
+			picObject.setXY();
 		}
 	}
 	

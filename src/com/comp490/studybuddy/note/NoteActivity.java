@@ -100,6 +100,7 @@ public class NoteActivity extends OrmLiteBaseActivity<DBHelper> {
 				case DRAW:
 					break;
 				case PICTURE:
+					new PictureBuilder(this, entry);
 					break;
 				case TEXT:
 					new TextBuilder(this, entry);
