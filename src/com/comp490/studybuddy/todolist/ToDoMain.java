@@ -13,7 +13,6 @@ package com.comp490.studybuddy.todolist;
 import java.sql.SQLException;
 import java.util.List;
 
-import android.database.Cursor;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,11 +24,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.comp490.studybuddy.R;
-import com.comp490.studybuddy.database.DBHelper;
 import com.comp490.studybuddy.models.Task;
-import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
+import com.j256.ormlite.dao.Dao;
 
-public class ToDoMain extends DefaultActivity {
+public class ToDoMain extends DefaultActivity implements Dao.DaoObserver {
 
 	private ListView listView;
    //adapter to display the list's data
@@ -42,6 +40,13 @@ public class ToDoMain extends DefaultActivity {
 		setContentView(R.layout.activity_to_do_main);
 		listView = (ListView) findViewById(R.id.view_all_tasks_listview);
 		listView.setSelector(R.drawable.selector);
+		
+		//Register ourselves as a DAO observer so we can update on change.
+		try {
+			getHelper().getTaskDao().registerObserver(this);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		
       //short click to open task
 		listView.setOnItemClickListener(new OnItemClickListener() {
@@ -81,39 +86,18 @@ public class ToDoMain extends DefaultActivity {
 			this.listView.setAdapter(listViewAdapter);
 	}
 
-	//event handler for item shortn clicked from listView
+	//event handler for item short clicked from listView
 	private void listViewItemClickHandler(AdapterView<?> adapterView, View listView, int itemId) {
 		//new task object with data to be passed to next activity to show detail
-		Task taskItem = null;
-		try {
-			taskItem = getHelper().getTaskDao().queryForId(itemId);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		//TODO: Check for nulls.
+		Task taskItem = this.listViewAdapter.getItem(itemId);
 		//start activity
 		NavigationHandler.viewTask(this, taskItem);
 	}
 	
 	//event handler for item long clicked from listView
    private void listViewItemLongClickHandler(AdapterView<?> adapterView, View listView, int itemId) {
-      Task taskItem = new Task();
-		try {
-			taskItem = getHelper().getTaskDao().queryForId(itemId);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		//TODO: Check for nulls.
+      Task taskItem = this.listViewAdapter.getItem(itemId);
       DeleteHandler.deleteDialog(this, taskItem);
-      try {
-		getHelper().getTaskDao().clearObjectCache();
-	} catch (SQLException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
-      listViewAdapter.notifyDataSetChanged();
    }
 
 	@Override
@@ -132,6 +116,23 @@ public class ToDoMain extends DefaultActivity {
 		// Inflate the menu; this adds items to the action bar if it is present
 		getMenuInflater().inflate(R.menu.to_do_main, menu);
 		return true;
+	}
+
+	@Override
+	//This should update the list menu when the Task DAO is changed.
+	public void onChange() {
+		this.initTasksListView();
+	}
+	
+	@Override
+	protected void onDestroy() {
+		try {
+			getHelper().getTaskDao().unregisterObserver(this);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		super.onDestroy();
 	}
 
 }
