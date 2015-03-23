@@ -1,5 +1,7 @@
 package com.comp490.studybuddy.note;
 
+import java.sql.SQLException;
+
 import android.net.Uri;
 import android.view.ActionMode;
 import android.view.View;
@@ -28,6 +30,14 @@ public class VideoBuilder {
 		this.data = data;
 		createVideoButton();
 		this.entry.setType(NoteEntry.NoteType.VIDEO);
+		
+		//creates the note in the DB
+		try {
+			this.noteActivity.getHelper().getNoteEntryDao().create(entry);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	private void createVideoButton() {
@@ -63,9 +73,14 @@ public class VideoBuilder {
 		return viewID;
 	}
 
-	// might be unnecessary
 	protected void deleteObject() {
-		noteActivity.deleteNote(entry);
+		try {
+			this.noteActivity.getHelper().getNoteEntryDao().delete(entry);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		videoButton = null;
 		videoBuilder = null;
 	}

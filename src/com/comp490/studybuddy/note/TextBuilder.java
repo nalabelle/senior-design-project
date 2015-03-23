@@ -1,5 +1,7 @@
 package com.comp490.studybuddy.note;
 
+import java.sql.SQLException;
+
 import android.text.InputType;
 import android.view.ActionMode;
 import android.view.View;
@@ -23,6 +25,12 @@ public class TextBuilder{
 		this.entry = entry;
 		createTextView();
 		this.entry.setType(NoteEntry.NoteType.TEXT);
+		try {
+			this.noteActivity.getHelper().getNoteEntryDao().create(entry);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	private void createTextView(){
@@ -55,7 +63,12 @@ public class TextBuilder{
 	
 	// might be unnecessary, but probably beneficial for garbage collection
 	protected void deleteObject(){
-		noteActivity.deleteNote(entry);
+		try {
+			noteActivity.getHelper().getNoteEntryDao().delete(entry);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		textBox = null;
 		textBuilder = null;
 	}

@@ -157,7 +157,7 @@ public class SoundPlayMenu implements ActionMode.Callback {
 					public void onClick(DialogInterface dialog, int id) {
 						try { // clicked yes
 							((ViewGroup) soundView.getParent()).removeView(soundView);
-							noteActivity.deleteNote(entry);					
+							noteActivity.getHelper().getNoteEntryDao().delete(entry);
 						} catch (Exception e1) {
 							Log.e(LOG_TAG, "Delete of soundbutton failed");
 						}

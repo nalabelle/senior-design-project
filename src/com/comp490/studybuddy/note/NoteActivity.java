@@ -14,21 +14,19 @@ import java.io.File;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 
-import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -37,10 +35,8 @@ import android.view.ActionMode;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MenuItem.OnActionExpandListener;
 import android.view.View;
 import android.widget.Button;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.comp490.studybuddy.R;
@@ -83,6 +79,16 @@ public class NoteActivity extends OrmLiteBaseActivity<DBHelper> {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_note);
+		
+		try {
+			List<NoteEntry> list = getHelper().getNoteEntryDao().queryForAll();
+			for (NoteEntry entry : list) {
+				//How do we load these into views?
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 
@@ -114,7 +120,6 @@ public class NoteActivity extends OrmLiteBaseActivity<DBHelper> {
 			//onClick of keyboard icon
 
 			NoteEntry noteEntry = new NoteEntry(NoteEntry.NoteType.TEXT);
-			this.createNote(noteEntry);
 			new TextBuilder(this, noteEntry); //TextBuilder text = 
 			return true;
 		}
@@ -122,7 +127,6 @@ public class NoteActivity extends OrmLiteBaseActivity<DBHelper> {
 			// onClick of Pen icon
 			if (drawEntry == null){
 				drawEntry = new NoteEntry(NoteEntry.NoteType.DRAW);
-				this.createNote(drawEntry);
 			}
 			ActionMode.Callback drawMenu = new DrawMenu(this, drawEntry);
 			this.startActionMode(drawMenu);
@@ -162,7 +166,6 @@ public class NoteActivity extends OrmLiteBaseActivity<DBHelper> {
 				//add the audionote entry. Not created until record is clicked once
 				if (audio == null){
 					NoteEntry noteEntry = new NoteEntry(NoteEntry.NoteType.AUDIO);
-					noteActivity.createNote(noteEntry);
 					audio = new SoundBuilder(noteEntry, noteActivity);					
 				} 
 				if (!audio.getStatus().equals(SoundBuilder.Status.RECORDING)){ // already recording?
@@ -236,7 +239,6 @@ public class NoteActivity extends OrmLiteBaseActivity<DBHelper> {
 		   // ********** creates VIDEO **************************
 			NoteEntry noteEntry = new NoteEntry(NoteEntry.NoteType.VIDEO);
 			noteEntry.setFilePath(mediaFile.toString()); //not sure about this
-			this.createNote(noteEntry);
 			new VideoBuilder(noteActivity, data.getData(), noteEntry);	//VideoBuilder videoBuilder = 		        
 	    }
 		
@@ -244,7 +246,6 @@ public class NoteActivity extends OrmLiteBaseActivity<DBHelper> {
 		   // ********** creates PICTURE **************************
 			NoteEntry noteEntry = new NoteEntry(NoteEntry.NoteType.PICTURE);
 			noteEntry.setFilePath(path); // photofilepath
-			this.createNote(noteEntry);
 			new PictureBuilder(noteActivity, noteEntry); //PictureBuilder picObject = 
 		}	
 		
@@ -338,27 +339,5 @@ public class NoteActivity extends OrmLiteBaseActivity<DBHelper> {
 	
 	public void clickie(String message){ //for testing
 		Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-	}
-
-	public boolean createNote(NoteEntry entry) {
-		try {
-			int i = getHelper().getDao(NoteEntry.class).create(entry);
-			if(i == 1) return true;
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return false;
-	}
-	
-	public boolean deleteNote(NoteEntry entry) {
-		try {
-			int i = getHelper().getDao(NoteEntry.class).delete(entry);
-			if(i == 1) return true;
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return false;
 	}
 }

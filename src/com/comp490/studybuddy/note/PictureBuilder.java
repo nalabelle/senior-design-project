@@ -1,6 +1,7 @@
 package com.comp490.studybuddy.note;
 
 import java.io.File;
+import java.sql.SQLException;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -35,7 +36,14 @@ public class PictureBuilder {
 		this.entry = entry;
 		this.noteActivity = noteActivity;
 		this.entry.setType(NoteEntry.NoteType.PICTURE);
-		createPicView();		
+		createPicView();
+		
+		try {
+			this.noteActivity.getHelper().getNoteEntryDao().create(entry);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}	
 	
 	private void createPicView(){
@@ -84,7 +92,12 @@ public class PictureBuilder {
 	
 	// might be unnecessary
 	protected void deleteObject(){
-		noteActivity.deleteNote(entry);
+		try {
+			this.noteActivity.getHelper().getNoteEntryDao().delete(entry);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		pic = null;
 		pictureBuilder = null;
 	}
