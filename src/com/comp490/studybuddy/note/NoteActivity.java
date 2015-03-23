@@ -13,7 +13,6 @@ package com.comp490.studybuddy.note;
 import java.io.File;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -25,6 +24,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.net.Uri;
@@ -37,7 +37,9 @@ import android.view.ActionMode;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -113,6 +115,25 @@ public class NoteActivity extends OrmLiteBaseActivity<DBHelper> {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	//This clears the focus out of edit text entries if they're not clicked and hides the keyboard.
+	@Override
+	public boolean dispatchTouchEvent(MotionEvent ev) {
+        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+            View v = getCurrentFocus();
+            if ( v instanceof EditText) {
+            	EditText e = (EditText) v;
+                Rect outRect = new Rect();
+                v.getGlobalVisibleRect(outRect);
+                if (!outRect.contains((int)ev.getRawX(), (int)ev.getRawY())) {
+                    v.clearFocus();
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                }
+            }
+        }
+        return super.dispatchTouchEvent(ev);
 	}
 	
 
@@ -382,24 +403,6 @@ public class NoteActivity extends OrmLiteBaseActivity<DBHelper> {
 			for(int i = 0; i < noteList.size(); i++) {
 			   key = noteList.keyAt(i);
 			   NoteEntry entry = noteList.get(key);
-			   //custom handling for types, if needed.
-			   switch(entry.getType()) {
-					case AUDIO:
-						break;
-					case DRAW:
-						break;
-					case PICTURE:
-						break;
-					case TEXT:
-						EditText text = (EditText) this.findViewById(entry.getViewID());
-						entry.setText(text.getText().toString());
-						break;
-					case VIDEO:
-						break;
-					default:
-						break;
-			   
-			   }
 			   getHelper().getNoteEntryDao().update(entry);
 			}
 		} catch (SQLException e) {

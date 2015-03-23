@@ -59,12 +59,20 @@ public class TextBuilder{
 		});
 		textBox.setOnFocusChangeListener(new OnFocusChangeListener() {
 
+			//This saves the note when you move focus away from it.
 			@Override
 			public void onFocusChange(View v, boolean hasFocus) {
 				//I think this cast should be safe.
 				EditText e = (EditText) v;
-				if(!hasFocus)
+				if(!hasFocus) {
 					entry.setText(e.getText().toString());
+					try {
+						noteActivity.getHelper().getNoteEntryDao().update(entry);
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
 			}
 			
 		});
