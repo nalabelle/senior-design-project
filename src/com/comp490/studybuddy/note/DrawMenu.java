@@ -1,5 +1,7 @@
 package com.comp490.studybuddy.note;
 
+import java.sql.SQLException;
+
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -23,6 +25,13 @@ public class DrawMenu implements ActionMode.Callback {
 	public DrawMenu(NoteActivity noteActivity, NoteEntry noteEntry) {
 		this.noteActivity = noteActivity;
 		this.noteEntry = noteEntry;
+		
+		try {
+			noteActivity.getHelper().getNoteEntryDao().createOrUpdate(noteEntry);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		//create a temporary transparent view to cover everything else
 		noteLayout = (RelativeLayout) noteActivity.findViewById(R.id.note_layout);
@@ -111,6 +120,12 @@ public class DrawMenu implements ActionMode.Callback {
 		setBitmap(false); 
 		noteLayout.removeView(drawing);
 		noteEntry.setDrawPath(drawing.getSavePath());
+		try {
+			noteActivity.getHelper().getNoteEntryDao().update(noteEntry);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		// NEED TO EITHER SAVE BITMAP TO ENTRY OR A DATA STRUCTURE WITH ALL
 		// THE DRAWINGS

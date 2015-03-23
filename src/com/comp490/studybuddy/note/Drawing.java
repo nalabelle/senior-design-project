@@ -56,7 +56,7 @@ public class Drawing extends View {
 		
 		initCanvas();
 		
-		if (savePath == null)
+		if (save == null)
 			savePath = new ArrayList<DrawPath>();
 		else {
 			savePath = save;

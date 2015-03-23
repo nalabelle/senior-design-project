@@ -99,6 +99,7 @@ public class NoteActivity extends OrmLiteBaseActivity<DBHelper> {
 					new SoundBuilder(entry, this);
 					break;
 				case DRAW:
+					drawEntry = entry;
 					break;
 				case PICTURE:
 					new PictureBuilder(this, entry);
@@ -126,7 +127,6 @@ public class NoteActivity extends OrmLiteBaseActivity<DBHelper> {
         if (ev.getAction() == MotionEvent.ACTION_DOWN) {
             View v = getCurrentFocus();
             if ( v instanceof EditText) {
-            	EditText e = (EditText) v;
                 Rect outRect = new Rect();
                 v.getGlobalVisibleRect(outRect);
                 if (!outRect.contains((int)ev.getRawX(), (int)ev.getRawY())) {

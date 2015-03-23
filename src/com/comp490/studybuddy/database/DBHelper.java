@@ -15,7 +15,7 @@ import android.util.Log;
 
 public class DBHelper extends OrmLiteSqliteOpenHelper {
 	private static final String DATABASE_NAME = "studybuddy.db";
-	private static final int DATABASE_VERSION = 11;
+	private static final int DATABASE_VERSION = 12;
 	
 	private Dao<Task, Integer> taskDao = null;
 	private Dao<CalendarEvent, Integer> calDao = null;

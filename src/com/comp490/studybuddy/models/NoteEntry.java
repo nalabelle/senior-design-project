@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import android.util.Log;
 
 import com.comp490.studybuddy.note.Drawing.DrawPath;
+import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
@@ -36,8 +37,7 @@ public class NoteEntry {
 	private float X;
 	@DatabaseField
 	private float Y;
-	
-	//@DatabaseField
+	@DatabaseField(dataType=DataType.SERIALIZABLE)
 	private ArrayList<DrawPath> drawing = null;
 
 	NoteEntry() {
