@@ -251,6 +251,7 @@ public class SoundPlayMenu implements ActionMode.Callback {
 		if (listen != null){
 			soundView.setOnTouchListener(null);
 			noteActivity.clickie("Sound Icon position locked.");
+			this.setXY();
 
 			//TO DO: need to update location X, Y in entry
 		}
