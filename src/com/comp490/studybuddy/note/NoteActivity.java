@@ -96,6 +96,7 @@ public class NoteActivity extends OrmLiteBaseActivity<DBHelper> {
 			for (NoteEntry entry : list) {
 				switch(entry.getType()) {
 				case AUDIO:
+					new SoundBuilder(entry, this);
 					break;
 				case DRAW:
 					break;
@@ -288,14 +289,14 @@ public class NoteActivity extends OrmLiteBaseActivity<DBHelper> {
 		if (requestCode == MEDIA_TYPE_VIDEO && resultCode == Activity.RESULT_OK) {	
 		   // ********** creates VIDEO **************************
 			NoteEntry noteEntry = new NoteEntry(NoteEntry.NoteType.VIDEO);
-			noteEntry.setFilePath(mediaFile.getAbsolutePath());
+			noteEntry.setFilePath(data.getData().toString());
 			new VideoBuilder(noteActivity, noteEntry);	//VideoBuilder videoBuilder = 		        
 	    }
 		
 		else if ( requestCode == MEDIA_TYPE_IMAGE && resultCode == Activity.RESULT_OK) {
 		   // ********** creates PICTURE **************************
 			NoteEntry noteEntry = new NoteEntry(NoteEntry.NoteType.PICTURE);
-			noteEntry.setFilePath(data.getData().toString()); // photofilepath
+			noteEntry.setFilePath(path); // photofilepath
 			new PictureBuilder(noteActivity, noteEntry); //PictureBuilder picObject = 
 		}	
 		

@@ -52,7 +52,7 @@ public class VideoBuilder {
 				.findViewById(R.id.note_layout);
 		layout.addView(videoButton);
 		
-		Bitmap thumbnail = ThumbnailUtils.createVideoThumbnail( entry.getFilePath(), MediaStore.Video.Thumbnails.MINI_KIND );
+		Bitmap thumbnail = ThumbnailUtils.createVideoThumbnail( Uri.parse(entry.getFilePath()).getPath(), MediaStore.Video.Thumbnails.MINI_KIND );
 		//this should work but doesn't ^
 		//videoButton.setImageBitmap(thumbnail);
 

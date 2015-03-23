@@ -1,6 +1,7 @@
 package com.comp490.studybuddy.note;
 
 import java.io.File;
+import java.sql.SQLException;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -250,7 +251,18 @@ public class SoundPlayMenu implements ActionMode.Callback {
 		if (listen != null){
 			soundView.setOnTouchListener(null);
 			noteActivity.clickie("Sound Icon position locked.");
+
 			//TO DO: need to update location X, Y in entry
+		}
+	}
+	
+	public void setXY() {
+		this.entry.setXY(soundView.getX(), soundView.getY());	
+		try {
+			this.noteActivity.getHelper().getNoteEntryDao().update(this.entry);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 	

@@ -1,6 +1,7 @@
 package com.comp490.studybuddy.note;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -40,7 +41,10 @@ public class SoundBuilder {
 	public SoundBuilder(NoteEntry entry, NoteActivity noteContext) {
 		this.noteActivity = noteContext;
 		this.entry = entry;
-		this.entry.setType(NoteEntry.NoteType.AUDIO);
+		if(this.entry.getFilePath() != null)
+			this.createSoundButton();
+		else
+			this.entry.setType(NoteEntry.NoteType.AUDIO);
 	}
 	
 	public boolean startRecording() { // on actionView REC button press
@@ -118,7 +122,7 @@ public class SoundBuilder {
 		//Generate IDs, one for deletion and the other for renaming
 		viewID = noteActivity.generateViewID();
 		soundButtonAndTitle.setId(viewID);
-		entry.setViewID(viewID);	
+		entry.setViewID(viewID);
 		
 		//We can use this to rename the title later
 		int secondViewID = noteActivity.generateViewID();
@@ -133,6 +137,12 @@ public class SoundBuilder {
 		
 		soundButtonAndTitle.addView(soundButton);
 		soundButtonAndTitle.addView(soundTitle);
+		
+		if(entry.getX() != 0) {
+			soundButtonAndTitle.setX(entry.getX());
+			soundButtonAndTitle.setY(entry.getY());
+		}
+		
 		ViewGroup layout = (ViewGroup)noteActivity.findViewById(R.id.note_layout);
 		layout.addView(soundButtonAndTitle);
 		
@@ -144,6 +154,13 @@ public class SoundBuilder {
 				return true;
 			}
 		});
+		
+		try {
+			this.noteActivity.getHelper().getNoteEntryDao().createOrUpdate(entry);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public Status getStatus() {
