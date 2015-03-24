@@ -68,6 +68,10 @@ public class DrawMenu implements ActionMode.Callback {
 			drawing.setPenColor(noteActivity);			
 			return true;
 		}
+		case R.id.action_eraser: {
+			drawing.eraser();			
+			return true;
+		}
 		case R.id.action_undo: {
 			drawing.undo();
 			return true;

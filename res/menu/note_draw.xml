@@ -15,6 +15,12 @@
         android:title="@string/action_changePenColor">
     </item>
     <item
+        android:id="@+id/action_eraser"
+        android:icon="@drawable/ic_action_undo"
+        android:showAsAction="ifRoom|collapseActionView"
+        android:title="@string/action_eraser">
+    </item>
+    <item
         android:id="@+id/action_undo"
         android:icon="@drawable/ic_action_undo"
         android:showAsAction="ifRoom|collapseActionView"

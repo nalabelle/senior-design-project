@@ -22,7 +22,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 public class Drawing extends View {
-	 Bitmap bitmap;
+	Bitmap bitmap;
 	Canvas canvas;
 	private Path path;
 	private Paint bitmapPaint;
@@ -240,6 +240,10 @@ public class Drawing extends View {
 			canvas.drawPath(tempDp.dPath, tempDp.dPaint);
 		}
 		invalidate();
+	}
+	
+	public void eraser(){
+		
 	}
 	
 	public void undo() {
