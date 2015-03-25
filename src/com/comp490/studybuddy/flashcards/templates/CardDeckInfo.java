@@ -30,6 +30,7 @@ public class CardDeckInfo implements InfoInterface {
 
 	public void setContext(Context ctx) { info = ctx; }
 
+	//saves info to local storage with .io.File
 	public boolean save(Object o) 
 	{
 		Decks deck = (Decks) o;
