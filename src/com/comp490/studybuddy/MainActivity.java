@@ -23,7 +23,7 @@ import com.comp490.studybuddy.calendar.CalenActivity;
 import com.comp490.studybuddy.flashcards.FlashMain;
 import com.comp490.studybuddy.handwritingnote.HandwritingMain;
 import com.comp490.studybuddy.models.NoteEntry;
-import com.comp490.studybuddy.note.AudioBuilder;
+import com.comp490.studybuddy.note.SoundBuilder;
 import com.comp490.studybuddy.note.NoteActivity;
 import com.comp490.studybuddy.note.PhotoViewerActivity;
 import com.comp490.studybuddy.note.PictureBuilder;

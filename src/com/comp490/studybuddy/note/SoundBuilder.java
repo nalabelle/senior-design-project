@@ -1,6 +1,7 @@
 package com.comp490.studybuddy.note;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -10,6 +11,7 @@ import android.os.Environment;
 import android.util.Log;
 import android.view.ActionMode;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -19,7 +21,7 @@ import android.widget.Toast;
 import com.comp490.studybuddy.R;
 import com.comp490.studybuddy.models.NoteEntry;
 
-public class AudioBuilder {
+public class SoundBuilder {
 	 //essentially another context of Note activity, but required for getting views
 	// temp fix for now
 	private NoteActivity noteActivity;
@@ -36,10 +38,13 @@ public class AudioBuilder {
 	ImageButton soundButton;
 	TextView soundTitle;
 	
-	public AudioBuilder(NoteEntry entry, NoteActivity noteContext) {
+	public SoundBuilder(NoteEntry entry, NoteActivity noteContext) {
 		this.noteActivity = noteContext;
 		this.entry = entry;
-		this.entry.setType(NoteEntry.NoteType.AUDIO);
+		if(this.entry.getFilePath() != null)
+			this.createSoundButton();
+		else
+			this.entry.setType(NoteEntry.NoteType.AUDIO);
 	}
 	
 	public boolean startRecording() { // on actionView REC button press
@@ -107,15 +112,17 @@ public class AudioBuilder {
 		soundButtonAndTitle.setLayoutParams(llParams);		
 		soundButton = new ImageButton(noteActivity);
 		soundButton.setImageResource(R.drawable.ic_action_volume_on);
+		soundButton.setClickable(false);
 		
 		//TextView displays name of sound
 		soundTitle = new TextView(noteActivity);
 		soundTitle.setText("Sound");
+		soundTitle.setClickable(false);
 		
 		//Generate IDs, one for deletion and the other for renaming
 		viewID = noteActivity.generateViewID();
 		soundButtonAndTitle.setId(viewID);
-		entry.setViewID(viewID);	
+		entry.setViewID(viewID);
 		
 		//We can use this to rename the title later
 		int secondViewID = noteActivity.generateViewID();
@@ -130,10 +137,16 @@ public class AudioBuilder {
 		
 		soundButtonAndTitle.addView(soundButton);
 		soundButtonAndTitle.addView(soundTitle);
-		LinearLayout layout = (LinearLayout)noteActivity.findViewById(R.id.note_inner_layout);
+		
+		if(entry.getX() != 0) {
+			soundButtonAndTitle.setX(entry.getX());
+			soundButtonAndTitle.setY(entry.getY());
+		}
+		
+		ViewGroup layout = (ViewGroup)noteActivity.findViewById(R.id.note_layout);
 		layout.addView(soundButtonAndTitle);
 		
-		soundButton.setOnLongClickListener(new View.OnLongClickListener(){
+		soundButtonAndTitle.setOnLongClickListener(new View.OnLongClickListener(){
 			@Override
 			public boolean onLongClick(View v) {
 				ActionMode.Callback soundMenu = new SoundPlayMenu(noteActivity, entry);
@@ -141,6 +154,13 @@ public class AudioBuilder {
 				return true;
 			}
 		});
+		
+		try {
+			this.noteActivity.getHelper().getNoteEntryDao().createOrUpdate(entry);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public Status getStatus() {

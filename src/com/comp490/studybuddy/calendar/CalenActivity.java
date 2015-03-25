@@ -15,6 +15,7 @@ package com.comp490.studybuddy.calendar;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -37,9 +38,12 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.comp490.studybuddy.R;
@@ -49,53 +53,56 @@ import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
 import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
 
+/**
+ * 
+ * 
+ * XMLS: 
+ * activity_customcal_phone: 2 text views month name, header. Grid View
+ * day_button
+ */
 public class CalenActivity extends OrmLiteBaseActivity<DBHelper> {
 	
-	private DateTime calendar;
-	private DateTime originalDate;
+	private DateTime displayedDateTime;
+	private DateTime todayDateTime;
     private TextView currentMonth;
-    
-    //Days of week, add events. TODO
+    //TODO Header for Days MON --> SUN
     private TextView calHeader;
-    
     //Calendar skeleton and adapter
     private GridView calendarGrid;
-    private GridCellAdapter adapter;
-    
+    //private GridCellAdapter adapter;
+    private GridCellAdapterTest adapter;
     private final DateTimeFormatter dateFormatter = 
     		DateTimeFormat.forPattern("MMMM yyyy");
-
     private int width;
     private static int height;
-    
     private ActionBar actionBar;
-    
     private GestureDetectorCompat swipeDetector;
-    private static ArrayList<CalendarEvent> eventList;
     
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_customcal_phone);
-		swipeDetector = new GestureDetectorCompat(this, new SwipeListener());
         
+		this.todayDateTime = new DateTime();
 		// Check if returning from different Cal activity goto that Date
 		Intent intent = getIntent();
 		String dateTimeString = intent.getStringExtra("date");
 		if (dateTimeString != null)
-			this.calendar = DateTime.parse(dateTimeString);
+			this.displayedDateTime = DateTime.parse(dateTimeString);
 		else
-			this.calendar = new DateTime();
-        this.originalDate = new DateTime();
+			this.displayedDateTime = new DateTime();
         
+		//Set the Name of the Month (Month Year)
         currentMonth = (TextView) this.findViewById(R.id.curr_month);
-        currentMonth.setText(calendar.toString(dateFormatter));
+        currentMonth.setText(displayedDateTime.toString(dateFormatter));
         
-        //How to align to columns? Option for Su->Sa || M -> Su TODO
+        //TODO Unused Ideally want MON --> SUN as headers to columns
         calHeader = (TextView) this.findViewById(R.id.cal_header);
-        // calHeader.setText("New Event"); //Esthetic bug fix for now
 
+        //Apply swipe detection to calendar
+        swipeDetector = new GestureDetectorCompat(this, new SwipeListener());
         calendarGrid = (GridView) this.findViewById(R.id.gridView1);
+        
         calendarGrid.setOnTouchListener(new View.OnTouchListener() {  
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -103,40 +110,67 @@ public class CalenActivity extends OrmLiteBaseActivity<DBHelper> {
                 return true;
             }
         });
-        
-        // Grid --> Calendar
-        changeCalendarDisplay(); 
-	}
+        changeCalendarDisplay();  //Initial drawing of the calendar, set to the current month
+	} //End onCreate
 	
+	//ReDraw Calendar when orientation is changed.
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {       
 	    super.onConfigurationChanged(newConfig);
 	    changeCalendarDisplay();
 	}
 	
-	@Override
-    public boolean onTouchEvent(MotionEvent event) {
-
-        swipeDetector.onTouchEvent(event);  
-        Log.d("TAG", "Touch");
-        return super.onTouchEvent(event);
-    }
-	
+	//Logic of how to reDraw Calendar
     private void changeCalendarDisplay()
     {
     	DisplayMetrics metrics = new DisplayMetrics();
 	    getWindowManager().getDefaultDisplay().getMetrics(metrics);
         width = metrics.widthPixels;
         height = metrics.heightPixels;
-        adapter = new GridCellAdapter(getApplicationContext(), R.id.grid_day);
-        currentMonth.setText(calendar.toString(dateFormatter));
+        //adapter = new GridCellAdapter(getApplicationContext(), R.id.grid_day);
+        adapter = new GridCellAdapterTest(getApplicationContext(), R.id.cellList);
+        currentMonth.setText(displayedDateTime.toString(dateFormatter));
         adapter.notifyDataSetChanged();
         calendarGrid.setAdapter(adapter);
     }
 	
+	//Swipe Right, move the calendar back one month
+	public void movePast(View v)
+	{
+		this.displayedDateTime = this.displayedDateTime.minusMonths(1);
+		changeCalendarDisplay();
+	}
+	
+	//Swipe Left, move the calendar forward one month
+	public void moveFuture(View v)
+	{
+		this.displayedDateTime = this.displayedDateTime.plusMonths(1);
+		changeCalendarDisplay();
+    }
+	
+	//Swipe Logic to move calendar back and forward
+	private class SwipeListener extends GestureDetector.SimpleOnGestureListener {
+		private static final String DEBUG_TAG = "Gestures"; 
+		        
+		@Override
+		public boolean onDown(MotionEvent event) { 
+			Log.d(DEBUG_TAG,"onDown: " + event.toString()); 
+		    return true;
+		}
+
+		@Override
+		public boolean onFling(MotionEvent event1, MotionEvent event2, 
+				float velocityX, float velocityY) {
+		        	if (velocityX < 0)
+		            	moveFuture(null);
+		            else if (velocityX > 0)
+		            	movePast(null);
+		            return true;
+		}
+	}
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
 		actionBar = getActionBar();
 	    actionBar.show();
 		getMenuInflater().inflate(R.menu.calen, menu);
@@ -145,72 +179,59 @@ public class CalenActivity extends OrmLiteBaseActivity<DBHelper> {
 		return super.onCreateOptionsMenu(menu);
 	}
 
+	//User hits "+" to create a new event
+	//Pass the DateTime object for the currently viewed month
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
 		switch(id) {
 			case R.id.action_settings:
 				return true;
 			case R.id.addEvent:
 				Intent intent = new Intent(getApplicationContext(), AddEvent.class);
+				intent.putExtra("DT", displayedDateTime.toString());
+				intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			    startActivity(intent);
 			    return true;
 			default:
 				return super.onOptionsItemSelected(item);
 		}		
 	}
-	
-	public void movePast(View v)
-	{
-		this.calendar = this.calendar.minusMonths(1);
-		changeCalendarDisplay();
-	}
-	
-	public void moveFuture(View v)
-	{
-		this.calendar = this.calendar.plusMonths(1);
-		changeCalendarDisplay();
-    }
-	
-	//Grid --> Calendar
-	public class GridCellAdapter extends BaseAdapter implements OnClickListener
-	{
-        private final Context context;
 
+	//Begin Adapter Land, First GridCells --> Text(day) and List(events)
+	public class GridCellAdapterTest extends BaseAdapter
+	{
+		ListView gridcell;
+		TextView date;
+        private final Context context;
         private final List<String> list;
-        
-        private Button gridcell;
-        private TextView num_events_per_day;
-        private final HashMap<String, Integer> eventsPerMonthMap;
         private List<CalendarEvent> eventList;
 
-        public GridCellAdapter(Context context, int cellID)
+        public GridCellAdapterTest(Context context, int cellID)
         {
                 super();
                 this.context = context;
                 this.list = new ArrayList<String>();
-                getEvents();
-
-                // Print Month
-                printMonth();
-
-                // Find Number of Events
-                eventsPerMonthMap = findEventsMonth(calendar.getYear(), calendar.getMonthOfYear());
+                DateTime startDate = displayedDateTime.withDayOfMonth(displayedDateTime.dayOfMonth().getMinimumValue()).withDayOfWeek(displayedDateTime.dayOfWeek().getMinimumValue());
+            	DateTime endDate = displayedDateTime.withDayOfMonth(displayedDateTime.dayOfMonth().getMaximumValue()).withDayOfWeek(displayedDateTime.dayOfWeek().getMaximumValue());
+            	
+            	//Iterate over every date in the period (startDate --> endDate).
+            	for (DateTime date = startDate; date.isBefore(endDate.plusDays(1)); date = date.plusDays(1)) {
+            		list.add(date.toString());
+            	}
+            	getEvents();
         }
         
         public void getEvents() {
-        	//calendar is the current view of the calendar as a dateTime
-        	//Get the previous month and next month
-        	DateTime prevDT = new DateTime(calendar);
+        	Log.d("TAG", "Called GetEVENTS");
+        	//Get the previous month and next month from the displayed month
+        	DateTime prevDT = new DateTime(displayedDateTime);
         	prevDT = prevDT.minusMonths(1);
-        	DateTime nextDT = new DateTime(calendar);
+        	DateTime nextDT = new DateTime(displayedDateTime);
         	nextDT = nextDT.plusMonths(1);
         	//Turn to Strings
         	String prev = prevDT.toString();
-        	String curr = calendar.toString();
+        	String curr = displayedDateTime.toString();
         	String next = nextDT.toString();
         	//Get relevant part Year and Month
         	prev = prev.substring(0,7)+"%";
@@ -219,14 +240,13 @@ public class CalenActivity extends OrmLiteBaseActivity<DBHelper> {
         	
     	    //Get Events For the Day
     		try {
-    			QueryBuilder<CalendarEvent, ?> queryBuilder = getHelper().getDao(
-    					CalendarEvent.class).queryBuilder();
+    			QueryBuilder<CalendarEvent, ?> queryBuilder = getHelper().getCalendarEventDao().queryBuilder();
     			queryBuilder.where()
     				.like(CalendarEvent.CAL_EVENT_START_DATE, prev).or()
     				.like(CalendarEvent.CAL_EVENT_START_DATE, curr).or()
     				.like(CalendarEvent.CAL_EVENT_START_DATE, next);
     			PreparedQuery<CalendarEvent> preparedQuery = queryBuilder.prepare();
-    			eventList = getHelper().getDao(CalendarEvent.class).query(preparedQuery);
+    			eventList = getHelper().getCalendarEventDao().query(preparedQuery);
     		} catch (SQLException e) {
     			// TODO Auto-generated catch block
     			e.printStackTrace();
@@ -234,62 +254,63 @@ public class CalenActivity extends OrmLiteBaseActivity<DBHelper> {
     	}
         
         @Override
-		public String getItem(int position)
-        {
-            return list.get(position);
-        }
+        public View getView(int position, View convertView, ViewGroup parent)
+            {
+        		List<CalendarEvent> dayEvents = new ArrayList<CalendarEvent>();
+                View row = convertView;
+                if (row == null)
+                {
+                    LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                    row = inflater.inflate(R.layout.cal_cell_list, parent, false);
+                    //Workingish. Should be based on number of rows...
+                    row.setLayoutParams(new GridView.LayoutParams(width/8, height/9));    
+                }
+                
+                gridcell = (ListView) row.findViewById(R.id.cellList);
+                date = (TextView) row.findViewById(R.id.dayNumber);
+                DateTime temp = DateTime.parse(list.get(position));
+                date.setText(""+temp.getDayOfMonth());
+                String thisYearMonDay = temp.toString().substring(0,10);
+                //only call gird adapter if necessary
+                if(eventList.isEmpty() == false) {
+                	for(Iterator<CalendarEvent> i = eventList.iterator(); i.hasNext();) {
+                		CalendarEvent tempEvent = i.next();
+                		String dateTimeString = tempEvent.getStart().toString().substring(0,10);
+                		if (dateTimeString.equals(thisYearMonDay)){
+                			dayEvents.add(tempEvent);
+                		}
+                		if (dayEvents.isEmpty() == false) {
+                			eventList.remove(dayEvents);
+                			CustomListAdapter adapter = new CustomListAdapter(getBaseContext(), 
+                	    		R.layout.cal_day_listitem, dayEvents);
+                			gridcell.setAdapter(adapter);
+                		}
+                		
+                	}
+                }
+                
+                row.setOnClickListener(new View.OnClickListener() {
+    				@Override
+    				public void onClick(View view) {
+    					Log.v("TAG", "ROW PRESSED");
+    				}
+    		    });
+    			
+                //gridcell.setOnClickListener(this);
+                
+                //If it has events
+                
+                
+                
+                //set a tag on the view
+                String tag = temp.toString().substring(0,10);
+                gridcell.setTag(tag);
+                Log.d("Gird", "RowAdapted");
+                
+                return row;
+            }
         
-        //Show number of events per days as red text in upper left
-        // Buggy Shows red one on Jan 30 and Dec 30...
-		private HashMap<String, Integer> findEventsMonth(int year, int month)
-		{
-		    HashMap<String, Integer> map = new HashMap<String, Integer>();
-		    for(int i = 0; i < eventList.size(); i++) {
-		    	CalendarEvent event = eventList.get(i);
-		    	String startDate = event.getStart();
-		    	DateTime date = DateTime.parse(startDate);
-		    	int y = date.getYear();
-		    	int m = date.getMonthOfYear();
-		    	int d = date.getDayOfMonth();
-		    	String dayAndMonth = "" + d + date.monthOfYear().getAsText();
-		    	
-		    	if (y == year && m == month) {
-		    		if (map.containsKey(dayAndMonth)) {
-			    	    map.put(dayAndMonth, map.get(dayAndMonth)+1);
-			    	} else { 
-			    	    map.put(dayAndMonth,1);
-			    	}
-		    	}
-		    	
-		    	
-		    }
-		    return map;
-		}
-        
-        //print to cells: Monday to Sunday
-        private void printMonth()
-        {
-        	//Set up dates with padding.
-        	DateTime startDate = calendar.withDayOfMonth(calendar.dayOfMonth().getMinimumValue()).withDayOfWeek(calendar.dayOfWeek().getMinimumValue());
-        	DateTime endDate = calendar.withDayOfMonth(calendar.dayOfMonth().getMaximumValue()).withDayOfWeek(calendar.dayOfWeek().getMaximumValue());
-        	
-        	//Iterate over every date in the period (startDate --> endDate).
-        	for (DateTime date = startDate; date.isBefore(endDate.plusDays(1)); date = date.plusDays(1)) {
-        		//Check if we're in the right month.
-        		if(!calendar.monthOfYear().equals(date.monthOfYear())) {
-        			if(date.isBefore(calendar.withDayOfMonth(calendar.dayOfMonth().getMinimumValue())))  //Previous Month
-        				list.add(date.getDayOfMonth() + "-GREY" + "-" + date.monthOfYear().getAsText() + "-" + date.year().getAsText());
-        			else if(date.isAfter(calendar.withDayOfMonth(calendar.dayOfMonth().getMaximumValue()))) //Future Month
-        				list.add(date.getDayOfMonth() + "-GREY" + "-" + date.monthOfYear().getAsText() + "-" + date.year().getAsText());
-        		} else { //we're in this month.
-        			if(originalDate.withTimeAtStartOfDay().isEqual(date.withTimeAtStartOfDay())) //today
-	        			list.add(date.getDayOfMonth() + "-WHITE" + "-" + date.monthOfYear().getAsText() + "-" + date.year().getAsText());
-        			else
-        				list.add(date.getDayOfMonth() + "-BLUE" + "-" + date.monthOfYear().getAsText() + "-" + date.year().getAsText());
-        		}
-        	}
-        } //End print Month
-        
+       
         
         @Override
         public int getCount()
@@ -298,122 +319,107 @@ public class CalenActivity extends OrmLiteBaseActivity<DBHelper> {
         }
         
         @Override
+        public String getItem(int position)
+        {
+            return list.get(position);
+        }
+        
+        @Override
         public long getItemId(int position)
         {
             return position;
         }
-        
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent)
-            {
-                View row = convertView;
-                if (row == null)
-                {
-                    LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                    row = inflater.inflate(R.layout.day_button, parent, false);
-                    //Workingish. Should be based on number of rows...
-                    row.setLayoutParams(new GridView.LayoutParams(width/8, height/9));
-                }
 
-                // day cells, button action
-                gridcell = (Button) row.findViewById(R.id.grid_day);
-                gridcell.setOnClickListener(this);
-                
-                
-                // Parse print month information
-                String[] day_color = list.get(position).split("-");
-                String theday = day_color[0];
-                String themonth = day_color[2];
-                String theyear = day_color[3];
-                
-                String dayAndMonth = theday + themonth;
-                
-                num_events_per_day = (TextView) row.findViewById(R.id.num_events);
-                //Add number of events per day from HashMap.
-                if ((!eventsPerMonthMap.isEmpty()) && (eventsPerMonthMap != null))
-                    {
-                        if (eventsPerMonthMap.containsKey(dayAndMonth))
-                            {
-                                Integer numEvents = eventsPerMonthMap.get(dayAndMonth);
-                                num_events_per_day.setText(numEvents.toString());
-                                if (numEvents == 0) {
-                                	num_events_per_day.setVisibility(View.GONE);
-                                }
-                             }
-                        else {
-                        	num_events_per_day.setVisibility(View.GONE);
-                        }
-                                
-                    }
-                else {
-                	num_events_per_day.setVisibility(View.GONE);
-                }
-
-                // Set the Day in each GridCell, date as tag
-                gridcell.setText(theday);
-                gridcell.setTag(themonth + "-" + theday + "-" + theyear);
-
-                //Colorize days on calendar
-                //Sandwiching months days
-                if (day_color[1].equals("GREY"))
-                {
-                    gridcell.setTextColor(Color.LTGRAY);
-                }
-                //Current Month
-                if (day_color[1].equals("WHITE"))
-                {
-                    gridcell.setTextColor(Color.WHITE);
-                }
-                //Day
-                if (day_color[1].equals("BLUE"))
-                {
-                    gridcell.setTextColor(Color.BLUE);
-                }
-                return row;
-            }
-        
-        //TODO setpopup day detail
-        @Override
-        public void onClick(View view)
-        {
-        	//Get the tag of the day touched. Eg. February-2-2015 
-        	String date_month_year = (String) view.getTag();
-        	//Turn into Date Time object
-        	DateTimeFormatter format = DateTimeFormat.forPattern("MMMM-dd-yyyy");
-        	DateTime monthDayYear = format.parseDateTime(date_month_year);
-        	//Pack information into event
-        	Intent dayLaunch = new Intent(CalenActivity.this, DayDetails.class);
-        	dayLaunch.putExtra("Day", date_month_year);    
-        	dayLaunch.putExtra("DT", monthDayYear.toString());
-    		startActivity(dayLaunch);
-        }
-        
-	} //End GridCellAdapter
-
-	private class SwipeListener extends GestureDetector.SimpleOnGestureListener {
-		 private static final String DEBUG_TAG = "Gestures"; 
-	        
-	        @Override
-	        public boolean onDown(MotionEvent event) { 
-	            Log.d(DEBUG_TAG,"onDown: " + event.toString()); 
-	            return true;
+	} //End GridAdapter
+	
+	//List Adapter to turn grid cells(days) into a List of events
+	private class CustomListAdapter extends ArrayAdapter<CalendarEvent> {
+		private Context mContext;
+		private int id;
+		private List<CalendarEvent> events;
+		
+		public CustomListAdapter(Context context, int textViewId, 
+				List<CalendarEvent> eventList) {
+			super(context, textViewId, eventList);
+			mContext = context;
+			id = textViewId;
+			events = eventList;
+			
+		}
+		
+		@Override
+		public View getView(int position, View v, ViewGroup parent) {
+			View mView = v;
+			if(mView == null) {
+				LayoutInflater vi = (LayoutInflater)mContext.getSystemService
+						(Context.LAYOUT_INFLATER_SERVICE);
+				mView = vi.inflate(R.layout.cal_day_listitem, null);	
+			}
+			
+			ListView list = (ListView) parent;
+			Log.d("TEST", (String) list.getTag());
+			TextView text = (TextView) mView.findViewById(R.id.eventItem);
+			
+			if(events.get(position) != null) {
+					text.setTextColor(Color.WHITE);
+					text.setText(events.get(position).getName());
+					Log.d("DAYDETAIL", ""+events.get(position).getName());
+					int color = colorFinder(events.get(position).getColor());
+					text.setBackgroundColor(getResources().getColor(color));
+			}
+			mView.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					Log.v("TAG", "List PRESSED");
+				}
+		    });
+			
+			return mView;
+		}
+		
+		private int colorFinder(String color)
+		{
+			int androidColor = R.color.blue;
+			if (color == null) { return androidColor;}
+			switch(color) {
+				case "Blue":
+					break;
+				case "Purple":
+					androidColor = R.color.purple;
+					break;
+				case "Green":
+					androidColor = R.color.green;
+					break;
+				case "Orange":
+					androidColor = R.color.orange;
+					break;
+				case "Red":
+					androidColor = R.color.red;
+					break;
+				default:
+					break;
+			}
+			return androidColor;
+			
+		}
+		
+		    /*
+	        public void onClick(View view)
+	        {
+	        	//Get the tag of the day touched. Eg. February-2-2015 
+	        	String date_month_year = (String) view.getTag();
+	        	//Turn into Date Time object
+	        	DateTimeFormatter format = DateTimeFormat.forPattern("MMMM-dd-yyyy");
+	        	DateTime monthDayYear = format.parseDateTime(date_month_year);
+	        	//Pack information into event
+	        	Intent dayLaunch = new Intent(CalenActivity.this, DayDetails.class);
+	        	dayLaunch.putExtra("Day", date_month_year);    
+	        	dayLaunch.putExtra("DT", monthDayYear.toString());
+	    		startActivity(dayLaunch);
 	        }
+	        */
+	}// End of ListAdapter
+	
 
-	        @Override
-	        public boolean onFling(MotionEvent event1, MotionEvent event2, 
-	                float velocityX, float velocityY) {
-	            //Log causing Null pointers
-	        	// Log.d(DEBUG_TAG, "onFling: " + event1.toString() + "\n Event2:"
-	            		//+event2.toString());
-	            //Threshold
-	            //if(velocityX < 100)
-	            	//return false;
-	            //findViewById(R.layout.activity_customcal_phone)
-	            if (velocityX < 0)
-	            	moveFuture(null);
-	            else if (velocityX > 0)
-	            	movePast(null);
-	            return true;
-	        }
-	}
+	
 }// End CalenActivity

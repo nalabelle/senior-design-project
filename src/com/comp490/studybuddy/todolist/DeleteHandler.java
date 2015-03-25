@@ -50,13 +50,24 @@ public class DeleteHandler {
       public void onClick(DialogInterface dialog, int val) {
     	  //it seems that ToDoMain and ViewTask both call this, so this cast should be okay.
     	  DefaultActivity act = (DefaultActivity) activity;
+    	  if(task == null) {
+    		  try {
+    			  act.getHelper().getTaskDao().notifyChanges();
+    		  } catch (SQLException e) {
+    			  e.printStackTrace();
+    		  }
+    		  return;
+    	  }
+    	  
+    	  String name = task.getName(); //this won't exist after we delete it.
     	  try {
 			act.getHelper().getTaskDao().delete(task);
+			act.getHelper().getTaskDao().notifyChanges();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} //TODO: Check to make sure this returned 1, as it should have.
-         Toast.makeText(activity.getBaseContext(), "Task deleted: " + task.getName(), Toast.LENGTH_LONG).show();
+         Toast.makeText(activity.getBaseContext(), "Task deleted: " + name, Toast.LENGTH_LONG).show();
          //return to last activity
          //activity.finish();
          activity.recreate();

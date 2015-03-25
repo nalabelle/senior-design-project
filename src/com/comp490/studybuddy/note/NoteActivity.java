@@ -14,32 +14,34 @@ import java.io.File;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 
-import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
+import android.graphics.Rect;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.util.SparseArray;
+import android.view.ActionMode;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MenuItem.OnActionExpandListener;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.RelativeLayout;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.comp490.studybuddy.R;
@@ -60,7 +62,7 @@ public class NoteActivity extends OrmLiteBaseActivity<DBHelper> {
 	ActionBar actionBar;
 	final Context context = this;
 	NoteActivity noteActivity = this;
-	AudioBuilder audio = null; 
+	SoundBuilder audio = null; 
 	
 	//Players
 	protected MediaPlayer player = null;
@@ -75,15 +77,66 @@ public class NoteActivity extends OrmLiteBaseActivity<DBHelper> {
 	
 	private static final String LOG_TAG = "Notes";
 		
+	private NoteEntry drawEntry = null;
 	
-	private Drawing drawing = null;
-	RelativeLayout noteLayout;
+	private SparseArray<NoteEntry> noteList = new SparseArray<NoteEntry>();
 	
 		
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_note);
+		//load previous stuff.
+		this.initializeViews();
+	}
+	
+	private void initializeViews() {
+		try {
+			List<NoteEntry> list = getHelper().getNoteEntryDao().queryForAll();
+			for (NoteEntry entry : list) {
+				switch(entry.getType()) {
+				case AUDIO:
+					new SoundBuilder(entry, this);
+					break;
+				case DRAW:
+					drawEntry = entry;
+					break;
+				case PICTURE:
+					new PictureBuilder(this, entry);
+					break;
+				case TEXT:
+					new TextBuilder(this, entry);
+					break;
+				case VIDEO:
+					new VideoBuilder(this, entry);
+					break;
+				default:
+					break;
+				
+				}
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	//This clears the focus out of edit text entries if they're not clicked and hides the keyboard.
+	@Override
+	public boolean dispatchTouchEvent(MotionEvent ev) {
+        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+            View v = getCurrentFocus();
+            if ( v instanceof EditText) {
+                Rect outRect = new Rect();
+                v.getGlobalVisibleRect(outRect);
+                if (!outRect.contains((int)ev.getRawX(), (int)ev.getRawY())) {
+                    v.clearFocus();
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                }
+            }
+        }
+        return super.dispatchTouchEvent(ev);
 	}
 	
 
@@ -115,16 +168,20 @@ public class NoteActivity extends OrmLiteBaseActivity<DBHelper> {
 			//onClick of keyboard icon
 
 			NoteEntry noteEntry = new NoteEntry(NoteEntry.NoteType.TEXT);
-			this.createNote(noteEntry);
 			new TextBuilder(this, noteEntry); //TextBuilder text = 
 			return true;
 		}
 		case R.id.action_draw:{
 			// onClick of Pen icon
-			noteLayout = (RelativeLayout) findViewById(R.id.note_layout);
-			drawing = new Drawing(noteActivity, noteLayout.getWidth(), noteLayout.getHeight());
-			noteLayout.addView(drawing);
+			if (drawEntry == null){
+				drawEntry = new NoteEntry(NoteEntry.NoteType.DRAW);
+			}
+			ActionMode.Callback drawMenu = new DrawMenu(this, drawEntry);
+			this.startActionMode(drawMenu);
 			return true;
+		}
+		case R.id.action_save_note: {
+			this.saveNotes();
 		}
 		// TO DO: SAVE NOTE AND NEW NOTE		
 		//insert other action menu options here
@@ -149,87 +206,6 @@ public class NoteActivity extends OrmLiteBaseActivity<DBHelper> {
 		
 		
 		View soundActionView = menu.findItem(R.id.action_record_sound).getActionView();
-		View drawActionView = menu.findItem(R.id.action_draw).getActionView();
-		
-		// Needed to intercept what the ActionView closes (i.e. on backpress)
-		// so we can save data and also remove the drawing from our Note and set
-		// it as the background
-		menu.findItem(R.id.action_draw).setOnActionExpandListener(
-				new OnActionExpandListener() {
-					@SuppressWarnings("deprecation")
-					@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-					@Override
-					public boolean onMenuItemActionCollapse(MenuItem item) {
-						clickie("Drawing Closed");
-						noteLayout = (RelativeLayout) findViewById(R.id.note_layout);
-						int sdk = android.os.Build.VERSION.SDK_INT;
-						if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
-							// for api less than 16
-							noteLayout.setBackgroundDrawable(new BitmapDrawable(
-									getResources(), drawing.bitmap));
-						} else {
-							// for the rest
-							noteLayout.setBackground(new BitmapDrawable(
-									getResources(), drawing.bitmap));
-						}
-						noteLayout.removeView(drawing);
-
-						return true; // Return true to collapse action view
-					}
-
-					@Override
-					public boolean onMenuItemActionExpand(MenuItem item) {
-						clickie("Drawing Started");
-						return true; // Return true to expand action view
-	        }
-	    });			
-			
-		//******** Handwriting aka Draw ActionView ************
-		drawActionView.findViewById(R.id.action_penWidth).setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				drawing.setPenWidth(noteActivity);			
-			}
-		});		
-		drawActionView.findViewById(R.id.action_penColor).setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				drawing.setPenColor(context);			
-			}
-		});
-		drawActionView.findViewById(R.id.action_undo).setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				clickie("Undo Last");
-				drawing.undo();				
-			}
-		});
-		drawActionView.findViewById(R.id.action_redo).setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				clickie("Redo");
-				drawing.redo();				
-			}
-		});
-		drawActionView.findViewById(R.id.action_clearAll).setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				//need to add a confirmation box
-				noteLayout = (RelativeLayout) findViewById(R.id.note_layout);
-				noteLayout.removeView(drawing);
-				drawing = new Drawing(noteActivity, noteLayout.getWidth(), noteLayout.getHeight());
-				noteLayout.addView(drawing);
-				clickie("Clear all");				
-			}
-		});
-		drawActionView.findViewById(R.id.action_save).setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				clickie("Saved drawing to device");
-				drawing.saveFile();				
-			}
-		});
-		
 		
 		if(hasMic()) {
 			
@@ -241,10 +217,9 @@ public class NoteActivity extends OrmLiteBaseActivity<DBHelper> {
 				//add the audionote entry. Not created until record is clicked once
 				if (audio == null){
 					NoteEntry noteEntry = new NoteEntry(NoteEntry.NoteType.AUDIO);
-					noteActivity.createNote(noteEntry);
-					audio = new AudioBuilder(noteEntry, noteActivity);					
+					audio = new SoundBuilder(noteEntry, noteActivity);					
 				} 
-				if (!audio.getStatus().equals(AudioBuilder.Status.RECORDING)){ // already recording?
+				if (!audio.getStatus().equals(SoundBuilder.Status.RECORDING)){ // already recording?
 					rec.setTextColor(Color.RED);
 					audio.startRecording();
 				}
@@ -254,7 +229,7 @@ public class NoteActivity extends OrmLiteBaseActivity<DBHelper> {
 			@Override
 			public void onClick(View v1) {
 				if (audio != null){
-					if (audio.getStatus().equals(AudioBuilder.Status.RECORDING)){
+					if (audio.getStatus().equals(SoundBuilder.Status.RECORDING)){
 						rec.setTextColor(Color.WHITE);
 					}
 					audio.stopRecording();
@@ -314,16 +289,14 @@ public class NoteActivity extends OrmLiteBaseActivity<DBHelper> {
 		if (requestCode == MEDIA_TYPE_VIDEO && resultCode == Activity.RESULT_OK) {	
 		   // ********** creates VIDEO **************************
 			NoteEntry noteEntry = new NoteEntry(NoteEntry.NoteType.VIDEO);
-			noteEntry.setFilePath(mediaFile.toString()); //not sure about this
-			this.createNote(noteEntry);
-			new VideoBuilder(noteActivity, data.getData(), noteEntry);	//VideoBuilder videoBuilder = 		        
+			noteEntry.setFilePath(data.getData().toString());
+			new VideoBuilder(noteActivity, noteEntry);	//VideoBuilder videoBuilder = 		        
 	    }
 		
 		else if ( requestCode == MEDIA_TYPE_IMAGE && resultCode == Activity.RESULT_OK) {
 		   // ********** creates PICTURE **************************
 			NoteEntry noteEntry = new NoteEntry(NoteEntry.NoteType.PICTURE);
 			noteEntry.setFilePath(path); // photofilepath
-			this.createNote(noteEntry);
 			new PictureBuilder(noteActivity, noteEntry); //PictureBuilder picObject = 
 		}	
 		
@@ -419,25 +392,25 @@ public class NoteActivity extends OrmLiteBaseActivity<DBHelper> {
 		Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
 	}
 
-	public boolean createNote(NoteEntry entry) {
-		try {
-			int i = getHelper().getDao(NoteEntry.class).create(entry);
-			if(i == 1) return true;
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return false;
+	public void addNote(NoteEntry entry) {
+		noteList.put(entry.getID(), entry);
 	}
 	
-	public boolean deleteNote(NoteEntry entry) {
+	public void deleteNote(NoteEntry entry) {
+		noteList.delete(entry.getID());
+	}
+	
+	public void saveNotes() {
 		try {
-			int i = getHelper().getDao(NoteEntry.class).delete(entry);
-			if(i == 1) return true;
+			int key = 0;
+			for(int i = 0; i < noteList.size(); i++) {
+			   key = noteList.keyAt(i);
+			   NoteEntry entry = noteList.get(key);
+			   getHelper().getNoteEntryDao().update(entry);
+			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return false;
 	}
 }

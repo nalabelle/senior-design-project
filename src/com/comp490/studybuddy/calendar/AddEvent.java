@@ -7,11 +7,6 @@ import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
-import com.comp490.studybuddy.R;
-import com.comp490.studybuddy.calendar.CalenActivity.GridCellAdapter;
-import com.comp490.studybuddy.database.DBHelper;
-import com.comp490.studybuddy.models.CalendarEvent;
-import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
 import android.app.ActionBar;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -19,7 +14,6 @@ import android.app.DialogFragment;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
@@ -39,6 +33,11 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.comp490.studybuddy.R;
+import com.comp490.studybuddy.database.DBHelper;
+import com.comp490.studybuddy.models.CalendarEvent;
+import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
+
 
 public class AddEvent extends OrmLiteBaseActivity<DBHelper> {
 	
@@ -48,6 +47,7 @@ public class AddEvent extends OrmLiteBaseActivity<DBHelper> {
 	private CalendarEvent event;
 	private DateTime startDateTime;
 	private DateTime finishDateTime;
+	private String color;
 	private int startYear;
 	private int startMonth;
 	private int startDay;
@@ -56,17 +56,12 @@ public class AddEvent extends OrmLiteBaseActivity<DBHelper> {
 	private ArrayList<String> colorImgName;
 	
 	String[] colorName = {"Blue", "Purple", "Green", "Orange", "Red"};
-	Integer[] imgId = {R.drawable.blue, R.drawable.blue, R.drawable.blue, R.drawable.blue, R.drawable.blue};
+	Integer[] imgId = {R.drawable.blue, R.drawable.purple, R.drawable.green, R.drawable.orange, R.drawable.red};
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.add_task_calendar);
-		colorImgName = new ArrayList<String>();
-		int blueId = this.getResources().getIdentifier("blue", "drawable", this.getPackageName());
-		colorImgName.add(""+blueId + "-Blue");
-		
-		//currentDateTime = new DateTime();
 	}
 	
 	@Override
@@ -92,13 +87,17 @@ public class AddEvent extends OrmLiteBaseActivity<DBHelper> {
 				return true;
 			case R.id.createEvent:
 				try {
-					startDateTime = new DateTime(startYear, startMonth, startDay, 
-							startHour, startMin);
+					//Need logic to handle from and desc data
 					EditText eventText = (EditText) findViewById(R.id.eventName);
 					String eventName = eventText.getText().toString(); 
-		    		
+					startDateTime = new DateTime(startYear, startMonth, startDay, 
+							startHour, startMin);
+					//finishDateTime = new DateTime(finishYear, finishMonth, finishDay,
+							//finishHour, finishMin);
+		    		//EditText eventDesc = (EditText) findViewById(R.id.eventDesc);
+					//String desc = eventDesc.getText().toString();
 					event = new CalendarEvent( 
-							eventName, startDateTime.toString());
+							eventName, startDateTime.toString(), "", "", color);
 
 		    		try {
 		    			getHelper().getDao(CalendarEvent.class).create(event);
@@ -110,17 +109,30 @@ public class AddEvent extends OrmLiteBaseActivity<DBHelper> {
 					//Return to Calendar
 					Intent back2Cal = new Intent(this, CalenActivity.class);
 					back2Cal.putExtra("date", startDateTime.toString());
-					back2Cal.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | 
-							Intent.FLAG_ACTIVITY_NEW_TASK);
+					back2Cal.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		    		startActivity(back2Cal);
 				} catch (Exception e) {
 					Toast.makeText(getApplicationContext(), 
-							"Uhoh, check your fields\n"+e, 30).show();
+							"Uhoh, check your fields\n"+e, Toast.LENGTH_LONG).show();
 				}
 				return true;
 			default:
 				return super.onOptionsItemSelected(item);
 		}		
+	}
+	
+	//TimePicker Buttons
+	public void showTimePickerDialog(View v) {
+		switch (v.getId()) {
+    	case R.id.fromButtTime:
+    		timeButt = 1;
+    		break;
+    	case R.id.toButtTime:
+    		timeButt = 0;
+    		break;
+		}
+	    DialogFragment newFragment = new TimePickerFragment();
+	    newFragment.show(getFragmentManager(), "timePicker");
 	}
 	
 	//Time Picker Fragment
@@ -159,9 +171,24 @@ public class AddEvent extends OrmLiteBaseActivity<DBHelper> {
 				toTimeButt.setText(time.toString(dateFormatter));
 			}
 		}
+	} //End Time Picker
+	
+	//DatePicker Buttons
+	public void showDatePickerDialog(View v) {
+		 switch (v.getId()) {
+	    	case R.id.fromButtDate:
+	    		dateButt = 1;
+	    		break;
+	    	case R.id.toButtDate:
+	    		dateButt = 0;
+	    		break;
+	    }
+		
+		DialogFragment newFragment = new DatePickerFragment();
+	    newFragment.show(getFragmentManager(), "datePicker");
 	}
 	
-	//DatePickerFragment
+	//Date Picker Fragment
 	public class DatePickerFragment extends DialogFragment
     	implements DatePickerDialog.OnDateSetListener {
 		
@@ -210,34 +237,7 @@ public class AddEvent extends OrmLiteBaseActivity<DBHelper> {
 				toDateButt.setText(to.toString(dateFormatter));
 			}		
 		}
-	}
-	
-	public void showDatePickerDialog(View v) {
-		 switch (v.getId()) {
-	    	case R.id.fromButtDate:
-	    		dateButt = 1;
-	    		break;
-	    	case R.id.toButtDate:
-	    		dateButt = 0;
-	    		break;
-	    }
-		
-		DialogFragment newFragment = new DatePickerFragment();
-	    newFragment.show(getFragmentManager(), "datePicker");
-	}
-	
-	public void showTimePickerDialog(View v) {
-		switch (v.getId()) {
-    	case R.id.fromButtTime:
-    		timeButt = 1;
-    		break;
-    	case R.id.toButtTime:
-    		timeButt = 0;
-    		break;
-		}
-	    DialogFragment newFragment = new TimePickerFragment();
-	    newFragment.show(getFragmentManager(), "timePicker");
-	}
+	} //End DatePicker
 	
 	public void showColorPickerDialog(View v) {
 		DialogFragment newFragment = new ListViewFragment();
@@ -271,7 +271,12 @@ public class AddEvent extends OrmLiteBaseActivity<DBHelper> {
 	        	//Handle onTouch
 	            @Override
 	            public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-	                Toast.makeText(getApplicationContext(),""+arg3,Toast.LENGTH_SHORT).show();
+	            	//Add Color to Event
+	            	color = (String) arg1.getTag();
+	                Button colorButt = 
+							(Button) getActivity().findViewById(R.id.colorButt);
+	                colorButt.setText((String) arg1.getTag());
+	                getDialog().dismiss();
 	            }
 	        });
 	        
@@ -281,6 +286,7 @@ public class AddEvent extends OrmLiteBaseActivity<DBHelper> {
 		
 	}
 	
+	//List Adapter for Color picker
 	private class CustomListAdapter extends ArrayAdapter<String> {
 		private Context mContext;
 		private final String[] colorName;
@@ -309,6 +315,8 @@ public class AddEvent extends OrmLiteBaseActivity<DBHelper> {
 			TextView text = (TextView) mView.findViewById(R.id.txt);
 			img.setImageResource(imgId[position]);
 			text.setText(colorName[position]);
+			
+			mView.setTag(colorName[position]);
 			
 			return mView;
 		}

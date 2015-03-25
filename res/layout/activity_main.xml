@@ -2,73 +2,58 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:gravity="center"
-    android:orientation="vertical" 
-    tools:context="com.comp490.studybuddy.MainActivity" 
     android:layout_margin="0dp"
-    android:background="@drawable/background">
-    
-    <View
-             android:layout_width="fill_parent"
-             android:layout_height="1dp"
-             android:background="#c0c0c0"/>
+    android:background="@drawable/background2"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:context="com.comp490.studybuddy.MainActivity" >
 
-        <Button
-            android:id="@+id/button1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:background="@drawable/textnoteclick"
-            android:duplicateParentState="true"
-            android:minHeight="138dip"
-            android:minWidth="154dip"
-            android:onClick="onTextNoteClick" />
+    <Button
+        android:id="@+id/button5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginBottom="32dp"
+        android:layout_marginLeft="33dp"
+        android:background="@drawable/flashcardclick"
+        android:onClick="onFlashcardhClick" />
 
-        <Button
-            android:id="@+id/button3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/button1"
-            android:layout_alignRight="@+id/button2"
-            android:layout_marginBottom="39dp"
-            android:background="@drawable/handwritingclick"
-            android:minHeight="68dip"
-            android:onClick="onHandwritingClick" />
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/button5"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="28dp"
+        android:layout_marginRight="23dp"
+        android:background="@drawable/todoclick"
+        android:minHeight="70dip"
+        android:minWidth="76dip"
+        android:onClick="onTodoClick" />
 
-        <Button
-            android:id="@+id/button5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/button4"
-            android:layout_below="@+id/button1"
-            android:layout_marginLeft="28dp"
-            android:layout_marginTop="31dp"
-            android:background="@drawable/flashcardclick" 
-            android:onClick="onFlashcardhClick" />
+    <Button
+        android:id="@+id/button4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignRight="@+id/button2"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="33dp"
+        android:background="@drawable/calclick"
+        android:onClick="onCalClick" />
 
-        <Button
-            android:id="@+id/button4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/button3"
-            android:layout_toLeftOf="@+id/button1"
-            android:background="@drawable/calclick"
-            android:onClick="onCalClick" />
-
-        <Button
-            android:id="@+id/button2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginBottom="23dp"
-            android:layout_marginRight="36dp"
-            android:background="@drawable/todoclick"
-            android:minHeight="70dip"
-            android:minWidth="76dip"
-            android:onClick="onTodoClick" />
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/button2"
+        android:layout_marginBottom="45dp"
+        android:layout_toLeftOf="@+id/button2"
+        android:background="@drawable/textnoteclick"
+        android:duplicateParentState="true"
+        android:minHeight="138dip"
+        android:minWidth="154dip"
+        android:onClick="onTextNoteClick" />
 
 </RelativeLayout>
-
-       

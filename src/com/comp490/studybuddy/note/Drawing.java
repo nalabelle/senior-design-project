@@ -22,7 +22,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 public class Drawing extends View {
-	 Bitmap bitmap;
+	Bitmap bitmap;
 	Canvas canvas;
 	private Path path;
 	private Paint bitmapPaint;
@@ -39,7 +39,7 @@ public class Drawing extends View {
 	private static ArrayList<DrawPath> deletedPath;
 	private DrawPath dp;
 	
-	private class DrawPath {
+	public class DrawPath {
 		public Path dPath;
 		public Paint dPaint;
 	}
@@ -49,14 +49,20 @@ public class Drawing extends View {
 	private int currWidth = 5;
 	
 	//constructor
-	public Drawing(Context context, int w, int h) {
+	public Drawing(Context context, int w, int h, ArrayList<DrawPath> save) {
 		super(context);
 		screenWidth = w;
 		screenHeight = h;		
 		
 		initCanvas();
 		
-		savePath = new ArrayList<DrawPath>();
+		if (save == null)
+			savePath = new ArrayList<DrawPath>();
+		else {
+			savePath = save;
+			redraw();
+		}
+		
 		deletedPath = new ArrayList<DrawPath>();
 	}
 	
@@ -236,6 +242,10 @@ public class Drawing extends View {
 		invalidate();
 	}
 	
+	public void eraser(){
+		
+	}
+	
 	public void undo() {
 		if (savePath != null && savePath.size() > 0) {
 			initCanvas();
@@ -274,5 +284,9 @@ public class Drawing extends View {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public ArrayList<DrawPath> getSavePath(){
+		return savePath;
 	}
 }

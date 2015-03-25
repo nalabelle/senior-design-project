@@ -41,9 +41,8 @@ public class CalendarEvent {
 		this.endDate = end;
 	}
 	
-	public CalendarEvent(int id, String name, String start, String end, 
+	public CalendarEvent(String name, String start, String end, 
 			String desc, String color) {
-		this.id = id;
 		this.startDate = start;
 		this.eventName = name;
 		this.endDate = end;

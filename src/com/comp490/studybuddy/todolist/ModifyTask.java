@@ -219,14 +219,16 @@ public class ModifyTask extends DefaultActivity {
       //load data from form to this.task object
       updateTask();
       //call the dbAdapter to add new task
+      int result = 0;
       try {
-		getHelper().getTaskDao().create(this.task);
+		result = getHelper().getTaskDao().create(this.task);
+		getHelper().getTaskDao().notifyChanges();
 	} catch (SQLException e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
 	}
-      
-      Toast.makeText(getBaseContext(), "Task added: " + this.task.getName(), Toast.LENGTH_LONG).show();
+      if (result == 1)
+    	  Toast.makeText(getBaseContext(), "Task added: " + this.task.getName(), Toast.LENGTH_LONG).show();
    }
    
    

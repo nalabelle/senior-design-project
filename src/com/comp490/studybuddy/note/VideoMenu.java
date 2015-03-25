@@ -8,8 +8,12 @@ import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
-import android.widget.LinearLayout;
+import android.view.View.OnTouchListener;
+import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 
 import com.comp490.studybuddy.R;
 
@@ -21,12 +25,17 @@ public class VideoMenu implements ActionMode.Callback {
 	private NoteActivity noteActivity;
 	private VideoBuilder videoBuilder;
 	private static final String LOG_TAG = "Video Menu Callback";
+	private int xDelta;
+	private int yDelta;
+	ImageButton video;
+	OnTouchListener listen = null;
 
 	// Video Contextual Action Mode
 
 	public VideoMenu(NoteActivity noteActivity, VideoBuilder videoBuilder) {
 		this.noteActivity = noteActivity;
 		this.videoBuilder = videoBuilder;
+		video = (ImageButton) noteActivity.findViewById(videoBuilder.getID());
 	}
 
 	@Override
@@ -50,12 +59,14 @@ public class VideoMenu implements ActionMode.Callback {
 		case R.id.menuSoundPlay: {
 			//launch VideoActivity to play fullscreen video
 			Intent launchVideo = new Intent(noteActivity.getApplicationContext(), VideoViewerActivity.class);
-			launchVideo.putExtra("videoUri", videoBuilder.data.toString());
+			launchVideo.putExtra("videoUri", videoBuilder.getPath());
 			noteActivity.startActivity(launchVideo);
 			return true;
 		}
 
 		case R.id.menuUnlockView: { 
+			allowViewMovement();
+			noteActivity.clickie("Video icon unlocked.");
 			return true;
 		}
 		
@@ -67,10 +78,8 @@ public class VideoMenu implements ActionMode.Callback {
 						@Override
 						public void onClick(DialogInterface dialog, int id) {
 							try { // clicked yes
-								View viewToDelete = noteActivity
-										.findViewById(videoBuilder.getID());
-								((LinearLayout) viewToDelete.getParent())
-										.removeView(viewToDelete);
+								((ViewGroup) video.getParent())
+										.removeView(video);
 								videoBuilder.deleteObject();
 								videoBuilder = null;
 							} catch (Exception e1) {
@@ -97,6 +106,60 @@ public class VideoMenu implements ActionMode.Callback {
 
 	@Override
 	public void onDestroyActionMode(ActionMode mode) {
-		// TODO Auto-generated method stub
+		video.setOnTouchListener(null);
+		noteActivity.clickie("Video icon position locked.");
+		videoBuilder.setXY();
 	}
+
+	public void allowViewMovement() {
+
+		final ViewGroup parent = (ViewGroup) noteActivity
+				.findViewById(R.id.note_layout);
+
+		listen = new OnTouchListener() {
+			@Override
+			public boolean onTouch(View view, MotionEvent event) {
+				final int X = (int) event.getRawX();
+				final int Y = (int) event.getRawY();
+
+				switch (event.getAction() & MotionEvent.ACTION_MASK) {
+				case MotionEvent.ACTION_DOWN:
+					RelativeLayout.LayoutParams lParams = (RelativeLayout.LayoutParams) view
+							.getLayoutParams();
+					xDelta = X - lParams.leftMargin;
+					yDelta = Y - lParams.topMargin;
+					break;
+				case MotionEvent.ACTION_UP:
+					break;
+				case MotionEvent.ACTION_POINTER_DOWN:
+					break;
+				case MotionEvent.ACTION_POINTER_UP:
+					break;
+				case MotionEvent.ACTION_MOVE:
+					RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) view
+							.getLayoutParams();
+
+					if (X - xDelta < 0)
+						layoutParams.leftMargin = 0;
+					else
+						layoutParams.leftMargin = X - xDelta;
+					if (Y - yDelta < 0)
+						layoutParams.topMargin = 0;
+					else
+						layoutParams.topMargin = Y - yDelta;
+					
+	            layoutParams.bottomMargin = -250;
+	            layoutParams.rightMargin = -250; 
+
+					view.setLayoutParams(layoutParams);
+					break;
+				}
+				parent.invalidate();
+				return true;
+			}
+		};
+
+		video.setOnTouchListener(listen);
+	}
+
 }

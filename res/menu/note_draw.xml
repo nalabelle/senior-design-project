@@ -1,0 +1,48 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.comp490.studybuddy.note.NoteActivity" >
+
+    <item
+        android:id="@+id/action_penWidth"
+        android:icon="@drawable/ic_action_width"
+        android:showAsAction="ifRoom|collapseActionView"
+        android:title="@string/action_changePenWidth">
+    </item>
+    <item
+        android:id="@+id/action_penColor"
+        android:icon="@drawable/ic_action_color"
+        android:showAsAction="ifRoom|collapseActionView"
+        android:title="@string/action_changePenColor">
+    </item>
+    <item
+        android:id="@+id/action_eraser"
+        android:icon="@drawable/ic_action_undo"
+        android:showAsAction="ifRoom|collapseActionView"
+        android:title="@string/action_eraser">
+    </item>
+    <item
+        android:id="@+id/action_undo"
+        android:icon="@drawable/ic_action_undo"
+        android:showAsAction="ifRoom|collapseActionView"
+        android:title="@string/action_undoDraw">
+    </item>
+    <item
+        android:id="@+id/action_redo"
+        android:icon="@drawable/ic_action_redo"
+        android:showAsAction="ifRoom|collapseActionView"
+        android:title="@string/action_redoDraw">
+    </item>
+    <item
+        android:id="@+id/action_clearAll"
+        android:icon="@drawable/ic_action_discard"
+        android:showAsAction="ifRoom|collapseActionView"
+        android:title="@string/action_clearAllDraw">
+    </item>
+    <item
+        android:id="@+id/action_save"
+        android:icon="@drawable/ic_action_save"
+        android:showAsAction="ifRoom|collapseActionView"
+        android:title="@string/action_saveDraw">
+    </item>
+
+</menu>

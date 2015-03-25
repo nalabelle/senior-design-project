@@ -3,9 +3,11 @@ package com.comp490.studybuddy.note;
 import java.io.File;
 
 import uk.co.senab.photoview.PhotoViewAttacher;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.drawable.Drawable;
 import android.media.ExifInterface;
@@ -47,8 +49,24 @@ public class PhotoViewerActivity extends Activity {
 			e.printStackTrace();
 		}
 		if (imgFile != null) {
-			bitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+			//The following prevents texture too large errors.
+			BitmapFactory.Options opts = new BitmapFactory.Options();
+			opts.inJustDecodeBounds = true;
 			
+			//this just decodes the bounds
+			BitmapFactory.decodeFile(imgFile.getAbsolutePath(), opts);
+			int pow = 0;
+			
+			//these are old, but safe?
+			int maxH = 2048;
+			int maxW = 2048;
+			
+			while (opts.outHeight >> pow > maxH || opts.outWidth >> pow > maxW)
+			    pow += 1;
+			opts.inSampleSize = 1 << pow; 
+			opts.inJustDecodeBounds = false;
+				
+			bitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath(), opts);
 			//some devices save photos rotated
 			rotateBitmap();
 			imageView.setImageBitmap(bitmap);

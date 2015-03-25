@@ -4,11 +4,11 @@
     android:layout_height="fill_parent" >
     
     <TextView 
-        android:id="@+id/textViewItem"
+        android:id="@+id/eventItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Placeholder"
-        android:textSize="30sp" 
+        android:text=""
+        android:textSize="20sp" 
         android:textColor="#0099FF"/>
         
 </RelativeLayout>

@@ -32,7 +32,7 @@
     <LinearLayout
         android:layout_width="fill_parent"
     	android:layout_height="wrap_content"
-    	android:orientation="horizontal"
+    	android:orientation="vertical"
     	android:paddingTop="20dp" >
     	
         <TextView
@@ -43,26 +43,32 @@
         	android:textColor="#0099FF"
         	android:textAppearance="?android:attr/textAppearanceLarge" />
 
-       <Button
-           android:id="@+id/fromButtDate"
-           android:layout_width="wrap_content" 
-    	   android:layout_height="wrap_content"
-       	   android:text="Pick Date" 
-           android:onClick="showDatePickerDialog" />
+        <LinearLayout
+        	android:layout_width="fill_parent"
+    		android:layout_height="wrap_content"
+    		android:orientation="horizontal">
+    	
+			<Button
+           		android:id="@+id/fromButtDate"
+           		android:layout_width="wrap_content" 
+    	   		android:layout_height="wrap_content"
+       	   		android:text="Start Date" 
+           		android:onClick="showDatePickerDialog" />
        
-       <Button
-           android:id="@+id/fromButtTime"
-           android:layout_width="wrap_content" 
-    	   android:layout_height="wrap_content"
-       	   android:text="Pick Time" 
-           android:onClick="showTimePickerDialog" />
-        
+       		<Button
+           		android:id="@+id/fromButtTime"
+           		android:layout_width="wrap_content" 
+    	   		android:layout_height="wrap_content"
+       	   		android:text="Start Time" 
+           		android:onClick="showTimePickerDialog" />
+    	</LinearLayout>  
+    	 
     </LinearLayout>
     
     <LinearLayout
         android:layout_width="fill_parent"
     	android:layout_height="wrap_content"
-    	android:orientation="horizontal"
+    	android:orientation="vertical"
     	android:paddingTop="20dp" >
     	
         <TextView
@@ -73,26 +79,32 @@
         	android:textColor="#0099FF"
         	android:textAppearance="?android:attr/textAppearanceLarge" />
 
-       <Button
-           android:id="@+id/toButtDate"
-           android:layout_width="wrap_content" 
-    	   android:layout_height="wrap_content"
-       	   android:text="Pick Date" 
-           android:onClick="showDatePickerDialog" />
+        <LinearLayout
+        	android:layout_width="fill_parent"
+    		android:layout_height="wrap_content"
+    		android:orientation="horizontal">
+       				
+       		<Button
+           		android:id="@+id/toButtDate"
+           		android:layout_width="wrap_content" 
+    	   		android:layout_height="wrap_content"
+       	   		android:text="End Date" 
+           		android:onClick="showDatePickerDialog" />
        
-       <Button
-           android:id="@+id/toButtTime"
-           android:layout_width="wrap_content" 
-    	   android:layout_height="wrap_content"
-       	   android:text="Pick Time" 
-           android:onClick="showTimePickerDialog" />
+       		<Button
+           		android:id="@+id/toButtTime"
+           		android:layout_width="wrap_content" 
+    	   		android:layout_height="wrap_content"
+       	   		android:text="End Time" 
+           		android:onClick="showTimePickerDialog" />
+       	</LinearLayout>
         
     </LinearLayout>
     
     <LinearLayout
         android:layout_width="fill_parent"
     	android:layout_height="wrap_content"
-    	android:orientation="horizontal"
+    	android:orientation="vertical"
     	android:paddingTop="20dp" >
 
     	<TextView
@@ -104,12 +116,39 @@
         	android:textColor="#0099FF" />
 
     	<Button
-        	android:id="@+id/button1"
+        	android:id="@+id/colorButt"
         	android:layout_width="wrap_content"
         	android:layout_height="wrap_content"
         	android:text="Pick a Color"
         	android:onClick="showColorPickerDialog" />
     	
     	</LinearLayout>
+    	
+    <LinearLayout
+        android:layout_width="fill_parent"
+    	android:layout_height="wrap_content"
+    	android:orientation="vertical"
+    	android:paddingTop="20dp" >
+       
+        <TextView
+        	android:id="@+id/textView4"
+        	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:text="Description"
+        	android:textColor="#0099FF"
+        	android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <EditText
+            android:id="@+id/eventDesc"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:inputType="textMultiLine" 
+            android:hint="Optional additional details">
+
+        </EditText>
+       
+    </LinearLayout>
 
 </LinearLayout>
