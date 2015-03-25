@@ -61,7 +61,9 @@ public class TextMenu implements ActionMode.Callback {
 		}
 		case R.id.menuDeleteView: {
 			AlertDialog.Builder builder = new AlertDialog.Builder(noteActivity);
-			builder.setMessage("Delete Item?");
+         builder.setIcon(android.R.drawable.ic_menu_help);
+         builder.setTitle("Are you sure to clear this text?");
+			//builder.setMessage("Delete Item?");
 			builder.setPositiveButton("Yes",
 					new DialogInterface.OnClickListener() {
 						@Override
@@ -76,7 +78,7 @@ public class TextMenu implements ActionMode.Callback {
 							}							
 						}
 					});
-			builder.setNegativeButton("Cancel",
+			builder.setNegativeButton("No",
 					new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(DialogInterface dialog, int id) {

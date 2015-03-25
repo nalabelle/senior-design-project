@@ -151,7 +151,9 @@ public class SoundPlayMenu implements ActionMode.Callback {
 		// Popup Confirmation dialogbox for deletion
 		
 		AlertDialog.Builder builder = new AlertDialog.Builder(noteActivity);
-		builder.setMessage("Delete Sound?");
+      builder.setIcon(android.R.drawable.ic_menu_help);
+      builder.setTitle("Are you sure to clear this recording?");
+		//builder.setMessage("Delete Sound?");
 		builder.setPositiveButton("Yes",
 				new DialogInterface.OnClickListener() {
 					@Override
@@ -175,7 +177,7 @@ public class SoundPlayMenu implements ActionMode.Callback {
 						}
 					}
 				});
-		builder.setNegativeButton("Cancel",
+		builder.setNegativeButton("No",
 				new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int id) {

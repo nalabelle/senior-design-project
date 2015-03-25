@@ -4,6 +4,7 @@ import java.sql.SQLException;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.graphics.drawable.BitmapDrawable;
 import android.view.ActionMode;
@@ -82,7 +83,9 @@ public class DrawMenu implements ActionMode.Callback {
 		}
 		case R.id.action_clearAll: {			
 			AlertDialog.Builder builder = new AlertDialog.Builder(noteActivity);
-			builder.setMessage("Clear Drawing?");
+			builder.setIcon(android.R.drawable.ic_menu_help);
+			builder.setTitle("Are you sure to clear this drawing?");
+			//builder.setMessage("Clear Drawing?");
 			builder.setPositiveButton("Yes",
 					new DialogInterface.OnClickListener() {
 						@Override
@@ -97,7 +100,7 @@ public class DrawMenu implements ActionMode.Callback {
 							dialog.dismiss();
 						}
 					});
-			builder.setNegativeButton("Cancel",
+			builder.setNegativeButton("No",
 					new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(DialogInterface dialog, int id) {
