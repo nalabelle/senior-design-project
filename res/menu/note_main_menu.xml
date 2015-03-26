@@ -28,24 +28,25 @@
         android:id="@+id/action_create_text"
         android:icon="@drawable/ic_action_keyboard"
         android:showAsAction="ifRoom"
-        android:title="@string/action_create_text"/>       
-
-    <item
-        android:id="@+id/action_save_note"
-        android:orderInCategory="100"
-        android:showAsAction="never"
-        android:title="@string/action_save_note"/>
-    
+        android:title="@string/action_create_text"/>    
+           
     <item
         android:id="@+id/action_new_note"
-        android:orderInCategory="100"
         android:showAsAction="never"
         android:title="@string/action_new_note"/>
 
+            
+    <item
+        android:id="@+id/action_save_note"
+        android:showAsAction="never"
+        android:title="@string/action_save_note"/>
+    
+    
         <item android:id="@+id/action_launch_flashcards"
         android:title="@string/menu_flashcards"
         />
-        
+    
+
                 <item
         android:id="@+id/action_launch_calendar"
         android:title="@string/menu_cal"

@@ -40,10 +40,7 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 import com.comp490.studybuddy.calendar.CalenActivity;
 import com.comp490.studybuddy.flashcards.templates.Decks;
 import com.comp490.studybuddy.flashcards.templates.CardDeckInfo;
-import com.comp490.studybuddy.handwritingnote.HandwritingMain;
 import com.comp490.studybuddy.note.NoteActivity;
-import com.comp490.studybuddy.note.PhotoViewerActivity;
-import com.comp490.studybuddy.note.VideoViewerActivity;
 import com.comp490.studybuddy.todolist.ToDoMain;
 
 public class FlashMain extends ListActivity 
@@ -173,7 +170,7 @@ public class FlashMain extends ListActivity
 
 	public boolean onCreateOptionsMenu(Menu menu) 
 	{
-		getMenuInflater().inflate(R.menu.main, menu);
+		getMenuInflater().inflate(R.menu.flash_main, menu);
 		return true;
 	}
 	

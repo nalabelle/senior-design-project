@@ -14,7 +14,6 @@ package com.comp490.studybuddy.calendar;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
@@ -37,24 +36,18 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.GridView;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.comp490.studybuddy.R;
 import com.comp490.studybuddy.database.DBHelper;
 import com.comp490.studybuddy.flashcards.FlashMain;
-import com.comp490.studybuddy.handwritingnote.HandwritingMain;
 import com.comp490.studybuddy.models.CalendarEvent;
 import com.comp490.studybuddy.note.NoteActivity;
-import com.comp490.studybuddy.note.PhotoViewerActivity;
-import com.comp490.studybuddy.note.VideoViewerActivity;
 import com.comp490.studybuddy.todolist.ToDoMain;
 import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
 import com.j256.ormlite.stmt.PreparedQuery;

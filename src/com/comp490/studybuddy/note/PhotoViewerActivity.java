@@ -3,11 +3,9 @@ package com.comp490.studybuddy.note;
 import java.io.File;
 
 import uk.co.senab.photoview.PhotoViewAttacher;
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.drawable.Drawable;
 import android.media.ExifInterface;

@@ -4,7 +4,6 @@ import java.sql.SQLException;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.graphics.drawable.BitmapDrawable;
 import android.view.ActionMode;

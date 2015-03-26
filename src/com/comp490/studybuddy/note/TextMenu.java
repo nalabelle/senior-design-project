@@ -2,10 +2,8 @@ package com.comp490.studybuddy.note;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.graphics.Point;
 import android.util.Log;
 import android.view.ActionMode;
-import android.view.Display;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -13,8 +11,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 

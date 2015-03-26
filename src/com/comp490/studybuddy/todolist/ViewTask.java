@@ -15,11 +15,8 @@ import java.util.Locale;
 import com.comp490.studybuddy.R;
 import com.comp490.studybuddy.models.Task;
 import com.comp490.studybuddy.todolist.NavigationHandler;
-import com.comp490.studybuddy.todolist.DeleteHandler;
-
 import android.os.Bundle;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.view.Menu;
 import android.view.MenuItem;

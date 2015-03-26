@@ -4,7 +4,7 @@
 
         <item
         android:id="@+id/action_launch_text"
-        android:title="@string/menu_text"
+        android:title="@string/menu_notes"
         />
         
         <item
