@@ -13,6 +13,7 @@ package com.comp490.studybuddy.todolist;
 import java.sql.SQLException;
 import java.util.List;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,7 +25,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.comp490.studybuddy.R;
+import com.comp490.studybuddy.calendar.CalenActivity;
+import com.comp490.studybuddy.flashcards.FlashMain;
 import com.comp490.studybuddy.models.Task;
+import com.comp490.studybuddy.note.NoteActivity;
 import com.j256.ormlite.dao.Dao;
 
 public class ToDoMain extends DefaultActivity implements Dao.DaoObserver {
@@ -106,9 +110,21 @@ public class ToDoMain extends DefaultActivity implements Dao.DaoObserver {
 		case R.id.view_all_tasks_actionbar_add:
 			NavigationHandler.addTask(this);
 			return true;
+	      case R.id.action_launch_text: {
+	           startActivity(new Intent(this, NoteActivity.class));
+             return true;
+	      }
+		case R.id.action_launch_flashcards: {
+			startActivity(new Intent(this, FlashMain.class));
+			return true;
+		      }
+		case R.id.action_launch_calendar: {
+			startActivity(new Intent(this, CalenActivity.class));
+			return true;
+			}   
 		default:
-			return super.onOptionsItemSelected(item);
-		}
+				return super.onOptionsItemSelected(item);
+		}	
 	}
 	
 	@Override
