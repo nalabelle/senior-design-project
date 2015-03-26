@@ -13,7 +13,6 @@ package com.comp490.studybuddy.todolist;
 //import com.comp490.studybuddy.todolist.NotificationReceiver;
 import com.comp490.studybuddy.R;
 import com.comp490.studybuddy.models.Task;
-import com.comp490.studybuddy.todolist.CancelHandler;
 
 import java.sql.SQLException;
 import java.util.Calendar;
@@ -86,8 +85,6 @@ public class ModifyTask extends DefaultActivity {
          bundle.putSerializable(Task.TASK_BUNDLE, this.task);
          intent.putExtras(bundle);
          setResult(ViewTask.EDIT_TASK, intent);
-         //show confirmation dialog
-         CancelHandler.cancelDialog(this);
          return true;
          
       //save button is selected

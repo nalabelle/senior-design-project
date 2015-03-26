@@ -6,7 +6,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:scrollbarStyle="outsideOverlay" 
     tools:context="com.comp490.studybuddy.todolist.ModifyTask" 
-    android:background="@drawable/gridbackground" >
+     >
 
     <TableLayout
         android:layout_width="match_parent"

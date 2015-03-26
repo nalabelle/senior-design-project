@@ -40,7 +40,7 @@
     </item>
     <item
         android:id="@+id/action_save"
-        android:icon="@drawable/ic_action_save"
+        android:icon="@drawable/ic_action_accept"
         android:showAsAction="ifRoom|collapseActionView"
         android:title="@string/action_saveDraw">
     </item>

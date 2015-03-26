@@ -3,7 +3,7 @@
     <item 
         android:id="@+id/modify_actionbar_save"
         android:showAsAction="always"
-        android:icon="@drawable/ic_action_save"
+        android:icon="@drawable/ic_action_accept"
         android:title="@string/modify_actionbar_save_title" />
     
     <item 

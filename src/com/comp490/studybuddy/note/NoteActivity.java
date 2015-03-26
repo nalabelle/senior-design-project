@@ -150,6 +150,15 @@ public class NoteActivity extends OrmLiteBaseActivity<DBHelper> {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Action bar clicks (black bar on top)
 		switch(item.getItemId()){
+		case R.id.action_draw:{
+			// onClick of Pen icon
+			if (drawEntry == null){
+				drawEntry = new NoteEntry(NoteEntry.NoteType.DRAW);
+			}
+			ActionMode.Callback drawMenu = new DrawMenu(this, drawEntry);
+			this.startActionMode(drawMenu);
+			return true;
+		}
 		case R.id.action_record_sound: {
 			// onClick of sound button loads actionView via xml
 			return true;
@@ -174,15 +183,7 @@ public class NoteActivity extends OrmLiteBaseActivity<DBHelper> {
 			new TextBuilder(this, noteEntry); //TextBuilder text = 
 			return true;
 		}
-		case R.id.action_draw:{
-			// onClick of Pen icon
-			if (drawEntry == null){
-				drawEntry = new NoteEntry(NoteEntry.NoteType.DRAW);
-			}
-			ActionMode.Callback drawMenu = new DrawMenu(this, drawEntry);
-			this.startActionMode(drawMenu);
-			return true;
-		}
+
 		case R.id.action_save_note: {
 			this.saveNotes();
 		}
