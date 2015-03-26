@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -48,7 +49,13 @@ import android.widget.TextView;
 
 import com.comp490.studybuddy.R;
 import com.comp490.studybuddy.database.DBHelper;
+import com.comp490.studybuddy.flashcards.FlashMain;
+import com.comp490.studybuddy.handwritingnote.HandwritingMain;
 import com.comp490.studybuddy.models.CalendarEvent;
+import com.comp490.studybuddy.note.NoteActivity;
+import com.comp490.studybuddy.note.PhotoViewerActivity;
+import com.comp490.studybuddy.note.VideoViewerActivity;
+import com.comp490.studybuddy.todolist.ToDoMain;
 import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
 import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
@@ -185,17 +192,27 @@ public class CalenActivity extends OrmLiteBaseActivity<DBHelper> {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		int id = item.getItemId();
 		switch(id) {
-			case R.id.action_settings:
-				return true;
 			case R.id.addEvent:
 				Intent intent = new Intent(getApplicationContext(), AddEvent.class);
 				intent.putExtra("DT", displayedDateTime.toString());
 				intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			    startActivity(intent);
 			    return true;
+			case R.id.action_launch_text: {
+				startActivity(new Intent(this, NoteActivity.class));
+				return true;
+				      }
+			case R.id.action_launch_flashcards: {
+				startActivity(new Intent(this, FlashMain.class));
+				return true;
+				      }
+			case R.id.action_launch_todo: {
+				startActivity(new Intent(this, ToDoMain.class));
+				return true;
+				      }	    
 			default:
 				return super.onOptionsItemSelected(item);
-		}		
+		}
 	}
 
 	//Begin Adapter Land, First GridCells --> Text(day) and List(events)

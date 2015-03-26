@@ -45,8 +45,11 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.comp490.studybuddy.R;
+import com.comp490.studybuddy.calendar.CalenActivity;
 import com.comp490.studybuddy.database.DBHelper;
+import com.comp490.studybuddy.flashcards.FlashMain;
 import com.comp490.studybuddy.models.NoteEntry;
+import com.comp490.studybuddy.todolist.ToDoMain;
 import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
 
 /* General Information: 
@@ -185,6 +188,18 @@ public class NoteActivity extends OrmLiteBaseActivity<DBHelper> {
 		}
 		// TO DO: SAVE NOTE AND NEW NOTE		
 		//insert other action menu options here
+		case R.id.action_launch_flashcards: {
+			startActivity(new Intent(this, FlashMain.class));
+			return true;
+			      }
+		case R.id.action_launch_calendar: {
+			startActivity(new Intent(this, CalenActivity.class));
+			return true;
+			      }
+		case R.id.action_launch_todo: {
+			startActivity(new Intent(this, ToDoMain.class));
+			return true;
+			      }	   
 		default:
 				return super.onOptionsItemSelected(item);
 		}

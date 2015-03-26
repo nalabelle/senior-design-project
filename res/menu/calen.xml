@@ -2,11 +2,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.studybuddy.CalenActivity" >
 
-    <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:showAsAction="never"
-        android:title="@string/action_settings"/>
     
     <item 
         android:id="@+id/addEvent"
@@ -28,5 +23,22 @@
         android:showAsAction="ifRoom"
         android:icon="@drawable/ic_action_accept"
         android:title="@string/action_create_event"/>
+    
+    
+    	<item
+        android:id="@+id/action_launch_text"
+        android:title="@string/menu_notes"
+        />
+
+        <item android:id="@+id/action_launch_flashcards"
+        android:title="@string/menu_flashcards"
+        />
+          
+        
+      <item 
+        android:id="@+id/action_launch_todo"
+        android:title="@string/menu_tasks"
+        />
+    
 
 </menu>

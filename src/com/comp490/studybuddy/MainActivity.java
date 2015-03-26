@@ -75,7 +75,7 @@ public class MainActivity extends Activity {
               return true;
 	      }
 	      case R.id.action_launch_flashcards: {
-	           //startActivity(new Intent(this, FlashMain.class));
+	           startActivity(new Intent(this, FlashMain.class));
             return true;
 	      }
 	      case R.id.action_launch_calendar: {
@@ -119,12 +119,6 @@ public class MainActivity extends Activity {
       startActivity(todoLaunch);
       return true;
    }
-   
-   public boolean onHandwritingClick(View view) {
-	      Intent handwritingLaunch = new Intent(this.getApplicationContext(), HandwritingMain.class);
-	      startActivity(handwritingLaunch);
-	      return true;
-	   }
    
    public boolean onFlashcardhClick(View view) {
       Intent FlashcardLaunch = new Intent(this.getApplicationContext(), FlashMain.class);

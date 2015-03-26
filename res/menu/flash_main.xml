@@ -8,4 +8,20 @@
         android:showAsAction="never"
         android:title="@string/action_settings"/>
 
+        <item
+        android:id="@+id/action_launch_text"
+        android:title="@string/menu_text"
+        />
+        
+        <item
+        android:id="@+id/action_launch_calendar"
+        android:title="@string/menu_cal"
+        />
+                
+      <item 
+        android:id="@+id/action_launch_todo"
+        android:title="@string/menu_tasks"
+        />
+    
+    
 </menu>

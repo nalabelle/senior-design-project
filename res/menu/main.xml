@@ -4,32 +4,39 @@
     
 
     <item android:id="@+id/action_launch_sound"
-        android:title="Audio"
+        android:title="@string/menu_audio"
         />
     <item
         android:id="@+id/action_launch_photo"
-        android:title="Photo"/>
+        android:title="@string/menu_photo"
+        />
     
     <item
         android:id="@+id/action_launch_video"
-        android:title="Video"/>
+        android:title="@string/menu_video"
+        />
     
     <item
         android:id="@+id/action_launch_text"
-        android:title="Text"/>       
-        
+        android:title="@string/menu_text"
+        />
+    
         <item android:id="@+id/action_launch_handwriting"
-        android:title="Writing"/>
+        android:title="@string/menu_handwriting"
+        />
         
         <item android:id="@+id/action_launch_flashcards"
-        android:title="Cards"/>
+        android:title="@string/menu_flashcards"
+        />
         
         <item
         android:id="@+id/action_launch_calendar"
-        android:title="Dates"/>  
+        android:title="@string/menu_cal"
+        />
                 
       <item 
         android:id="@+id/action_launch_todo"
-        android:title="Tasks"/> 
+        android:title="@string/menu_tasks"
+        />
 
 </menu>

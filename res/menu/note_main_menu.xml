@@ -29,13 +29,7 @@
         android:icon="@drawable/ic_action_keyboard"
         android:showAsAction="ifRoom"
         android:title="@string/action_create_text"/>       
-           
-    <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:showAsAction="never"
-        android:title="@string/action_settings"/>
-    
+
     <item
         android:id="@+id/action_save_note"
         android:orderInCategory="100"
@@ -47,5 +41,19 @@
         android:orderInCategory="100"
         android:showAsAction="never"
         android:title="@string/action_new_note"/>
+
+        <item android:id="@+id/action_launch_flashcards"
+        android:title="@string/menu_flashcards"
+        />
+        
+                <item
+        android:id="@+id/action_launch_calendar"
+        android:title="@string/menu_cal"
+        />
+        
+      <item 
+        android:id="@+id/action_launch_todo"
+        android:title="@string/menu_tasks"
+        />
 
 </menu>

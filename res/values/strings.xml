@@ -17,8 +17,8 @@
     <string name="title_activity_picture">Picture</string>
     <string name="title_activity_to_do_list">Reminders</string>
     <string name="title_activity_my_service">MyService</string>
-    <string name="action_create_text">Enter Text</string>
-    <string name="action_record_sound">Record Sound</string>
+    <string name="action_create_text">Enter text</string>
+    <string name="action_record_sound">Record sound</string>
     <string name="action_take_photo">Take picture</string>
     <string name="action_take_video">Take video</string>
     <string name="action_photo_view">View photo</string>
@@ -121,4 +121,20 @@
     <string name="add_back_name_hint">Back of card</string>
     <string name="add_card_save_label">" Save "</string>
     <string name="add_card_cancel_label">Cancel</string>
+    
+    
+    <string name="menu_audio">Audio</string>
+    <string name="menu_photo">Photo</string>
+    <string name="menu_video">Video</string>
+    <string name="menu_text">Text</string>
+    <string name="menu_handwriting">Writing</string>
+    <string name="menu_flashcards">Cards</string>    
+    <string name="menu_cal">Dates</string>
+    <string name="menu_tasks">Tasks</string>    
+	<string name="menu_notes">Notes</string>    
+    
+    
+  
+        
+  
 </resources>

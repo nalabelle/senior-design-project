@@ -22,7 +22,9 @@ import com.comp490.studybuddy.R;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
+
 import java.util.ArrayList;
+
 import android.view.MenuItem;
 import android.content.Intent;
 import android.widget.ListView;
@@ -34,8 +36,15 @@ import android.widget.ArrayAdapter;
 import android.view.View.OnClickListener;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.AdapterView.AdapterContextMenuInfo;
+
+import com.comp490.studybuddy.calendar.CalenActivity;
 import com.comp490.studybuddy.flashcards.templates.Decks;
 import com.comp490.studybuddy.flashcards.templates.CardDeckInfo;
+import com.comp490.studybuddy.handwritingnote.HandwritingMain;
+import com.comp490.studybuddy.note.NoteActivity;
+import com.comp490.studybuddy.note.PhotoViewerActivity;
+import com.comp490.studybuddy.note.VideoViewerActivity;
+import com.comp490.studybuddy.todolist.ToDoMain;
 
 public class FlashMain extends ListActivity 
 {
@@ -167,4 +176,28 @@ public class FlashMain extends ListActivity
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// Handle action bar item clicks here. The action bar will
+		// automatically handle clicks on the Home/Up button, so long
+		// as you specify a parent activity in AndroidManifest.xml.
+	   switch(item.getItemId()) {
+	      case R.id.action_launch_text: {
+	           startActivity(new Intent(this, NoteActivity.class));
+              return true;
+	      }
+	      case R.id.action_launch_calendar: {
+	           startActivity(new Intent(this, CalenActivity.class));
+              return true;
+	      }
+	      case R.id.action_launch_todo: {
+	           startActivity(new Intent(this, ToDoMain.class));
+	           return true;
+	      }
+	      default:
+	           return super.onOptionsItemSelected(item);
+	      }
+	   }
+	  
 }
