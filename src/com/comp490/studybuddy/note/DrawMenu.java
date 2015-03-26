@@ -82,9 +82,8 @@ public class DrawMenu implements ActionMode.Callback {
 		}
 		case R.id.action_clearAll: {			
 			AlertDialog.Builder builder = new AlertDialog.Builder(noteActivity);
-			builder.setIcon(android.R.drawable.ic_menu_help);
-			builder.setTitle("Are you sure to clear this drawing?");
-			//builder.setMessage("Clear Drawing?");
+			builder.setIcon(android.R.drawable.ic_dialog_alert);
+			builder.setTitle("Clear drawing?");
 			builder.setPositiveButton("Yes",
 					new DialogInterface.OnClickListener() {
 						@Override
@@ -95,7 +94,6 @@ public class DrawMenu implements ActionMode.Callback {
 							noteLayout.addView(drawing);
 							setBitmap(true); //true = clear background
 							noteActivity.clickie("Drawing Removed");
-
 							dialog.dismiss();
 						}
 					});

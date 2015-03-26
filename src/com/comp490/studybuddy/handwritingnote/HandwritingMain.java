@@ -1,4 +1,3 @@
-//Author: Tom, Xintong
 
 
 //This is for summer's account testing

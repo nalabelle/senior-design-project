@@ -3,40 +3,8 @@
     tools:context="com.example.studybuddy.MainActivity" >
     
 
-    <item android:id="@+id/action_launch_sound"
-        android:title="@string/menu_audio"
-        />
-    <item
-        android:id="@+id/action_launch_photo"
-        android:title="@string/menu_photo"
-        />
-    
-    <item
-        android:id="@+id/action_launch_video"
-        android:title="@string/menu_video"
-        />
-    
-    <item
-        android:id="@+id/action_launch_text"
-        android:title="@string/menu_text"
-        />
-    
-        <item android:id="@+id/action_launch_handwriting"
-        android:title="@string/menu_handwriting"
-        />
-        
-        <item android:id="@+id/action_launch_flashcards"
-        android:title="@string/menu_flashcards"
-        />
-        
-        <item
-        android:id="@+id/action_launch_calendar"
-        android:title="@string/menu_cal"
-        />
-                
-      <item 
-        android:id="@+id/action_launch_todo"
-        android:title="@string/menu_tasks"
-        />
+    <item android:id="@+id/about_dialog"
+        android:title="@string/about_title" />
+
 
 </menu>

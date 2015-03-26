@@ -108,7 +108,7 @@ public class Drawing extends View {
 		AlertDialog picker;
 		CharSequence[] widths = {"Thin", "Thick"};
 		AlertDialog.Builder build = new AlertDialog.Builder(context);
-		build.setTitle("Pen Width");
+		build.setTitle("Pen width");
 		build.setSingleChoiceItems(widths, -1, new DialogInterface.OnClickListener() {
 			
 			@Override
@@ -136,7 +136,7 @@ public class Drawing extends View {
 		CharSequence[] colors = { "Black", "Blue", "Cyan", "Green", "Red",
 				"Yellow", "White" };
 		AlertDialog.Builder build = new AlertDialog.Builder(context);
-		build.setTitle("Pen Color");
+		build.setTitle("Pen color");
 		build.setSingleChoiceItems(colors, -1,
 				new DialogInterface.OnClickListener() {
 

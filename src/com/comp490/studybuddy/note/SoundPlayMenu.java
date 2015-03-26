@@ -114,7 +114,8 @@ public class SoundPlayMenu implements ActionMode.Callback {
 				e.printStackTrace();
 			}
 			new AlertDialog.Builder(noteActivity)
-					.setTitle("Rename Sound Title")
+					.setTitle("Rename sound title")
+					.setIcon(android.R.drawable.ic_menu_help)
 					.setView(editName)
 					.setPositiveButton("Rename",
 							new DialogInterface.OnClickListener() {
@@ -150,10 +151,9 @@ public class SoundPlayMenu implements ActionMode.Callback {
 		// Popup Confirmation dialogbox for deletion
 		
 		AlertDialog.Builder builder = new AlertDialog.Builder(noteActivity);
-      builder.setIcon(android.R.drawable.ic_menu_help);
-      builder.setTitle("Are you sure to clear this recording?");
-		//builder.setMessage("Delete Sound?");
-		builder.setPositiveButton("Yes",
+      builder.setIcon(android.R.drawable.ic_dialog_alert);
+      builder.setTitle("Delete recording?");
+      builder.setPositiveButton("Yes",
 				new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int id) {

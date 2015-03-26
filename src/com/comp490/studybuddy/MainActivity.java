@@ -10,20 +10,20 @@ package com.comp490.studybuddy;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.DialogInterface.OnClickListener;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-
 import com.comp490.studybuddy.calendar.CalenActivity;
 import com.comp490.studybuddy.flashcards.FlashMain;
-import com.comp490.studybuddy.handwritingnote.HandwritingMain;
 import com.comp490.studybuddy.note.NoteActivity;
-import com.comp490.studybuddy.note.PhotoViewerActivity;
-import com.comp490.studybuddy.note.VideoViewerActivity;
 import com.comp490.studybuddy.todolist.ToDoMain;
 
 public class MainActivity extends Activity {
@@ -49,6 +49,18 @@ public class MainActivity extends Activity {
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
 	   switch(item.getItemId()) {
+	   case R.id.about_dialog: {
+		   Dialog about = new AlertDialog.Builder(this)
+	         .setIcon(android.R.drawable.ic_dialog_info)
+	         .setTitle(R.string.about_title)
+	         .setMessage(R.string.about_msg)
+	         .setNegativeButton(R.string.close,
+               new NegativeButtonListener())
+	         .create();
+	      about.show();
+		  return true;
+	   }
+	   /*
 	      case R.id.action_launch_sound: {
 	         startActivity(new Intent(this, NoteActivity.class));
             return true;
@@ -81,21 +93,20 @@ public class MainActivity extends Activity {
 	           startActivity(new Intent(this, ToDoMain.class));
 	           return true;
 	      }
+	      */
 	      default:
 	           return super.onOptionsItemSelected(item);
 	      }
 	   }
-	  
-	  
-	public void onClickStartService(View V)
-	{
-		startService(new Intent(this,MyService.class));
-	}
-	
-	public void onClickStopService(View V)
-	{
-		stopService(new Intent(this,MyService.class));
-	}
+
+	   //event handler for No button 
+	   private static class NegativeButtonListener implements OnClickListener {
+	      @Override
+	      public void onClick(DialogInterface dialog, int val) {
+	         //close dialog
+	         dialog.dismiss();
+	      }
+	   }
 	
 	public boolean onTextNoteClick(View view) {
 		Intent noteLaunch = new Intent(this.getApplicationContext(), NoteActivity.class);

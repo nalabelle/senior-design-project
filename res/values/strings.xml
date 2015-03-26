@@ -39,22 +39,22 @@
     <string name="action_edit_event">Edit event</string>
     <string name="action_create_event">Create event</string>
     <string name="action_startDraw">Start handwriting</string>
-    <string name="action_eraser">Eraser</string>
-    <string name="action_undoDraw">Undo handwriting</string>
-    <string name="action_redoDraw">Redo handwriting</string>
-    <string name="action_clearAllDraw">Clear all handwriting</string>
-    <string name="action_saveDraw">Save handwriting</string>
-    <string name="action_changePenWidth">Change pen width</string>
-    <string name="action_penWidthThick">Change pen width to thick</string>
-    <string name="action_penWidthThin">Change pen didth to thin</string>
-    <string name="action_changePenColor">Change pen color</string>
-    <string name="action_penColorBlack">Change pen color to black</string>
-    <string name="action_penColorBlue">Change pen color to blue</string>
-    <string name="action_penColorCyan">Change pen color to cyan</string>
-    <string name="action_penColorGreen">Change pen color to green</string>
-    <string name="action_penColorRed">Change pen color to red</string>
-    <string name="action_penColorYellow">Change pen color to yellow</string>
-    <string name="action_penColorWhite">Change pen color to white</string>
+    <string name="action_eraser">Erase</string>
+    <string name="action_undoDraw">Undo</string>
+    <string name="action_redoDraw">Redo</string>
+    <string name="action_clearAllDraw">Clear all</string>
+    <string name="action_saveDraw">Save</string>
+    <string name="action_changePenWidth">Change width</string>
+    <string name="action_penWidthThick">Change width to thick</string>
+    <string name="action_penWidthThin">Change width to thin</string>
+    <string name="action_changePenColor">Change color</string>
+    <string name="action_penColorBlack">Change color to black</string>
+    <string name="action_penColorBlue">Change color to blue</string>
+    <string name="action_penColorCyan">Change color to cyan</string>
+    <string name="action_penColorGreen">Change color to green</string>
+    <string name="action_penColorRed">Change color to red</string>
+    <string name="action_penColorYellow">Change color to yellow</string>
+    <string name="action_penColorWhite">Change color to white</string>
     <string name="title_activity_settings">SettingsActivity</string>
     <string name="title_activity_settings_fragment">SettingsFragment</string>
     <string name="title_activity_help">Help</string>
@@ -131,7 +131,11 @@
     <string name="menu_flashcards">Cards</string>    
     <string name="menu_cal">Dates</string>
     <string name="menu_tasks">Tasks</string>    
-	<string name="menu_notes">Notes</string>    
+    <string name="menu_notes">Notes</string>    
+    
+	<string name="about_title">About</string>    
+    <string name="about_msg">Tom Conaway, Nik LaBelle, Wesley Liang, Uyen Nguyen, \nAnthony Sager, Xintong Shi, and Alex Swanson\nCSUN Computer Science</string>    
+	<string name="close">Close</string>    
     
     
   

@@ -26,7 +26,7 @@ public class DeleteHandler {
 
    public static void deleteDialog(Activity activity, Task task) {
       Dialog confirmDelete = new AlertDialog.Builder(activity)
-      .setIcon(android.R.drawable.ic_menu_help)
+      .setIcon(android.R.drawable.ic_dialog_alert)
       .setTitle("Are you sure to want to delete this task?")
       .setPositiveButton("Yes",
             new PositiveButtonListener(activity, task))
