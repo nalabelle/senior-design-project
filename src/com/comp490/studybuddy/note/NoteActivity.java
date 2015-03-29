@@ -89,6 +89,7 @@ public class NoteActivity extends OrmLiteBaseActivity<DBHelper> {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_note);
+		getActionBar().setDisplayShowTitleEnabled(true);
 		//load previous stuff.
 		this.initializeViews();
 	}
