@@ -24,11 +24,12 @@
         android:showAsAction="ifRoom"
         android:title="@string/action_take_video"/>
     
-    <item
+    <!--<item
         android:id="@+id/action_create_text"
         android:icon="@drawable/ic_action_keyboard"
         android:showAsAction="ifRoom"
-        android:title="@string/action_create_text"/>    
+        android:title="@string/action_create_text"/>   
+          --> 
            
     <item
         android:id="@+id/action_new_note"

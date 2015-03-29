@@ -10,7 +10,7 @@
 
     
     <item android:id="@+id/action_penWidth"
-          android:icon="@drawable/ic_action_width"
+          android:icon="@drawable/ic_action_edit"
           android:title="@string/action_changePenWidth" 
           android:showAsAction="always"> 
 		<menu>

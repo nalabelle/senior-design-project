@@ -176,31 +176,30 @@ public class NoteActivity extends OrmLiteBaseActivity<DBHelper> {
 			takeVideo();
 			return true;
 		}
-		case R.id.action_create_text:{
+		case R.id.action_new_note:{
 			//onClick of keyboard icon
-
 			NoteEntry noteEntry = new NoteEntry(NoteEntry.NoteType.TEXT);
 			new TextBuilder(this, noteEntry); //TextBuilder text = 
 			return true;
 		}
-
 		case R.id.action_save_note: {
 			this.saveNotes();
+			return true;
 		}
 		// TO DO: SAVE NOTE AND NEW NOTE		
 		//insert other action menu options here
 		case R.id.action_launch_flashcards: {
 			startActivity(new Intent(this, FlashMain.class));
 			return true;
-			      }
+		}
 		case R.id.action_launch_calendar: {
 			startActivity(new Intent(this, CalenActivity.class));
 			return true;
-			      }
+		}
 		case R.id.action_launch_todo: {
 			startActivity(new Intent(this, ToDoMain.class));
 			return true;
-			      }	   
+		}	   
 		default:
 				return super.onOptionsItemSelected(item);
 		}

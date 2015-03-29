@@ -85,6 +85,7 @@ public class ModifyTask extends DefaultActivity {
          bundle.putSerializable(Task.TASK_BUNDLE, this.task);
          intent.putExtras(bundle);
          setResult(ViewTask.EDIT_TASK, intent);
+         finish();
          return true;
          
       //save button is selected
