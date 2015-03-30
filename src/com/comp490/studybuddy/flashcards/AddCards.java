@@ -69,10 +69,9 @@ public class AddCards extends FragmentActivity
 
 				String front = cardFront.getText().toString();
 				String back = cardBack.getText().toString();
-
+				
 				if (front == null || front.length() == 0 || back == null
 						|| back.length() == 0) {
-					incompleteMessage += "Front/Back";
 					incompleteMessage();
 					return;
 				}
@@ -115,8 +114,7 @@ public class AddCards extends FragmentActivity
 
 				if (front == null || front.length() == 0 || back == null
 						|| back.length() == 0) {
-					incompleteMessage += "Front and Back";
-					incompleteMessage();
+//					incompleteMessage();
 					return;
 				}
 
@@ -143,10 +141,11 @@ public class AddCards extends FragmentActivity
 			}
 		});
 	}
-
+	
+	//throws this error at user if fields aren't complete
 	private void incompleteMessage() 
 	{
-		incompleteMessage += " please fill out info";
+		incompleteMessage += "Please fill out each field";
 		DeckInfoDialogFragment newFragment = new DeckInfoDialogFragment();
 		Bundle bundle = new Bundle();
 		bundle.putString(DeckInfoDialogFragment.MESSAGE, incompleteMessage);
