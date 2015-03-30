@@ -44,6 +44,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.comp490.studybuddy.MainActivity;
 import com.comp490.studybuddy.R;
 import com.comp490.studybuddy.calendar.CalenActivity;
 import com.comp490.studybuddy.database.DBHelper;
@@ -151,6 +152,9 @@ public class NoteActivity extends OrmLiteBaseActivity<DBHelper> {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Action bar clicks (black bar on top)
 		switch(item.getItemId()){
+		case android.R.id.home:
+			startActivity(new Intent(this, MainActivity.class));
+			return true;
 		case R.id.action_draw:{
 			// onClick of Pen icon
 			if (drawEntry == null){

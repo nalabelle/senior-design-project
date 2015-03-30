@@ -43,6 +43,7 @@ import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.comp490.studybuddy.MainActivity;
 import com.comp490.studybuddy.R;
 import com.comp490.studybuddy.database.DBHelper;
 import com.comp490.studybuddy.flashcards.FlashMain;
@@ -82,6 +83,8 @@ public class CalenActivity extends OrmLiteBaseActivity<DBHelper> {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_customcal_phone);
+	    ActionBar actionBar = getActionBar();
+	    actionBar.setDisplayHomeAsUpEnabled(true);
         
 		this.todayDateTime = new DateTime();
 		// Check if returning from different Cal activity goto that Date
@@ -185,6 +188,9 @@ public class CalenActivity extends OrmLiteBaseActivity<DBHelper> {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		int id = item.getItemId();
 		switch(id) {
+	      	case android.R.id.home:
+	      		startActivity(new Intent(this, MainActivity.class));
+	      		return true;
 			case R.id.addEvent:
 				Intent intent = new Intent(getApplicationContext(), AddEvent.class);
 				intent.putExtra("DT", displayedDateTime.toString());

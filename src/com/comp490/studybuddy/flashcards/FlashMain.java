@@ -17,6 +17,7 @@
 
 package com.comp490.studybuddy.flashcards;
 
+import com.comp490.studybuddy.MainActivity;
 import com.comp490.studybuddy.R;
 
 import android.os.Bundle;
@@ -30,6 +31,7 @@ import android.content.Intent;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.view.ContextMenu;
+import android.app.ActionBar;
 import android.app.ListActivity;
 import android.view.MenuInflater;
 import android.widget.ArrayAdapter;
@@ -57,7 +59,9 @@ public class FlashMain extends ListActivity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.deck_list);
-
+	    ActionBar actionBar = getActionBar();
+	    actionBar.setDisplayHomeAsUpEnabled(true);
+	    
 		list = this.getListView();
 
 		deckObj = backObj.loadAll();
@@ -180,6 +184,9 @@ public class FlashMain extends ListActivity
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
 	   switch(item.getItemId()) {
+	   		case android.R.id.home:
+      		startActivity(new Intent(this, MainActivity.class));
+      		return true;
 	      case R.id.action_launch_text: {
 	           startActivity(new Intent(this, NoteActivity.class));
               return true;
