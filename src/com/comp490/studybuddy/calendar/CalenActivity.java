@@ -105,6 +105,7 @@ public class CalenActivity extends OrmLiteBaseActivity<DBHelper> {
         //Apply swipe detection to calendar
         swipeDetector = new GestureDetectorCompat(this, new SwipeListener());
         calendarGrid = (GridView) this.findViewById(R.id.gridView1);
+
         
         calendarGrid.setOnTouchListener(new View.OnTouchListener() {  
             @Override

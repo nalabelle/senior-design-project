@@ -20,19 +20,6 @@
         android:onClick="onFlashcardhClick" />
 
     <Button
-        android:id="@+id/button2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/button5"
-        android:layout_alignParentRight="true"
-        android:layout_marginBottom="28dp"
-        android:layout_marginRight="23dp"
-        android:background="@drawable/todoclick"
-        android:minHeight="70dip"
-        android:minWidth="76dip"
-        android:onClick="onTodoClick" />
-
-    <Button
         android:id="@+id/button4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -47,13 +34,26 @@
         android:id="@+id/button1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/button2"
-        android:layout_marginBottom="45dp"
+        android:layout_below="@+id/button4"
+        android:layout_marginTop="16dp"
         android:layout_toLeftOf="@+id/button2"
         android:background="@drawable/textnoteclick"
         android:duplicateParentState="true"
         android:minHeight="138dip"
         android:minWidth="154dip"
         android:onClick="onTextNoteClick" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/button5"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="48dp"
+        android:layout_marginRight="23dp"
+        android:background="@drawable/todoclick"
+        android:minHeight="70dip"
+        android:minWidth="76dip"
+        android:onClick="onTodoClick" />
 
 </RelativeLayout>
