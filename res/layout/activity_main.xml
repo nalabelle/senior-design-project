@@ -31,19 +31,6 @@
         android:onClick="onCalClick" />
 
     <Button
-        android:id="@+id/button1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/button4"
-        android:layout_marginTop="16dp"
-        android:layout_toLeftOf="@+id/button2"
-        android:background="@drawable/textnoteclick"
-        android:duplicateParentState="true"
-        android:minHeight="138dip"
-        android:minWidth="154dip"
-        android:onClick="onTextNoteClick" />
-
-    <Button
         android:id="@+id/button2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -55,5 +42,18 @@
         android:minHeight="70dip"
         android:minWidth="76dip"
         android:onClick="onTodoClick" />
+
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/button2"
+        android:layout_marginBottom="35dp"
+        android:layout_toLeftOf="@+id/button2"
+        android:background="@drawable/textnoteclick"
+        android:duplicateParentState="true"
+        android:minHeight="138dip"
+        android:minWidth="154dip"
+        android:onClick="onTextNoteClick" />
 
 </RelativeLayout>
