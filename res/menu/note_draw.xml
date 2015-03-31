@@ -4,44 +4,44 @@
 
     <item
         android:id="@+id/action_penWidth"
-        android:icon="@drawable/ic_action_edit"
-        android:showAsAction="ifRoom|collapseActionView"
+        android:icon="@drawable/ic_action_pen"
+        android:showAsAction="always"
         android:title="@string/action_changePenWidth">
     </item>
     <item
         android:id="@+id/action_penColor"
-        android:icon="@drawable/ic_action_color"
-        android:showAsAction="ifRoom|collapseActionView"
+        android:icon="@drawable/ic_action_blackpen"
+        android:showAsAction="always"
         android:title="@string/action_changePenColor">
     </item>
     <item
         android:id="@+id/action_eraser"
-        android:icon="@drawable/ic_action_undo"
-        android:showAsAction="ifRoom|collapseActionView"
+        android:icon="@drawable/ic_action_eraser"
+        android:showAsAction="always"
         android:title="@string/action_eraser">
     </item>
     <item
         android:id="@+id/action_undo"
         android:icon="@drawable/ic_action_undo"
-        android:showAsAction="ifRoom|collapseActionView"
+        android:showAsAction="always"
         android:title="@string/action_undoDraw">
     </item>
     <item
         android:id="@+id/action_redo"
         android:icon="@drawable/ic_action_redo"
-        android:showAsAction="ifRoom|collapseActionView"
+        android:showAsAction="always"
         android:title="@string/action_redoDraw">
     </item>
     <item
         android:id="@+id/action_clearAll"
-        android:icon="@drawable/ic_action_discard"
-        android:showAsAction="ifRoom|collapseActionView"
+        android:icon="@drawable/ic_action_trashcan"
+        android:showAsAction="always"
         android:title="@string/action_clearAllDraw">
     </item>
     <item
         android:id="@+id/action_save"
         android:icon="@drawable/ic_action_accept"
-        android:showAsAction="ifRoom|collapseActionView"
+        android:showAsAction="always"
         android:title="@string/action_saveDraw">
     </item>
 
