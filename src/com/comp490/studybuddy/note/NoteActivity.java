@@ -91,6 +91,7 @@ public class NoteActivity extends OrmLiteBaseActivity<DBHelper> {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_note);
 		getActionBar().setDisplayShowTitleEnabled(true);
+		getActionBar().setDisplayHomeAsUpEnabled(true);
 		//load previous stuff.
 		this.initializeViews();
 	}
@@ -220,8 +221,6 @@ public class NoteActivity extends OrmLiteBaseActivity<DBHelper> {
 		// Inflate the menu; this adds items to the action bar if it is present.
 
 		actionBar = getActionBar();
-		actionBar.setDisplayShowTitleEnabled(false); //hide actionbar title
-		actionBar.setDisplayShowHomeEnabled(false); //hide actionbar icon
 		getMenuInflater().inflate(R.menu.note_main_menu, menu);
 		
 		
