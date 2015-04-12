@@ -440,13 +440,6 @@ public class CalenActivity extends OrmLiteBaseActivity<DBHelper> {
 			return androidColor;
 			
 		}
-		
-		    /*
-	        public void onClick(View view)
-	        {
-	        	
-	        }
-	        */
 	}// End of ListAdapter
 	
 

@@ -1,6 +1,8 @@
 package com.comp490.studybuddy.calendar;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.joda.time.DateTime;
@@ -8,6 +10,7 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import android.app.ActionBar;
+import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -18,9 +21,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.AdapterView.OnItemClickListener;
 
 import com.comp490.studybuddy.R;
 import com.comp490.studybuddy.database.DBHelper;
@@ -39,6 +46,7 @@ public class DayDetails extends OrmLiteBaseActivity<DBHelper> {
 	private List<CalendarEvent> eventList;
 	private final DateTimeFormatter dateFormatter = 
     		DateTimeFormat.forPattern("MMMM d, yyyy");
+	private ArrayList<String> details;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -122,7 +130,7 @@ public class DayDetails extends OrmLiteBaseActivity<DBHelper> {
 		}
 		
 		@Override
-		public View getView(int position, View v, ViewGroup parent) {
+		public View getView(final int position, View v, ViewGroup parent) {
 			View mView = v;
 			if(mView == null) {
 				LayoutInflater vi = (LayoutInflater)mContext.getSystemService
@@ -136,11 +144,96 @@ public class DayDetails extends OrmLiteBaseActivity<DBHelper> {
 				text.setTextColor(Color.WHITE);
 				text.setText(events.get(position).getName());
 				Log.d("DAYDETAIL", ""+events.get(position).getName());
+				//Need to set Bcolor to events.get(position).getColor();
+				//but it is a string...
 				text.setBackgroundColor(Color.BLUE);
 			}
+			//Event Test clicked open fragmen
+			mView.setOnClickListener(new View.OnClickListener() {
+    			@Override
+    			public void onClick(View view) {
+    				//Log.d("TAG", view.getTag().toString());
+    			    CalendarEvent eventToShow = events.get(position);
+    			    details = new ArrayList<String>();
+    			    details.add(eventToShow.getName());
+    			    Log.d("aaa", eventToShow.getName());
+    			    details.add(eventToShow.getStart());
+    			    details.add(eventToShow.getEnd());
+    			    details.add(eventToShow.getColor());
+    			    details.add(eventToShow.getDesc());
+    			    DialogFragment newFragment = new ListViewFragment();
+    			    newFragment.show(getFragmentManager(), "detailFragment");
+    			   
+    			}
+    		 });
 			return mView;
 		}
 		
 	} //End Adapter
+	
+	//ListFragment for Detailed Day info
+	public class ListViewFragment extends DialogFragment {
+	
+		public ListViewFragment create() {
+			ListViewFragment frag = new ListViewFragment();
+			return frag;
+		}
+		
+		@Override
+		public void onCreate(Bundle savedInstanceState) {
+			super.onCreate(savedInstanceState);
+		}
+		
+		@Override
+	    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+			getDialog().setTitle("Day Details");
+	        ListView v = new ListView(getActivity());
+	        DayDetailAdapter adapter = new DayDetailAdapter(this.getActivity().getBaseContext(), details);
+	        v.setAdapter(adapter); 
+
+	        //Handle on Clicks
+	        v.setClickable(true);
+	        v.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+	        	//Handle onTouch on fragment
+	            @Override
+	            public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
+	            	//Add Color to Event
+	            	Log.d("FragTouch" , "?");
+	                getDialog().dismiss();
+	            }
+	        });
+	        
+	        return v;
+	    }
+	}
+	
+	//Adapter for Day Detail
+	private class DayDetailAdapter extends ArrayAdapter<String> {
+		private Context mContext;
+		private ArrayList<String> arry2;
+		
+		public DayDetailAdapter(Context context, ArrayList<String> arry) {
+			super(context, R.layout.detail_list, arry);
+			mContext = context;
+			arry2 = arry;
+		}
+		
+		@Override
+		public View getView(int position, View v, ViewGroup parent) {
+			View mView = v;
+			if(mView == null) {
+				LayoutInflater vi = (LayoutInflater)mContext.getSystemService
+						(Context.LAYOUT_INFLATER_SERVICE);
+				mView = vi.inflate(R.layout.detail_list, null);
+				
+			}
+			//Apply image
+			TextView text = (TextView) mView.findViewById(R.id.detailTxt);
+			text.setText(arry2.get(position));
+			return mView;
+		}
+		
+	}
 
 }
