@@ -50,6 +50,7 @@ public class SoundBuilder {
 	public boolean startRecording() { // on actionView REC button press
 		if (noteActivity.recorder == null) {
 			noteActivity.recorder = new MediaRecorder();
+			noteActivity.recorder.setMaxDuration(15000000); //~ 4hrs
 		}
 		
 		if(status.equals(Status.RECORDING)) {
