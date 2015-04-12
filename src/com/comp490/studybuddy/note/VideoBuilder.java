@@ -22,7 +22,7 @@ import com.comp490.studybuddy.models.NoteEntry;
 public class VideoBuilder {
 	private NoteActivity noteActivity;
 	private VideoBuilder videoBuilder = this;
-	private NoteEntry entry;
+	NoteEntry entry;
 	private int viewID;
 	private ImageButton videoButton;
 

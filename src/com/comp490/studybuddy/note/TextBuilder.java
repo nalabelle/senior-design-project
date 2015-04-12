@@ -18,7 +18,7 @@ public class TextBuilder{
 	protected EditText textBox;
 	private NoteActivity noteActivity;
 	private TextBuilder textBuilder = this;
-	private NoteEntry entry;
+	NoteEntry entry;
 	private int viewID;
 	
 	public TextBuilder(NoteActivity noteActivity, NoteEntry entry){
@@ -86,10 +86,12 @@ public class TextBuilder{
 		this.noteActivity.addNote(entry);
 	}
 	
+	/*
 	public int getID(){
 		return viewID;
-	}
+	}*/
 	
+	/*
 	protected void deleteObject(){
 		try {
 			noteActivity.deleteNote(entry);
@@ -103,6 +105,12 @@ public class TextBuilder{
 	}
 
 	public void setXY() {
-		this.entry.setXY(this.textBox.getX(), this.textBox.getY());
-	}
+		this.entry.setXY(this.textBox.getX(), this.textBox.getY());	
+		try {
+			this.noteActivity.getHelper().getNoteEntryDao().update(this.entry);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}	*/
 }

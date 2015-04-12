@@ -25,10 +25,7 @@ public class VideoMenu implements ActionMode.Callback {
 	private NoteActivity noteActivity;
 	private VideoBuilder videoBuilder;
 	private static final String LOG_TAG = "Video Menu Callback";
-	private int xDelta;
-	private int yDelta;
 	ImageButton video;
-	OnTouchListener listen = null;
 
 	// Video Contextual Action Mode
 
@@ -47,7 +44,6 @@ public class VideoMenu implements ActionMode.Callback {
 
 	@Override
 	public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
@@ -65,12 +61,12 @@ public class VideoMenu implements ActionMode.Callback {
 		}
 
 		case R.id.menuUnlockView: { 
-			allowViewMovement();
+			EditView.move(video, noteActivity);
 			noteActivity.clickie("Video icon unlocked.");
 			return true;
 		}
 		
-		case R.id.menuDeleteView: {
+		case R.id.menuDeleteView: { /*
 			AlertDialog.Builder builder = new AlertDialog.Builder(noteActivity);
          builder.setIcon(android.R.drawable.ic_dialog_alert);
          builder.setTitle("Delete item?");
@@ -102,6 +98,13 @@ public class VideoMenu implements ActionMode.Callback {
 		}
 		default:
 			return false;
+		} */
+			EditView.deleteView(videoBuilder.entry, noteActivity, video);
+			mode.finish();
+			return true;
+		}
+			default:
+				return false;
 		}
 	}
 
@@ -109,58 +112,6 @@ public class VideoMenu implements ActionMode.Callback {
 	public void onDestroyActionMode(ActionMode mode) {
 		video.setOnTouchListener(null);
 		noteActivity.clickie("Video icon position locked.");
-		videoBuilder.setXY();
+		EditView.setXY(videoBuilder.entry, noteActivity, video);
 	}
-
-	public void allowViewMovement() {
-
-		final ViewGroup parent = (ViewGroup) noteActivity
-				.findViewById(R.id.note_layout);
-
-		listen = new OnTouchListener() {
-			@Override
-			public boolean onTouch(View view, MotionEvent event) {
-				final int X = (int) event.getRawX();
-				final int Y = (int) event.getRawY();
-
-				switch (event.getAction() & MotionEvent.ACTION_MASK) {
-				case MotionEvent.ACTION_DOWN:
-					RelativeLayout.LayoutParams lParams = (RelativeLayout.LayoutParams) view
-							.getLayoutParams();
-					xDelta = X - lParams.leftMargin;
-					yDelta = Y - lParams.topMargin;
-					break;
-				case MotionEvent.ACTION_UP:
-					break;
-				case MotionEvent.ACTION_POINTER_DOWN:
-					break;
-				case MotionEvent.ACTION_POINTER_UP:
-					break;
-				case MotionEvent.ACTION_MOVE:
-					RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) view
-							.getLayoutParams();
-
-					if (X - xDelta < 0)
-						layoutParams.leftMargin = 0;
-					else
-						layoutParams.leftMargin = X - xDelta;
-					if (Y - yDelta < 0)
-						layoutParams.topMargin = 0;
-					else
-						layoutParams.topMargin = Y - yDelta;
-					
-	            layoutParams.bottomMargin = -250;
-	            layoutParams.rightMargin = -250; 
-
-					view.setLayoutParams(layoutParams);
-					break;
-				}
-				parent.invalidate();
-				return true;
-			}
-		};
-
-		video.setOnTouchListener(listen);
-	}
-
 }
