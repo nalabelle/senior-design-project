@@ -20,7 +20,7 @@ public class DrawMenu implements ActionMode.Callback {
 	private NoteEntry noteEntry;
 	private Drawing drawing;
 	private RelativeLayout noteLayout;
-	private static final String LOG_TAG = "DrawMenu Action Menu Callback";
+	//private static final String LOG_TAG = "DrawMenu Action Menu Callback";
 	
 	public DrawMenu(NoteActivity noteActivity, NoteEntry noteEntry) {
 		this.noteActivity = noteActivity;
@@ -40,7 +40,6 @@ public class DrawMenu implements ActionMode.Callback {
 		}
 		drawing = new Drawing(noteActivity, noteLayout.getWidth(), noteLayout.getHeight(), noteEntry.getDrawPath());
 		noteLayout.addView(drawing);	
-
 	}
 	
 	@Override
@@ -130,9 +129,6 @@ public class DrawMenu implements ActionMode.Callback {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-		// NEED TO EITHER SAVE BITMAP TO ENTRY OR A DATA STRUCTURE WITH ALL
-		// THE DRAWINGS
 	}
 
 	@SuppressLint("NewApi")

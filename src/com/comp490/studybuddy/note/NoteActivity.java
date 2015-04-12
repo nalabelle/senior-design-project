@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -33,7 +32,6 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.util.SparseArray;
-import android.view.ActionMode;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -62,8 +60,8 @@ import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
  */
 
 public class NoteActivity extends OrmLiteBaseActivity<DBHelper> {	
+	
 	// Sound related variables
-	ActionBar actionBar;
 	final Context context = this;
 	NoteActivity noteActivity = this;
 	SoundBuilder audio = null; 
@@ -105,7 +103,7 @@ public class NoteActivity extends OrmLiteBaseActivity<DBHelper> {
 					new SoundBuilder(entry, this);
 					break;
 				case DRAW:
-					drawEntry = entry;
+					drawEntry = entry; //can't access views from oncreate?
 					break;
 				case PICTURE:
 					new PictureBuilder(this, entry);
@@ -161,8 +159,7 @@ public class NoteActivity extends OrmLiteBaseActivity<DBHelper> {
 			if (drawEntry == null){
 				drawEntry = new NoteEntry(NoteEntry.NoteType.DRAW);
 			}
-			ActionMode.Callback drawMenu = new DrawMenu(this, drawEntry);
-			this.startActionMode(drawMenu);
+			this.startActionMode(new DrawMenu(this, drawEntry));
 			return true;
 		}
 		case R.id.action_record_sound: {
@@ -182,17 +179,15 @@ public class NoteActivity extends OrmLiteBaseActivity<DBHelper> {
 			takeVideo();
 			return true;
 		}
-		case R.id.action_new_note:{
+		case R.id.action_create_text:{
 			//onClick of keyboard icon
-			NoteEntry noteEntry = new NoteEntry(NoteEntry.NoteType.TEXT);
-			new TextBuilder(this, noteEntry); //TextBuilder text = 
+			new TextBuilder(this, new NoteEntry(NoteEntry.NoteType.TEXT));
 			return true;
 		}
 		case R.id.action_save_note: {
 			this.saveNotes();
 			return true;
 		}
-		// TO DO: SAVE NOTE AND NEW NOTE		
 		//insert other action menu options here
 		case R.id.action_launch_flashcards: {
 			startActivity(new Intent(this, FlashMain.class));
@@ -218,12 +213,9 @@ public class NoteActivity extends OrmLiteBaseActivity<DBHelper> {
 	 implementation.	 */
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
+		
 		// Inflate the menu; this adds items to the action bar if it is present.
-
-		actionBar = getActionBar();
-		getMenuInflater().inflate(R.menu.note_main_menu, menu);
-		
-		
+		getMenuInflater().inflate(R.menu.note_main_menu, menu);				
 		View soundActionView = menu.findItem(R.id.action_record_sound).getActionView();
 		
 		if(hasMic()) {
