@@ -22,21 +22,18 @@ import com.comp490.studybuddy.R;
 import com.comp490.studybuddy.models.NoteEntry;
 
 public class SoundBuilder {
-	 //essentially another context of Note activity, but required for getting views
-	// temp fix for now
+
 	private NoteActivity noteActivity;
 	private NoteEntry entry;
-	//private MediaRecorder recorder = null;
 	private Status status = Status.PAUSED;
 	private static final String LOG_TAG = "Sound Record";
 	//private String tempStorage = "/Temp/Notes/Audio/";  //move to Notes/Audio after save
 	private String soundFilePath;
-	private int viewID;
 	
 	// Views 
 	private LinearLayout soundButtonAndTitle;
-	ImageButton soundButton;
-	TextView soundTitle;
+	private ImageButton soundButton;
+	private TextView soundTitle;
 	
 	public SoundBuilder(NoteEntry entry, NoteActivity noteContext) {
 		this.noteActivity = noteContext;
@@ -121,7 +118,7 @@ public class SoundBuilder {
 		soundTitle.setClickable(false);
 		
 		//Generate IDs, one for deletion and the other for renaming
-		viewID = noteActivity.generateViewID();
+		int viewID = noteActivity.generateViewID();
 		soundButtonAndTitle.setId(viewID);
 		entry.setViewID(viewID);
 		
@@ -170,9 +167,5 @@ public class SoundBuilder {
 	
 	public enum Status {
 		RECORDING, PLAYING, PAUSED;
-	}
-	
-	protected int getID(){
-		return viewID;
 	}
 }

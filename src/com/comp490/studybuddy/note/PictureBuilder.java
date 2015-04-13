@@ -29,13 +29,11 @@ public class PictureBuilder {
 	private NoteActivity noteActivity; //essentially context of Note activity
 	private PictureBuilder pictureBuilder = this;
 	private NoteEntry entry;
-	private int viewID;
 	private Bitmap bitmap;
 	
 	public PictureBuilder(NoteActivity noteActivity, NoteEntry entry){
 		this.entry = entry;
 		this.noteActivity = noteActivity;
-		this.entry.setType(NoteEntry.NoteType.PICTURE);
 		createPicView();
 	}	
 	
@@ -45,7 +43,7 @@ public class PictureBuilder {
 		pic = new ImageView(noteActivity);
 		pic.setLayoutParams(new LinearLayout.LayoutParams(android.view.ViewGroup.LayoutParams.WRAP_CONTENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT));
 		ViewGroup layout = (ViewGroup) noteActivity.findViewById(R.id.note_layout);
-		viewID = noteActivity.generateViewID();
+		int viewID = noteActivity.generateViewID();
 		pic.setId(viewID); //required for deletion
 		entry.setViewID(viewID);
 		if(entry.getX() != 0) {
@@ -86,25 +84,13 @@ public class PictureBuilder {
 			e.printStackTrace();
 		}
 	}	
-	
-	public int getID(){
-		return viewID;
+
+	public NoteEntry getEntry(){
+		return entry;
 	}
 	
 	public String getFilePath(){
 		return entry.getFilePath();
-	}
-	
-	// might be unnecessary
-	protected void deleteObject(){
-		try {
-			this.noteActivity.getHelper().getNoteEntryDao().delete(entry);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		pic = null;
-		pictureBuilder = null;
 	}
 	
 	//Correct thumbnail rotation due to some devices default rotation of image
@@ -135,40 +121,4 @@ public class PictureBuilder {
 		bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(),
 				bitmap.getHeight(), matrix, true);
 	}
-
-	public void setXY() {
-		this.entry.setXY(this.pic.getX(), this.pic.getY());	
-		try {
-			this.noteActivity.getHelper().getNoteEntryDao().update(this.entry);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}	
-	
-	/* temp saving in case we use some scaling 
-	 
-	private void setPic() {
-	    // Get the dimensions of the View
-	    int targetW = pic.getWidth();
-	    int targetH = pic.getHeight();
-
-	    // Get the dimensions of the bitmap
-	    BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-	    bmOptions.inJustDecodeBounds = true;
-	    BitmapFactory.decodeFile(entry.getFilePath(), bmOptions);
-	    int photoW = bmOptions.outWidth;
-	    int photoH = bmOptions.outHeight;
-
-	    // Determine how much to scale down the image
-	    int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
-
-	    // Decode the image file into a Bitmap sized to fill the View
-	    bmOptions.inJustDecodeBounds = false;
-	    bmOptions.inSampleSize = scaleFactor;
-	    bmOptions.inPurgeable = true;
-
-	    Bitmap bitmap = BitmapFactory.decodeFile(entry.getFilePath(), bmOptions);
-	    pic.setImageBitmap(bitmap);
-	} */
 }

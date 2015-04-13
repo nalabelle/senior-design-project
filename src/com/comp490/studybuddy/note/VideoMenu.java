@@ -1,19 +1,11 @@
 package com.comp490.studybuddy.note;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.util.Log;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.View.OnTouchListener;
-import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.RelativeLayout;
 
 import com.comp490.studybuddy.R;
 
@@ -24,7 +16,7 @@ import com.comp490.studybuddy.R;
 public class VideoMenu implements ActionMode.Callback {
 	private NoteActivity noteActivity;
 	private VideoBuilder videoBuilder;
-	private static final String LOG_TAG = "Video Menu Callback";
+	//private static final String LOG_TAG = "Video Menu Callback";
 	ImageButton video;
 
 	// Video Contextual Action Mode
@@ -32,7 +24,7 @@ public class VideoMenu implements ActionMode.Callback {
 	public VideoMenu(NoteActivity noteActivity, VideoBuilder videoBuilder) {
 		this.noteActivity = noteActivity;
 		this.videoBuilder = videoBuilder;
-		video = (ImageButton) noteActivity.findViewById(videoBuilder.getID());
+		video = (ImageButton) noteActivity.findViewById(videoBuilder.getEntry().getViewID());
 	}
 
 	@Override
@@ -49,7 +41,6 @@ public class VideoMenu implements ActionMode.Callback {
 
 	@Override
 	public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-		// TODO Auto-generated method stub
 		switch (item.getItemId()) {
 		
 		case R.id.menuSoundPlay: {
@@ -61,46 +52,15 @@ public class VideoMenu implements ActionMode.Callback {
 		}
 
 		case R.id.menuUnlockView: { 
-			EditView.move(video, noteActivity);
-			noteActivity.clickie("Video icon unlocked.");
+			UpdateView.move(video, noteActivity);
+			noteActivity.clickie("Video unlocked and moveable.");
 			return true;
 		}
 		
-		case R.id.menuDeleteView: { /*
-			AlertDialog.Builder builder = new AlertDialog.Builder(noteActivity);
-         builder.setIcon(android.R.drawable.ic_dialog_alert);
-         builder.setTitle("Delete item?");
-			builder.setPositiveButton("Yes",
-					new DialogInterface.OnClickListener() {
-						@Override
-						public void onClick(DialogInterface dialog, int id) {
-							try { // clicked yes
-								((ViewGroup) video.getParent())
-										.removeView(video);
-								videoBuilder.deleteObject();
-								videoBuilder = null;
-							} catch (Exception e1) {
-								Log.e(LOG_TAG, "Delete of VideoView failed");
-							}
-						}
-					});
-			builder.setNegativeButton("No",
-					new DialogInterface.OnClickListener() {
-						@Override
-						public void onClick(DialogInterface dialog, int id) {
-							dialog.cancel();
-						}
-					});
-			AlertDialog dialog = builder.create();
-			dialog.show();
+		case R.id.menuDeleteView: {
+			UpdateView.deleteView(videoBuilder.getEntry(), noteActivity, video);
 			mode.finish();
-			return true;
-		}
-		default:
-			return false;
-		} */
-			EditView.deleteView(videoBuilder.entry, noteActivity, video);
-			mode.finish();
+			videoBuilder = null;
 			return true;
 		}
 			default:
@@ -110,8 +70,9 @@ public class VideoMenu implements ActionMode.Callback {
 
 	@Override
 	public void onDestroyActionMode(ActionMode mode) {
-		video.setOnTouchListener(null);
-		noteActivity.clickie("Video icon position locked.");
-		EditView.setXY(videoBuilder.entry, noteActivity, video);
+		if (videoBuilder != null){
+			video.setOnTouchListener(null);
+			UpdateView.setXY(videoBuilder.getEntry(), noteActivity, video);
+		}
 	}
 }

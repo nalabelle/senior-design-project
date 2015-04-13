@@ -17,7 +17,7 @@ public class TextMenu implements ActionMode.Callback {
 	public TextMenu(NoteActivity noteActivity, TextBuilder textBuilder) {
 		this.noteActivity = noteActivity;
 		this.textBuilder = textBuilder;
-		text = (TextView) noteActivity.findViewById(textBuilder.entry.getViewID());
+		text = (TextView) noteActivity.findViewById(textBuilder.getEntry().getViewID());
 	}
 
 	@Override
@@ -37,12 +37,12 @@ public class TextMenu implements ActionMode.Callback {
 		switch (item.getItemId()) {
 
 		case R.id.menuUnlockView: {
-			EditView.move(text, noteActivity); //creates temp onTouch listener
+			UpdateView.move(text, noteActivity);
 			noteActivity.clickie("Text unlocked and moveable.");
 			return true;
 		}
 		case R.id.menuDeleteView: {
-			EditView.deleteView(textBuilder.entry, noteActivity, text);
+			UpdateView.deleteView(textBuilder.getEntry(), noteActivity, text);
 			textBuilder = null;
 			mode.finish(); 
 			return true;
@@ -56,9 +56,7 @@ public class TextMenu implements ActionMode.Callback {
 	public void onDestroyActionMode(ActionMode mode) {
 		if (textBuilder != null){
 			text.setOnTouchListener(null);
-			noteActivity.clickie("Text Position Locked.");
-			EditView.setXY(textBuilder.entry, noteActivity, text);
-			//textBuilder.setXY();
+			UpdateView.setXY(textBuilder.getEntry(), noteActivity, text);
 		}
 	}
 }

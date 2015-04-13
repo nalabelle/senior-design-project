@@ -18,8 +18,7 @@ public class TextBuilder{
 	protected EditText textBox;
 	private NoteActivity noteActivity;
 	private TextBuilder textBuilder = this;
-	NoteEntry entry;
-	private int viewID;
+	private NoteEntry entry;
 	
 	public TextBuilder(NoteActivity noteActivity, NoteEntry entry){
 		this.noteActivity = noteActivity;
@@ -41,7 +40,7 @@ public class TextBuilder{
 		}
 		textBox.requestFocus();
 		textBox.setClickable(true);
-		viewID = (noteActivity.generateViewID());
+		int viewID = (noteActivity.generateViewID());
 		textBox.setId(viewID); //required for deletion
 		entry.setViewID(viewID);
 		textBox.setRawInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
@@ -60,6 +59,7 @@ public class TextBuilder{
 		textBox.setOnFocusChangeListener(new OnFocusChangeListener() {
 
 			//This saves the note when you move focus away from it.
+			//TO DO: not saving if you press back to close the softkeyboard and back to exit
 			@Override
 			public void onFocusChange(View v, boolean hasFocus) {
 				//I think this cast should be safe.
@@ -86,31 +86,7 @@ public class TextBuilder{
 		this.noteActivity.addNote(entry);
 	}
 	
-	/*
-	public int getID(){
-		return viewID;
-	}*/
-	
-	/*
-	protected void deleteObject(){
-		try {
-			noteActivity.deleteNote(entry);
-			noteActivity.getHelper().getNoteEntryDao().delete(entry);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		textBox = null;
-		textBuilder = null;
+	protected NoteEntry getEntry(){
+		return entry;
 	}
-
-	public void setXY() {
-		this.entry.setXY(this.textBox.getX(), this.textBox.getY());	
-		try {
-			this.noteActivity.getHelper().getNoteEntryDao().update(this.entry);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}	*/
 }

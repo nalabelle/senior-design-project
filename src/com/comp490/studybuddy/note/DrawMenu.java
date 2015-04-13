@@ -15,6 +15,11 @@ import android.widget.RelativeLayout;
 import com.comp490.studybuddy.R;
 import com.comp490.studybuddy.models.NoteEntry;
 
+/* Creates a temporary transparent view on top to hold the Drawing and also 
+ * blocks listeners of the other views so gestures will not conflict. Once
+ * drawing is finished, the bitmap of the drawing is set as background. 
+ */
+
 public class DrawMenu implements ActionMode.Callback {
 	private NoteActivity noteActivity;
 	private NoteEntry noteEntry;
@@ -25,6 +30,7 @@ public class DrawMenu implements ActionMode.Callback {
 	public DrawMenu(NoteActivity noteActivity, NoteEntry noteEntry) {
 		this.noteActivity = noteActivity;
 		this.noteEntry = noteEntry;
+		this.noteEntry.setType(NoteEntry.NoteType.DRAW);
 		
 		try {
 			noteActivity.getHelper().getNoteEntryDao().createOrUpdate(noteEntry);
@@ -36,11 +42,15 @@ public class DrawMenu implements ActionMode.Callback {
 		//create a temporary transparent view to cover everything else
 		noteLayout = (RelativeLayout) noteActivity.findViewById(R.id.note_layout);
 		if (noteEntry.getDrawPath() != null){
-			setBitmap(true);
+			//if a drawing already exists (bitmap is on the background)
+			//we need clear the bitmap background before redrawing the paths
+			//otherwise we have double image
+			setBitmap(true); 
 		}
 		drawing = new Drawing(noteActivity, noteLayout.getWidth(), noteLayout.getHeight(), noteEntry.getDrawPath());
-		noteLayout.addView(drawing);	
+		noteLayout.addView(drawing);
 	}
+	
 	
 	@Override
 	public boolean onCreateActionMode(ActionMode mode, Menu menu) {
@@ -120,6 +130,7 @@ public class DrawMenu implements ActionMode.Callback {
 	@Override
 	public void onDestroyActionMode(ActionMode mode) {
 		noteActivity.clickie("Drawing Closed");
+		//convert drawing to bitmap and set as background
 		setBitmap(false); 
 		noteLayout.removeView(drawing);
 		noteEntry.setDrawPath(drawing.getSavePath());
@@ -131,6 +142,7 @@ public class DrawMenu implements ActionMode.Callback {
 		}
 	}
 
+	// Setting background as bitmap requires different methods depending on API
 	@SuppressLint("NewApi")
 	@SuppressWarnings("deprecation")
 	public void setBitmap(boolean clear) {
