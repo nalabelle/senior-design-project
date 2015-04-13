@@ -87,7 +87,7 @@ public class AddEvent extends OrmLiteBaseActivity<DBHelper> {
 				return true;
 			case R.id.createEvent:
 				try {
-					//Need logic to handle from and desc data
+					//Need logic to handle finish, color, and desc data
 					EditText eventText = (EditText) findViewById(R.id.eventName);
 					String eventName = eventText.getText().toString(); 
 					startDateTime = new DateTime(startYear, startMonth, startDay, 
@@ -244,7 +244,7 @@ public class AddEvent extends OrmLiteBaseActivity<DBHelper> {
 	    newFragment.show(getFragmentManager(), "colorPicker");
 	}
 	
-	//ListFragment
+	//ListFragment for Color Picker
 	public class ListViewFragment extends DialogFragment {
 	
 		public ListViewFragment create() {
@@ -282,11 +282,9 @@ public class AddEvent extends OrmLiteBaseActivity<DBHelper> {
 	        
 	        return v;
 	    }
-		
-		
 	}
 	
-	//List Adapter for Color picker
+	//Adapter for Color Picker
 	private class CustomListAdapter extends ArrayAdapter<String> {
 		private Context mContext;
 		private final String[] colorName;
