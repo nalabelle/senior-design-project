@@ -21,7 +21,9 @@ import java.util.Random;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.media.MediaPlayer;
@@ -32,11 +34,14 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.util.SparseArray;
+import android.view.Display;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
+import android.view.Surface;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -187,6 +192,10 @@ public class NoteActivity extends OrmLiteBaseActivity<DBHelper> {
 		case R.id.action_save_note: {
 			this.saveNotes();
 			return true;
+		}
+		case R.id.action_screen_orientation:{
+			this.changeOrientation();
+	        return true;
 		}
 		//insert other action menu options here
 		case R.id.action_launch_flashcards: {
@@ -422,6 +431,20 @@ public class NoteActivity extends OrmLiteBaseActivity<DBHelper> {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+	}
+	
+	public void changeOrientation(){
+		int orientation = getResources().getConfiguration().orientation;
+		switch(orientation) {
+        case Configuration.ORIENTATION_PORTRAIT:
+            setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+            clickie("Switched to Landscape");
+            break;
+        case Configuration.ORIENTATION_LANDSCAPE:
+            setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+            clickie("Switched to Portrait");
+            break;
 		}
 	}
 }
