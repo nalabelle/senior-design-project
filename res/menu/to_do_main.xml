@@ -7,20 +7,15 @@
         android:icon="@drawable/ic_action_new"
         android:showAsAction="always"
         android:title="@string/main_actionbar_add_title"/>
-    
-            
-      <item 
+    <!-- 
+    <item
         android:id="@+id/action_launch_text"
-        android:title="@string/menu_notes"
-        />
-    
-            <item android:id="@+id/action_launch_flashcards"
-        android:title="@string/menu_flashcards"
-        />
-        
-                <item
+        android:title="@string/menu_notes"/>
+    <item
+        android:id="@+id/action_launch_flashcards"
+        android:title="@string/menu_flashcards"/>
+    <item
         android:id="@+id/action_launch_calendar"
-        android:title="@string/menu_cal"
-        />
-
+        android:title="@string/menu_cal"/>
+	-->
 </menu>

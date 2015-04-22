@@ -187,18 +187,22 @@ public class FlashMain extends ListActivity
 	   		case android.R.id.home:
       		startActivity(new Intent(this, MainActivity.class));
       		return true;
+      		/*
 	      case R.id.action_launch_text: {
 	           startActivity(new Intent(this, NoteActivity.class));
+	           this.finish();
               return true;
 	      }
 	      case R.id.action_launch_calendar: {
 	           startActivity(new Intent(this, CalenActivity.class));
+	           this.finish();
               return true;
 	      }
 	      case R.id.action_launch_todo: {
 	           startActivity(new Intent(this, ToDoMain.class));
+	           this.finish();
 	           return true;
-	      }
+	      } */
 	      default:
 	           return super.onOptionsItemSelected(item);
 	      }

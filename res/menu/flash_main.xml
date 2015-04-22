@@ -1,7 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.comp490.studybuddy.FlashMain" >
-
+	<!-- 
         <item
         android:id="@+id/action_launch_text"
         android:title="@string/menu_notes"
@@ -17,5 +17,5 @@
         android:title="@string/menu_tasks"
         />
     
-    
+    -->
 </menu>

@@ -202,18 +202,23 @@ public class CalenActivity extends OrmLiteBaseActivity<DBHelper> {
 				intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			    startActivity(intent);
 			    return true;
+			    /*
 			case R.id.action_launch_text: {
 				startActivity(new Intent(this, NoteActivity.class));
+				finish();
 				return true;
 				      }
 			case R.id.action_launch_flashcards: {
 				startActivity(new Intent(this, FlashMain.class));
+				finish();
 				return true;
 				      }
 			case R.id.action_launch_todo: {
 				startActivity(new Intent(this, ToDoMain.class));
+				finish();
 				return true;
 				      }	    
+				      */
 			default:
 				return super.onOptionsItemSelected(item);
 		}
