@@ -110,18 +110,22 @@ public class ToDoMain extends DefaultActivity implements Dao.DaoObserver {
 		case R.id.view_all_tasks_actionbar_add:
 			NavigationHandler.addTask(this);
 			return true;
+			/*
 	      case R.id.action_launch_text: {
 	           startActivity(new Intent(this, NoteActivity.class));
+	           finish();
              return true;
 	      }
 		case R.id.action_launch_flashcards: {
 			startActivity(new Intent(this, FlashMain.class));
+			finish();
 			return true;
 		      }
 		case R.id.action_launch_calendar: {
 			startActivity(new Intent(this, CalenActivity.class));
+			finish();
 			return true;
-			}   
+			}  */ 
 		default:
 				return super.onOptionsItemSelected(item);
 		}	

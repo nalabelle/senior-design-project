@@ -197,19 +197,26 @@ public class NoteActivity extends OrmLiteBaseActivity<DBHelper> {
 			this.changeOrientation();
 	        return true;
 		}
+		/*
 		//insert other action menu options here
 		case R.id.action_launch_flashcards: {
 			startActivity(new Intent(this, FlashMain.class));
+			saveNotes();
+			this.finish();
 			return true;
 		}
 		case R.id.action_launch_calendar: {
 			startActivity(new Intent(this, CalenActivity.class));
+			saveNotes();
+			this.finish();
 			return true;
 		}
 		case R.id.action_launch_todo: {
 			startActivity(new Intent(this, ToDoMain.class));
+			saveNotes();
+			this.finish();
 			return true;
-		}	   
+		}	*/   
 		default:
 				return super.onOptionsItemSelected(item);
 		}

@@ -24,7 +24,7 @@
         android:icon="@drawable/ic_action_accept"
         android:title="@string/action_create_event"/>
     
-    
+    <!--
     	<item
         android:id="@+id/action_launch_text"
         android:title="@string/menu_notes"
@@ -39,6 +39,6 @@
         android:id="@+id/action_launch_todo"
         android:title="@string/menu_tasks"
         />
-    
+    -->
 
 </menu>
