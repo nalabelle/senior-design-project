@@ -16,6 +16,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -48,11 +49,17 @@ public class AddEvent extends OrmLiteBaseActivity<DBHelper> {
 	private DateTime startDateTime;
 	private DateTime finishDateTime;
 	private String color;
+	private Intent prevIntent;
 	private int startYear;
 	private int startMonth;
 	private int startDay;
 	private int startHour;
 	private int startMin;
+	private int finishYear;
+	private int finishMonth;
+	private int finishDay;
+	private int finishHour;
+	private int finishMin;
 	private ArrayList<String> colorImgName;
 	
 	String[] colorName = {"Blue", "Purple", "Green", "Orange", "Red"};
@@ -62,6 +69,12 @@ public class AddEvent extends OrmLiteBaseActivity<DBHelper> {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.add_task_calendar);
+		prevIntent = getIntent();
+		if (prevIntent.getStringExtra("name") != null) {
+			Log.d("zzz", "From Detail");
+		}
+		else
+			Log.d("aaa", "From Cal");
 	}
 	
 	@Override
@@ -87,25 +100,38 @@ public class AddEvent extends OrmLiteBaseActivity<DBHelper> {
 				return true;
 			case R.id.createEvent:
 				try {
-					//Need logic to handle finish, color, and desc data
+					//Grab event name
 					EditText eventText = (EditText) findViewById(R.id.eventName);
 					String eventName = eventText.getText().toString(); 
+					//Create event start start as a DateTime, REQUIRED
 					startDateTime = new DateTime(startYear, startMonth, startDay, 
 							startHour, startMin);
-					//finishDateTime = new DateTime(finishYear, finishMonth, finishDay,
-							//finishHour, finishMin);
-		    		//EditText eventDesc = (EditText) findViewById(R.id.eventDesc);
-					//String desc = eventDesc.getText().toString();
+					//Create event finish time if supplied
+					String finishDate;
+					if (finishYear != 0) {
+						if (finishHour == 0) { //If time not set, default to 11:59pm
+							finishHour = 23;
+							finishMin = 59;
+						}	
+						finishDateTime = new DateTime(finishYear, finishMonth,
+								finishDay, finishHour, finishMin);
+						finishDate = finishDateTime.toString();
+					}
+					else
+						finishDate = "";
+					//Grab event description
+		    		EditText eventDesc = (EditText) findViewById(R.id.eventDesc);
+					String desc = eventDesc.getText().toString();
+					//Make event
 					event = new CalendarEvent( 
-							eventName, startDateTime.toString(), "", "", color);
-
+							eventName, startDateTime.toString(), finishDate, desc, color);
+					//save event
 		    		try {
 		    			getHelper().getDao(CalendarEvent.class).create(event);
 		    		} catch (SQLException e) {
 		    			// TODO Auto-generated catch block
 		    			e.printStackTrace();
 		    		}
-					
 					//Return to Calendar
 					Intent back2Cal = new Intent(this, CalenActivity.class);
 					back2Cal.putExtra("date", startDateTime.toString());
@@ -166,6 +192,8 @@ public class AddEvent extends OrmLiteBaseActivity<DBHelper> {
 				fromTimeButt.setText(time.toString(dateFormatter));
 			}
 			else if (timeButt == 0) {
+				finishHour = hourOfDay;
+				finishMin = minute;
 				Button toTimeButt = 
 						(Button) getActivity().findViewById(R.id.toButtTime);
 				toTimeButt.setText(time.toString(dateFormatter));
@@ -231,6 +259,9 @@ public class AddEvent extends OrmLiteBaseActivity<DBHelper> {
 				fromDateButt.setText(from.toString(dateFormatter));
 			}
 			else if (dateButt == 0){
+				finishYear = year;
+				finishMonth = month+1;
+				finishDay = day;
 				Button toDateButt = 
 						(Button) getActivity().findViewById(R.id.toButtDate);
 				DateTime to = new DateTime(year, ++month, day, 0, 0);

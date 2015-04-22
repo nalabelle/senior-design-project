@@ -16,6 +16,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -27,6 +28,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
 import com.comp490.studybuddy.R;
@@ -144,17 +146,17 @@ public class DayDetails extends OrmLiteBaseActivity<DBHelper> {
 				text.setTextColor(Color.WHITE);
 				text.setText(events.get(position).getName());
 				Log.d("DAYDETAIL", ""+events.get(position).getName());
-				//Need to set Bcolor to events.get(position).getColor();
-				//but it is a string...
-				text.setBackgroundColor(Color.BLUE);
+				String color = events.get(position).getColor();
+				text.setBackgroundColor(getResources().getColor(colorFinder(color)));
 			}
-			//Event Test clicked open fragmen
+			//Event Test clicked open fragment
 			mView.setOnClickListener(new View.OnClickListener() {
     			@Override
     			public void onClick(View view) {
     				//Log.d("TAG", view.getTag().toString());
     			    CalendarEvent eventToShow = events.get(position);
     			    details = new ArrayList<String>();
+    			    details.add("EDIT");
     			    details.add(eventToShow.getName());
     			    Log.d("aaa", eventToShow.getName());
     			    details.add(eventToShow.getStart());
@@ -198,9 +200,21 @@ public class DayDetails extends OrmLiteBaseActivity<DBHelper> {
 	        	//Handle onTouch on fragment
 	            @Override
 	            public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-	            	//Add Color to Event
-	            	Log.d("FragTouch" , "?");
-	                getDialog().dismiss();
+	                if(position == 0) {
+	                	//Pack info into intent launch AddEvent activity
+	                	Intent intent = new Intent(getApplicationContext(), AddEvent.class);
+	                	intent.putExtra("name", details.get(1));
+	                	intent.putExtra("start", details.get(2));
+	                	intent.putExtra("finish", details.get(3));
+	                	intent.putExtra("desc", details.get(4));
+	                	intent.putExtra("color", details.get(5));
+	                	startActivity(intent);
+	                	
+	                }
+	                else {
+	                	TextView text = (TextView) arg1.findViewById(R.id.detailTxt);
+	                	Toast.makeText(getApplicationContext(), text.getText(), Toast.LENGTH_LONG).show();
+	                }
 	            }
 	        });
 	        
@@ -231,8 +245,37 @@ public class DayDetails extends OrmLiteBaseActivity<DBHelper> {
 			//Apply image
 			TextView text = (TextView) mView.findViewById(R.id.detailTxt);
 			text.setText(arry2.get(position));
+			if(position == 0) {
+				text.setGravity(Gravity.CENTER);
+			}
 			return mView;
 		}
+		
+	}
+	
+	private int colorFinder(String color)
+	{
+		int androidColor = R.color.blue;
+		if (color == null) { return androidColor;}
+		switch(color) {
+			case "Blue":
+				break;
+			case "Purple":
+				androidColor = R.color.purple;
+				break;
+			case "Green":
+				androidColor = R.color.green;
+				break;
+			case "Orange":
+				androidColor = R.color.orange;
+				break;
+			case "Red":
+				androidColor = R.color.red;
+				break;
+			default:
+				break;
+		}
+		return androidColor;
 		
 	}
 
