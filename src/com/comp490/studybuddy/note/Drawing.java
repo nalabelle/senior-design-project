@@ -270,6 +270,7 @@ public class Drawing extends View {
 		}
 	}
 	
+	/*
 	public void saveFile() {
 		String fileUrl = Environment.getExternalStorageDirectory().toString()
 				+ "/handwriting.png";
@@ -285,7 +286,7 @@ public class Drawing extends View {
 			e.printStackTrace();
 		}
 	}
-	
+	*/
 	public ArrayList<DrawPath> getSavePath(){
 		return savePath;
 	}
