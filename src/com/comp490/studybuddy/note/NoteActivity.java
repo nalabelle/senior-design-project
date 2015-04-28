@@ -34,26 +34,22 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.util.SparseArray;
-import android.view.Display;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
-import android.view.Surface;
 import android.view.View;
-import android.view.WindowManager;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.comp490.studybuddy.MainActivity;
 import com.comp490.studybuddy.R;
-import com.comp490.studybuddy.calendar.CalenActivity;
 import com.comp490.studybuddy.database.DBHelper;
-import com.comp490.studybuddy.flashcards.FlashMain;
 import com.comp490.studybuddy.models.NoteEntry;
-import com.comp490.studybuddy.todolist.ToDoMain;
 import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
 
 /* General Information: 
@@ -108,7 +104,33 @@ public class NoteActivity extends OrmLiteBaseActivity<DBHelper> {
 					new SoundBuilder(entry, this);
 					break;
 				case DRAW:
-					drawEntry = entry; //can't access views from oncreate?
+
+					drawEntry = entry; // can't access views from oncreate?
+					ViewGroup layout;
+					TextView blank = new TextView(this);
+					
+					try {
+						layout = (ViewGroup) this
+								.findViewById(R.id.note_layout);
+						layout.addView(blank);
+					} catch (Exception e) {
+						clickie("layout failed on start");
+						e.printStackTrace();
+						break;
+					}
+
+					try {
+						blank.post(new Runnable() {
+							@Override
+							public void run() {
+								new DrawMenu(noteActivity, drawEntry);
+							}
+						});
+					} catch (Exception e) {
+						clickie("startup post or runnable failed");
+						e.printStackTrace();
+					}
+					
 					break;
 				case PICTURE:
 					new PictureBuilder(this, entry);
