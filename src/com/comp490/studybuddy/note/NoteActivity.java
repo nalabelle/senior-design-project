@@ -19,7 +19,9 @@ import java.util.Locale;
 import java.util.Random;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
@@ -81,6 +83,7 @@ public class NoteActivity extends OrmLiteBaseActivity<DBHelper> {
 	private static final String LOG_TAG = "Notes";
 		
 	private NoteEntry drawEntry = null;
+	public boolean showPopUp = true;
 	
 	private SparseArray<NoteEntry> noteList = new SparseArray<NoteEntry>();
 	
@@ -93,6 +96,8 @@ public class NoteActivity extends OrmLiteBaseActivity<DBHelper> {
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		//load previous stuff.
 		this.initializeViews();
+		createPopup();
+		//createPopup();
 	}
 	
 	private void initializeViews() {
@@ -475,5 +480,33 @@ public class NoteActivity extends OrmLiteBaseActivity<DBHelper> {
             clickie("Switched to Portrait");
             break;
 		}
+	}
+	
+	
+	public void createPopup(){
+		
+		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(noteActivity);
+		alertDialogBuilder.setMessage("Welcome to the Note!")
+		.setCancelable(false)
+		.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+
+
+				try {
+					new DrawMenu(noteActivity, drawEntry);
+				} catch (Exception e) {
+					clickie("Fail");
+					e.printStackTrace();
+				}
+				dialog.cancel();
+				
+			}
+		});
+		
+		AlertDialog alert = alertDialogBuilder.create();
+		alert.show();
+
 	}
 }
