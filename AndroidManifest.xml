@@ -15,7 +15,7 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/sb_app_icon" android:theme="@style/Theme.Orange">
+        android:icon="@drawable/sb_app_icon7" android:theme="@style/Theme.Orange">
         <activity
             android:name=".SplashScreen"
             android:label="@string/app_name"
