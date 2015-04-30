@@ -1,4 +1,68 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tableLayout1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+ 	android:padding="5dp">
+
+    <TableRow
+        android:id="@+id/tableRow1"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" >
+
+        <Button
+            android:id="@+id/note_btn"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1" 
+            android:background="@drawable/note_btn"
+            android:onClick="onTextNoteClick"
+            />
+
+        <Button
+            android:id="@+id/flashcard_btn"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1" 
+            android:background="@drawable/flashcard_btn"
+            android:onClick="onFlashcardClick"
+            />
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/tableRow2"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" >
+
+        <Button
+            android:id="@+id/calendar_btn"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1" 
+            android:background="@drawable/calendar_btn"
+            android:onClick="onCalClick"
+            />
+
+        <Button
+            android:id="@+id/todo_btn"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1" 
+            android:background="@drawable/todo_btn"
+            android:onClick="onTodoClick"
+            
+            />
+    </TableRow>
+
+</TableLayout>
+
+
+
+
+
+<!-- <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
@@ -17,7 +81,7 @@
         android:layout_marginBottom="32dp"
         android:layout_marginLeft="33dp"
         android:background="@drawable/flashcardclick"
-        android:onClick="onFlashcardhClick" />
+        android:onClick="onFlashcardClick" />
 
     <Button
         android:id="@+id/button4"
@@ -56,4 +120,4 @@
         android:minWidth="154dip"
         android:onClick="onTextNoteClick" />
 
-</RelativeLayout>
+</RelativeLayout> -->

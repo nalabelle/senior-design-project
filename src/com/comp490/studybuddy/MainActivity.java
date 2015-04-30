@@ -125,7 +125,7 @@ public class MainActivity extends Activity {
       return true;
    }
    
-   public boolean onFlashcardhClick(View view) {
+   public boolean onFlashcardClick(View view) {
       Intent FlashcardLaunch = new Intent(this.getApplicationContext(), FlashMain.class);
       startActivity(FlashcardLaunch);
       return true;
