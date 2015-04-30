@@ -1,4 +1,9 @@
+<!-- <selector xmlns:android="http://schemas.android.com/apk/res/android">
+<item android:state_pressed="true" android:drawable="@drawable/calclicked" /> pressed 
+<item android:drawable="@drawable/cal" /> Normal
+</selector> -->
+
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-<item android:state_pressed="true" android:drawable="@drawable/calclicked" /> <!--pressed --> 
-<item android:drawable="@drawable/cal" /> <!-- Normal -->
+<item android:state_pressed="true" android:drawable="@drawable/calendar_click_btn" /> <!--pressed --> 
+<item android:drawable="@drawable/calendar_btn" /> <!-- Normal -->
 </selector>

@@ -20,7 +20,7 @@
             android:layout_width="0dp"
             android:layout_height="fill_parent"
             android:layout_weight="1" 
-            android:background="@drawable/note_btn"
+        android:background="@drawable/textnoteclick"
             android:onClick="onTextNoteClick"
             />
 
@@ -29,7 +29,7 @@
             android:layout_width="0dp"
             android:layout_height="fill_parent"
             android:layout_weight="1" 
-            android:background="@drawable/flashcard_btn"
+        android:background="@drawable/flashcardclick"
             android:onClick="onFlashcardClick"
             />
     </TableRow>
@@ -45,7 +45,7 @@
             android:layout_width="0dp"
             android:layout_height="fill_parent"
             android:layout_weight="1" 
-            android:background="@drawable/calendar_btn"
+        android:background="@drawable/calclick"
             android:onClick="onCalClick"
             />
 
@@ -54,7 +54,7 @@
             android:layout_width="0dp"
             android:layout_height="fill_parent"
             android:layout_weight="1" 
-            android:background="@drawable/todo_btn"
+        android:background="@drawable/todoclick"
             android:onClick="onTodoClick"
             
             />

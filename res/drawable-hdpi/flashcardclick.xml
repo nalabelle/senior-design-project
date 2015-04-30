@@ -1,4 +1,9 @@
+<!-- <selector xmlns:android="http://schemas.android.com/apk/res/android">
+<item android:state_pressed="true" android:drawable="@drawable/flashcardclicked" /> pressed 
+<item android:drawable="@drawable/flashcard" /> Normal
+</selector> -->
+
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-<item android:state_pressed="true" android:drawable="@drawable/flashcardclicked" /> <!--pressed --> 
-<item android:drawable="@drawable/flashcard" /> <!-- Normal -->
+<item android:state_pressed="true" android:drawable="@drawable/flashcard_click_btn" /> <!--pressed --> 
+<item android:drawable="@drawable/flashcard_btn" /> <!-- Normal -->
 </selector>
