@@ -86,19 +86,19 @@
                 android:id="@+id/modify_timepicker_time"/>   
         </TableRow>
 
-                      <View
+                     <!--  <View
             android:layout_height="1dp"
             android:background="#d3d3d3" />
-
+ -->
 
         <TableRow>
-            <TextView
+           <!--  <TextView
                 android:layout_marginTop = "5dp"
                 android:id="@+id/modify_notification"
                 android:padding="2dp"
                 android:text="@string/task_notification_label"            
                 android:textColor="#0099FF"
-                android:textAppearance="?android:attr/textAppearanceSmall"/>
+                android:textAppearance="?android:attr/textAppearanceSmall"/> -->
         </TableRow>
         <TableRow>
 
@@ -111,6 +111,7 @@
                 android:textOff="Off"
                 android:textOn="On"
                 android:layout_marginBottom = "5dp"
+                android:visibility="gone"
                  />
 
         </TableRow>

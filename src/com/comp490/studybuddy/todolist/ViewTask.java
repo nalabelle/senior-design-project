@@ -114,15 +114,15 @@ public class ViewTask extends DefaultActivity {
          priorityTextView.setText(priorityString);
          
          //set notification
-         TextView notificationTextView = (TextView) findViewById(R.id.view_textview_notification);
-         String notificationString = "";
-         if (this.task.getNotification() == 0) {
-            notificationString = "Off";
-         }
-         else {
-            notificationString = "On";
-         }
-         notificationTextView.setText(notificationString);
+//         TextView notificationTextView = (TextView) findViewById(R.id.view_textview_notification);
+//         String notificationString = "";
+//         if (this.task.getNotification() == 0) {
+//            notificationString = "Off";
+//         }
+//         else {
+//            notificationString = "On";
+//         }
+//         notificationTextView.setText(notificationString);
       }
    }
 

@@ -10,7 +10,6 @@
 
 package com.comp490.studybuddy.todolist;
 
-//import com.comp490.studybuddy.todolist.NotificationReceiver;
 import com.comp490.studybuddy.R;
 import com.comp490.studybuddy.models.Task;
 
@@ -31,7 +30,6 @@ import android.widget.Toast;
 //Activity edits task if Task object in the bundle exists, else creates a new task
 public class ModifyTask extends DefaultActivity {
 
-   //private NotificationReceiver notificationReceiver;
    private Calendar cal;
    private Task task = null;
    //the job of activity edit or add 
@@ -64,9 +62,7 @@ public class ModifyTask extends DefaultActivity {
          this.taskJob = this.ADD_TASK;
       }
       
-      //notificationReceiver = new NotificationReceiver(this);
-      //bind activity to service
-      //notificationReceiver.doBindService();      
+     
    }
    
    
@@ -128,10 +124,6 @@ public class ModifyTask extends DefaultActivity {
       //load data from form to this.task object
       updateTask();
       
-      /**
-       *check for notification
-       */
-      
       //call dbAdapter to update task
       try {
 		getHelper().getTaskDao().update(this.task);
@@ -176,40 +168,25 @@ public class ModifyTask extends DefaultActivity {
       cal.set(Calendar.MINUTE, minute);
       cal.set(Calendar.SECOND, 0);
       
-      //service sets alarm through NotificationReceiver that talks to service
-      
-      /**
-      notificationReceiver.setAlarmForNotification(cal);
-      Toast.makeText(this, "Notification set for: "+ (month+1) +"/"+ day +"/"+ 
-            year + " " + hour + ":" + minute, Toast.LENGTH_SHORT).show();
-       */
       
       //set notification 
-      CompoundButton notificationSwitch = (Switch)findViewById(R.id.modify_switch_notification);
-      if(notificationSwitch.isChecked()){this.task.setNotification(1);}
-
-      notificationSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
-         {
-            if(isChecked) {
-               //do stuff when Switch is ON
-               } 
-            else {
-               //do stuff when Switch if OFF
-               }    
-         }
-      });
+//      CompoundButton notificationSwitch = (Switch)findViewById(R.id.modify_switch_notification);
+//      if(notificationSwitch.isChecked()){this.task.setNotification(1);}
+//
+//      notificationSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+//         {
+//            if(isChecked) {
+//               //do stuff when Switch is ON
+//               } 
+//            else {
+//               //do stuff when Switch if OFF
+//               }    
+//         }
+//      });
    }
 
-   /*
-   @Override
-   protected void onStop() {
-       //stop connection to service when activity is stopped
-       if(notificationReceiver != null)
-          notificationReceiver.doUnbindService();
-       super.onStop();
-   }
-   */
+  
   
    
    //add new task to db
@@ -253,13 +230,13 @@ public class ModifyTask extends DefaultActivity {
          Spinner taskPrioritySpinner = (Spinner) findViewById(R.id.modify_spinner_priority);
          taskPrioritySpinner.setSelection(this.task.getPriority());
         
-         //set notification 
-         CompoundButton taskNotificationSwitch = (Switch)findViewById(R.id.modify_switch_notification);
-         if (this.task.getNotification() == 0) {
-            taskNotificationSwitch.setChecked(false);
-         } else {
-            taskNotificationSwitch.setChecked(true);
-         }  
+//         //set notification 
+//         CompoundButton taskNotificationSwitch = (Switch)findViewById(R.id.modify_switch_notification);
+//         if (this.task.getNotification() == 0) {
+//            taskNotificationSwitch.setChecked(false);
+//         } else {
+//            taskNotificationSwitch.setChecked(true);
+//         }  
       }
    }
 

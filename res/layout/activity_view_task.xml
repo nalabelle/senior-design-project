@@ -92,12 +92,12 @@
                 android:textAppearance="?android:attr/textAppearanceMedium" />
         </TableRow>
 
-              <View
+<!--                <View
             android:layout_height="1dp"
             android:background="#d3d3d3" />
 
 
-        <TableRow>
+       <TableRow>
             <TextView
                 android:layout_marginTop="5dp"
                 android:id="@+id/view_notification"
@@ -112,7 +112,7 @@
                 android:id="@+id/view_textview_notification"
                 android:padding="2dp"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
-        </TableRow>
+        </TableRow> -->
         
     </TableLayout>
 
