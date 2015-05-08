@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     android:paddingTop="55dp"
     android:paddingBottom="55dp"  
+	android:background="#ffffff"
  	 	>
 
     <TableRow
