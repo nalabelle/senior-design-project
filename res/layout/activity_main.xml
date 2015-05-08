@@ -3,25 +3,25 @@
     android:id="@+id/tableLayout1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
- 	android:paddingLeft="5dp"
- 	 	android:paddingRight="5dp"
- 	 	android:paddingTop="40dp"
- 	 	android:paddingBottom="40dp"
+    android:paddingTop="55dp"
+    android:paddingBottom="55dp"  
  	 	>
 
     <TableRow
         android:id="@+id/tableRow1"
         android:layout_width="fill_parent"
         android:layout_height="0dp"
-        android:layout_weight="1" >
+        android:layout_weight="1" 
+        >
 
         <Button
             android:id="@+id/note_btn"
             android:layout_width="0dp"
             android:layout_height="fill_parent"
             android:layout_weight="1" 
-        android:background="@drawable/textnoteclick"
-            android:onClick="onTextNoteClick"
+        	android:background="@drawable/textnoteclick"
+            android:onClick="onTextNoteClick"          	        
+            android:layout_margin="10dp"
             />
 
         <Button
@@ -29,8 +29,9 @@
             android:layout_width="0dp"
             android:layout_height="fill_parent"
             android:layout_weight="1" 
-        android:background="@drawable/flashcardclick"
-            android:onClick="onFlashcardClick"
+        	android:background="@drawable/flashcardclick"
+            android:onClick="onFlashcardClick"          	
+            android:layout_margin="10dp"
             />
     </TableRow>
 
@@ -38,15 +39,17 @@
         android:id="@+id/tableRow2"
         android:layout_width="fill_parent"
         android:layout_height="0dp"
-        android:layout_weight="1" >
+        android:layout_weight="1"          	
+        >
 
         <Button
             android:id="@+id/calendar_btn"
             android:layout_width="0dp"
             android:layout_height="fill_parent"
             android:layout_weight="1" 
-        android:background="@drawable/calclick"
-            android:onClick="onCalClick"
+        	android:background="@drawable/calclick"
+            android:onClick="onCalClick"           	
+            android:layout_margin="10dp"
             />
 
         <Button
@@ -54,9 +57,9 @@
             android:layout_width="0dp"
             android:layout_height="fill_parent"
             android:layout_weight="1" 
-        android:background="@drawable/todoclick"
-            android:onClick="onTodoClick"
-            
+        	android:background="@drawable/todoclick"
+            android:onClick="onTodoClick"           	
+            android:layout_margin="10dp"
             />
     </TableRow>
 
