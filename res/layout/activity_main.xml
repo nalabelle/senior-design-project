@@ -3,8 +3,8 @@
     android:id="@+id/tableLayout1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="55dp"
-    android:paddingBottom="55dp"  
+    android:paddingTop="70dp"
+    android:paddingBottom="70dp"  
 	android:background="#ffffff"
  	 	>
 
@@ -22,7 +22,7 @@
             android:layout_weight="1" 
         	android:background="@drawable/textnoteclick"
             android:onClick="onTextNoteClick"          	        
-            android:layout_margin="10dp"
+            android:layout_margin="8dp"
             />
 
         <Button
@@ -32,7 +32,7 @@
             android:layout_weight="1" 
         	android:background="@drawable/flashcardclick"
             android:onClick="onFlashcardClick"          	
-            android:layout_margin="10dp"
+            android:layout_margin="8dp"
             />
     </TableRow>
 
@@ -50,7 +50,7 @@
             android:layout_weight="1" 
         	android:background="@drawable/calclick"
             android:onClick="onCalClick"           	
-            android:layout_margin="10dp"
+            android:layout_margin="8dp"
             />
 
         <Button
@@ -60,7 +60,7 @@
             android:layout_weight="1" 
         	android:background="@drawable/todoclick"
             android:onClick="onTodoClick"           	
-            android:layout_margin="10dp"
+            android:layout_margin="8dp"
             />
     </TableRow>
 
