@@ -3,27 +3,6 @@
 
 ## Description
 **StudyBuddy** is the software solution that gets you the grades you deserve.
-## Installation
-
-Download from the Google PlayStore:
-
-```
-Here :D
-```
-Download from the AppStore:
-
-```
-Here D:
-```
-
-Run the Web Application:
-
-```
-http://=D.com
-```
-
-
-
 
 ### Known Issues
 
@@ -34,8 +13,6 @@ Well...
 
 By Anthony Sager, Nikolas La Belle, Tom Conaway, Uyen Nguyen, Wesley Liang, Alexander Swanson, Xintong Shi
 
-
-
 ## Contributing
 
 1. Fork it
@@ -43,8 +20,3 @@ By Anthony Sager, Nikolas La Belle, Tom Conaway, Uyen Nguyen, Wesley Liang, Alex
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
-
-
-## License
-
-BuddyCorp LLC
